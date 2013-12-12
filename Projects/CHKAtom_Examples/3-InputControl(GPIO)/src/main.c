@@ -52,7 +52,7 @@ int main(void)
     GPIO_InitStruct1.GPIO_InitState = Bit_RESET;   
     GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;
     GPIO_InitStruct1.GPIO_Pin = GPIO_Pin_9;
-    GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_IPU;         //上拉输入
+    GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_IPD;         //下拉输入
     GPIO_Init(&GPIO_InitStruct1);  
     //初始化GPIO输出引脚(LED1)
     GPIO_InitStruct1.GPIOx = PTC;  
