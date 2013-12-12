@@ -108,7 +108,9 @@ CH-KinetisV2.40
 │  │  ├─39-SoftwareTimer(uCOS)              uCOS 软件定时器实验
 │  │  ├─40-MassageBox(uCOS)                 uCOS 消息邮箱实验
 │  │  ├─41-uCGUI(uCGUI)                     uCGUI 移植实验
-│  │  ├─42-USB_Bootloader(CDC)           USBBooltoader实验（配合Templete(Bootloader)模板
+│  │  ├─42-USB_Bootloader(CDC)              USBBooltoader实验（配合Templete(Bootloader)模板
+│  │  ├─43-MAG3110(I2C)                     MAG3110地磁场传感器
+│  │  ├─43-44-QuadratureDecoder(FTM)        正交解码试验
 ├─Tools: 工具
 │  │  
 │  │ 
