@@ -1,12 +1,9 @@
 超核Kinetis K60 固件库V2.41
 
-1.本店地址:http://upcmcu.taobao.com 
-2:官方版本发布及讨论: http://www.beyondcore.net/
+1:官方版本发布及讨论: http://www.beyondcore.net/
 2.MDK工程请使用 MDK4.53以上版本打开 IAR 请用6.6以上版本打开
 3.本文件夹请放在英文目录下，比如 不 要放到  /D/学习/...
-4.相关软件及最新版本下载地址：
-http://pan.baidu.com/share/home?uk=2870907047
-http://github.com/yandld
+
 
 
 中文目录结构
@@ -66,6 +63,7 @@ CH-KinetisV2.40
 │  │  ├─40-MassageBox(uCOS)                 uCOS 消息邮箱实验
 │  │  ├─41-uCGUI(uCGUI)                     uCGUI 移植实验
 │  │  ├─42-USB_Bootloader(CDC)           USBBooltoader实验（配合Templete(Bootloader)模板
+│  │  ├─43-I2C_BusHunter(I2C)            I2C总线扫描器，用于扫描总线上所有I2C设备
 │  │ 
 │  │ 
 │  │─CHKATOM Examples (超核K60原子核 核心板 例程 
@@ -110,7 +108,9 @@ CH-KinetisV2.40
 │  │  ├─39-SoftwareTimer(uCOS)              uCOS 软件定时器实验
 │  │  ├─40-MassageBox(uCOS)                 uCOS 消息邮箱实验
 │  │  ├─41-uCGUI(uCGUI)                     uCGUI 移植实验
-│  │  ├─42-USB_Bootloader(CDC)           USBBooltoader实验（配合Templete(Bootloader)模板
+│  │  ├─42-USB_Bootloader(CDC)              USBBooltoader实验（配合Templete(Bootloader)模板
+│  │  ├─43-MAG3110(I2C)                     MAG3110地磁场传感器
+│  │  ├─43-44-QuadratureDecoder(FTM)        正交解码试验
 ├─Tools: 工具
 │  │  
 │  │ 

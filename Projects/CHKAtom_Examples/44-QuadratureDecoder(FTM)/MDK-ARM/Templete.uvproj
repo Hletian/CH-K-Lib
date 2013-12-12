@@ -357,7 +357,7 @@
               <MiscControls>--c99</MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\Libraries\startup\CoreSupport;..\..\..\..\Libraries\startup\DeviceSupport;..\..\..\..\Libraries\drivers\inc;..\..\..\..\Libraries\devices\ads7843;..\..\..\..\Libraries\devices\kbi;..\..\..\..\Libraries\devices\lcd;..\..\..\..\Libraries\devices\led;..\..\..\..\Libraries\devices\nrf2401;..\..\..\..\Libraries\devices\spiflash;..\..\..\..\Libraries\utilities\chgui;..\..\..\..\Libraries\utilities\minishell;..\src;..\..\..\..\Libraries\znfat</IncludePath>
+              <IncludePath>..\..\..\..\Libraries\startup\CoreSupport;..\..\..\..\Libraries\startup\DeviceSupport;..\..\..\..\Libraries\drivers\inc;..\..\..\..\Libraries\devices\ads7843;..\..\..\..\Libraries\devices\kbi;..\..\..\..\Libraries\devices\lcd;..\..\..\..\Libraries\devices\led;..\..\..\..\Libraries\devices\nrf2401;..\..\..\..\Libraries\devices\spiflash;..\..\..\..\Libraries\utilities\chgui;..\..\..\..\Libraries\utilities\minishell;..\src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -577,21 +577,6 @@
               <FileName>minishell.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\Libraries\utilities\minishell\minishell.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>znfat</GroupName>
-          <Files>
-            <File>
-              <FileName>deviceio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\Libraries\znfat\deviceio.c</FilePath>
-            </File>
-            <File>
-              <FileName>znFAT.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\Libraries\znfat\znFAT.c</FilePath>
             </File>
           </Files>
         </Group>

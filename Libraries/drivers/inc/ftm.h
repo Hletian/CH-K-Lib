@@ -38,6 +38,11 @@
 #define FTM1_CH1_PB1    (0x000c4111U)
 #define FTM2_CH0_PB18   (0x000c5202U)
 #define FTM2_CH1_PB19   (0x000c5312U)
+
+#define FTM1_QD_A12_PHA_A13_PHB    (0x7034C01U)
+#define FTM1_QD_B00_PHA_B01_PHB    (0x6104001U)
+#define FTM2_QD_B18_PHA_B19_PHB    (0x614D202U)
+
 //参数检查器
 #define IS_FTM_PWM_MAP(MAP)  (((MAP) == FTM0_CH0_PC1)  || \
                               ((MAP) == FTM0_CH0_PA3)  || \
@@ -71,6 +76,15 @@ typedef struct
 		uint32_t FTM_Sesevred:10;
 }FTM_PWM_MapTypeDef;
 
+typedef struct
+{
+    uint32_t FTM_Index:4;
+    uint32_t FTM_CH_Index:4;
+		uint32_t FTM_PHA_Index:6;
+		uint32_t FTM_PHB_Index:6;
+		uint32_t FTM_GPIO_Index:4;
+		uint32_t FTM_Alt_Index:4;
+}FTM_QD_MapTypeDef;
 
 //FTM  模式选择
 typedef enum
@@ -132,7 +146,8 @@ void FTM_PWM_ChangeDuty(uint32_t FTMxMAP,uint32_t PWMDuty);
 void FTM_ITConfig(FTM_Type* FTMx, uint16_t FTM_IT, FunctionalState NewState);
 ITStatus FTM_GetITStatus(FTM_Type* FTMx, uint16_t FTM_IT);
 void FTM_ClearITPendingBit(FTM_Type *FTMx,uint16_t FTM_IT);
-
+void FTM_QDInit(uint32_t FTM_QD_Maps);
+void FTM_QDGetData(FTM_Type *ftm,uint32_t* value, uint8_t* dir);
 
 #ifdef __cplusplus
 }

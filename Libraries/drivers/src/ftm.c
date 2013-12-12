@@ -334,95 +334,119 @@ void FTM_Init(FTM_InitTypeDef *FTM_InitStruct)
 }
 
 /***********************************************************************************************
- 功能：FTM 正交解码器 初始化  这个函数还未经过测试  将在后续版本中开放 技术支持请联系QQ 1453363089
- 形参：ftm  : FTM0  FTM1   FTM2
-			  FTM0: 无效
-			  FTM1: 
-				  FTM1_QDA  PTA12   PTB0
-          FTM1_QDB  PTA13   PTB1
-			  FTM2: 
-					FTM2_QDA  PTB18
-					FTM2_QDB  PTB19
+ 功能：FTM 获得正交编码数据
+ 形参：ftm: FTM模块号
+       value: 编码计数值指针
+       dir：  方向指针 0正向 1反相 
  返回：0
- 详解：未测试
+ 详解：Added in 2013-12-12
 ************************************************************************************************/
-/*
-uint8_t FTM_QUADInit(FTM_Type *ftm)
+void FTM_QDGetData(FTM_Type *ftm, uint32_t* value, uint8_t* dir)
 {
-	//开启PORT时钟
-	SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;
-	SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;
-	SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;
-	SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;
-	SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;
- //开启响应PWM时钟
-	switch((uint32_t)ftm)
-	{
-	  case FTM0_BASE:SIM->SCGC6|=SIM_SCGC6_FTM0_MASK;break;     
-	  case FTM1_BASE:SIM->SCGC6|=SIM_SCGC6_FTM1_MASK;break;
-	  case FTM2_BASE:SIM->SCGC3|=SIM_SCGC3_FTM2_MASK;break; 
-	}
-	//初始化引脚
-	switch((uint32_t)ftm)
-	{
-		case FTM0_BASE:
-			
-			break;
-		case FTM1_BASE:
-		  PORTA->PCR[12]&=~(PORT_PCR_MUX_MASK); 
-			PORTA->PCR[12]|=PORT_PCR_MUX(7); 
-			PORTA->PCR[13]&=~(PORT_PCR_MUX_MASK); 
-			PORTA->PCR[13]|=PORT_PCR_MUX(7); 
-		  PORTB->PCR[0]&=~(PORT_PCR_MUX_MASK); 
-			PORTB->PCR[0]|=PORT_PCR_MUX(6); 
-			PORTB->PCR[1]&=~(PORT_PCR_MUX_MASK); 
-			PORTB->PCR[1]|=PORT_PCR_MUX(6); 
-			break;
-		case FTM2_BASE:
-		  PORTB->PCR[18]&=~(PORT_PCR_MUX_MASK); 
-			PORTB->PCR[18]|=PORT_PCR_MUX(6); 
-			PORTB->PCR[19]&=~(PORT_PCR_MUX_MASK); 
-			PORTB->PCR[19]|=PORT_PCR_MUX(6); 
-			break;
-		default:break;
-	}
-	ftm->MOD = 14000; //根据需要设置
-	ftm->CNTIN = 0;
-	ftm->MODE |= FTM_MODE_WPDIS_MASK; //禁止写保护
-	ftm->MODE |= FTM_MODE_FTMEN_MASK; //FTMEN=1,关闭TPM兼容模式，开启FTM所有功能
-	ftm->QDCTRL &= ~FTM_QDCTRL_QUADMODE_MASK; //选定编码模式为A相与B相编码模式 
-	ftm->QDCTRL |= FTM_QDCTRL_QUADEN_MASK; //使能正交解码模式
-	//设置时钟
-	ftm->SC |= FTM_SC_CLKS(1)|FTM_SC_PS(5);
-
-	return 0;
+	*dir = (((ftm->QDCTRL)>>FTM_QDCTRL_QUADIR_SHIFT)&1);
+	*value = (ftm->CNT);
 }
-*/
 
 /***********************************************************************************************
- 功能：FTM 正交解码器 读取数据  这个函数还未经过测试  将在后续版本中开放 技术支持请联系QQ 1453363089
- 形参：ftm  : FTM0  FTM1   FTM2
-			  FTM0: 无效
-			  FTM1: 
-				  FTM1_QDA  PTA12   PTB0
-          FTM1_QDB  PTA13   PTB1
-			  FTM2: 
-					FTM2_QDA  PTB18
-					FTM2_QDB  PTB19
-			 uint32_t* value :计数值
-			 uint8_t* dir    :方向
+ 功能：FTM 正交解码器 初始化 
+ 形参：FTM1_QD_A12_PHA_A13_PHB: FTM1 A12-PHA  A13-PHB
+       FTM1_QD_B00_PHA_B01_PHB
+       FTM2_QD_B18_PHA_B19_PHB
  返回：0
- 详解：未测试
+ 详解：Added in 2013-12-12
 ************************************************************************************************/
-/*
-uint8_t FTM_GetQUADValue(FTM_Type *ftm,uint32_t* value,uint8_t* dir)
+void FTM_QDInit(uint32_t FTM_QD_Maps)
 {
-	*dir = (((ftm->QDCTRL)>>FTM_QDCTRL_QUADIR_MASK)&1);
-	*value = (ftm->CNT);
-	return 0;
+    FTM_Type *FTMx = NULL;
+    PORT_Type *FTM_PORT = NULL;
+    FTM_QD_MapTypeDef *pFTM_Map = (FTM_QD_MapTypeDef*)&FTM_QD_Maps;
+    // get module index
+    switch(pFTM_Map->FTM_Index)
+    {
+        case 0:
+            SIM->SCGC6 |= SIM_SCGC6_FTM0_MASK;
+            FTMx = FTM0;
+            break;
+        case 1:
+            SIM->SCGC6 |= SIM_SCGC6_FTM1_MASK;
+            FTMx = FTM1;
+            break;
+        case 2:
+            SIM->SCGC3 |= SIM_SCGC3_FTM2_MASK;
+            FTMx = FTM2;
+            break;
+        default:
+            break;	
+    }
+    //get pinmux port index
+    switch(pFTM_Map->FTM_GPIO_Index)
+    {
+        case 0:
+            FTM_PORT = PORTA;
+            SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;
+            break;
+        case 1:
+            FTM_PORT = PORTB;
+            SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;
+            break;	
+        case 2:
+            FTM_PORT = PORTC;
+            SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;
+            break;
+        case 3:
+            FTM_PORT = PORTD;
+            SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;
+            break;
+        case 4:
+            FTM_PORT = PORTE;
+            SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;
+            break;
+    }
+    //Config the PinMux and enable pull up
+    FTM_PORT->PCR[pFTM_Map->FTM_PHA_Index] &= ~PORT_PCR_MUX_MASK;
+    FTM_PORT->PCR[pFTM_Map->FTM_PHA_Index] |= PORT_PCR_MUX(pFTM_Map->FTM_Alt_Index);
+    FTM_PORT->PCR[pFTM_Map->FTM_PHA_Index] |= PORT_PCR_PE_MASK;
+    FTM_PORT->PCR[pFTM_Map->FTM_PHA_Index] |= PORT_PCR_PS_MASK;
+		
+    FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] &= ~PORT_PCR_MUX_MASK;
+    FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] |= PORT_PCR_MUX(pFTM_Map->FTM_Alt_Index);
+    FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] |= PORT_PCR_PE_MASK;
+    FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] |= PORT_PCR_PS_MASK;
+		
+    FTMx->MOD = 14000; //根据需要设置
+    FTMx->CNTIN = 0;
+    FTMx->MODE |= FTM_MODE_WPDIS_MASK; //禁止写保护
+    FTMx->MODE |= FTM_MODE_FTMEN_MASK; //FTMEN=1,关闭TPM兼容模式，开启FTM所有功能
+    FTMx->QDCTRL &= ~FTM_QDCTRL_QUADMODE_MASK; //选定编码模式为A相与B相编码模式 
+    FTMx->QDCTRL |= FTM_QDCTRL_QUADEN_MASK; //使能正交解码模式
+    //设置时钟
+    FTMx->SC |= FTM_SC_CLKS(1)|FTM_SC_PS(3);
 }
-*/
+
+
 /*
+
+static const FTM_QD_MapTypeDef FTM_PWM_Check_Maps[] = 
+{
+    {1, 0, 12 ,13, 0, 7}, //FTM1_QD_A12_PHA_A13_PHB
+    {1, 0,  0 , 1, 1, 6}, //FTM1_QD_B00_PHA_B01_PHB
+    {2, 0, 18 ,19, 1, 6}, //FTM2_QD_B18_PHA_B19_PHB
+};
+void PWM_CalConstValue(void)
+{
+	uint8_t i =0;
+	uint32_t value = 0;
+	for(i=0;i<sizeof(FTM_PWM_Check_Maps)/sizeof(FTM_QD_MapTypeDef);i++)
+	{
+		value = FTM_PWM_Check_Maps[i].FTM_Index<<0;
+		value|= FTM_PWM_Check_Maps[i].FTM_CH_Index<<4;
+		value|= FTM_PWM_Check_Maps[i].FTM_PHA_Index<<8;
+		value|= FTM_PWM_Check_Maps[i].FTM_PHB_Index<<14;
+		value|= FTM_PWM_Check_Maps[i].FTM_GPIO_Index<<20;
+		value|= FTM_PWM_Check_Maps[i].FTM_Alt_Index<<24;
+		UART_printf("(0x%xU)\r\n",value);
+	}
+}
 //生成
 static const FTM_PWM_MapTypeDef FTM_PWM_Check_Maps[] = 
 { 
