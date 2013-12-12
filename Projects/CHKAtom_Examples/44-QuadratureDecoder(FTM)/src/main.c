@@ -37,36 +37,31 @@
 
 /*
 * 入门知识:
+QD: 正交编码 需要2根线 A线 B线 可以测量 转速和 旋转方向
 */
 
 
 int main(void)
 {
-    uint32_t FTMDuty = 0;
-    FTM_InitTypeDef FTM_InitStruct1;
+		uint32_t value;
+		uint8_t dir;
     //初始化系统时钟 使用外部50M晶振 PLL倍频到100M
     SystemClockSetup(ClockSource_EX50M,CoreClock_100M);
     DelayInit();
     LED_Init(LED_PinLookup_CHKATOM, kNumOfLED);
     UART_DebugPortInit(UART4_RX_C14_TX_C15, 115200);
-    UART_printf("PWM Test\r\n");
+    UART_printf("FTM QuadratureDecoder Test\r\n");
 	
-    //初始化FTM
-    FTM_InitStruct1.Frequency = 1000;                // 1KHZ
-    FTM_InitStruct1.FTMxMAP = FTM0_CH0_PC1;          //FTM0_CH0 PC1引脚
-    FTM_InitStruct1.FTM_Mode = FTM_Mode_EdgeAligned; //边沿对齐模式
-    FTM_InitStruct1.InitalDuty = 4000;               //初始化后产生40%的占空比
-    FTM_Init(&FTM_InitStruct1);
-	
-    FTM_InitStruct1.InitalDuty = 7000;               //初始化后产生70%的占空比
-    FTM_InitStruct1.FTMxMAP = FTM0_CH1_PC2;          //FTM0 CH1 PC2 引脚
-    FTM_Init(&FTM_InitStruct1);
+    //QD Init
+    FTM_QDInit(FTM2_QD_B18_PHA_B19_PHB);
+		
     while(1)
     {
-        FTMDuty += 1000;
-        FTMDuty %= 10000; //FTM占空比输入范围 0-10000 对应 %0- 100%
-        FTM_PWM_ChangeDuty(FTM0_CH0_PC1, FTMDuty); //FTMDUTY变化
-        DelayMs(300);
+			  //Get Data for QD module
+			  FTM_QDGetData(FTM2, &value, &dir);
+        UART_printf("Value:%d  Direction%d\r\n", value, dir);
+				DelayMs(50);
+				LED_Toggle(kLED1);
     }
  }
 
