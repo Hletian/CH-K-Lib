@@ -63,8 +63,9 @@ int main(void)
     DisplayCPUInfo();
     while(1)
 		{
-			UART_printf("i:%d\r\n", i++);
-			DelayMs(500);
+        UART_printf("i:%d\r\n", i++);
+        LED_Toggle(kLED1);
+        DelayMs(500);
 		}
 }
 
