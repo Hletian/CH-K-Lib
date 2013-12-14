@@ -1,120 +1,120 @@
-³¬ºËKinetis K60 ¹Ì¼þ¿âV2.41
+ï»¿è¶…æ ¸Kinetis K60 å›ºä»¶åº“V2.41
 
-1:¹Ù·½°æ±¾·¢²¼¼°ÌÖÂÛ: http://www.beyondcore.net/
-2.MDK¹¤³ÌÇëÊ¹ÓÃ MDK4.53ÒÔÉÏ°æ±¾´ò¿ª IAR ÇëÓÃ6.6ÒÔÉÏ°æ±¾´ò¿ª
-3.±¾ÎÄ¼þ¼ÐÇë·ÅÔÚÓ¢ÎÄÄ¿Â¼ÏÂ£¬±ÈÈç ²» Òª·Åµ½  /D/Ñ§Ï°/...
+1:å®˜æ–¹ç‰ˆæœ¬å‘å¸ƒåŠè®¨è®º: http://www.beyondcore.net/
+2.MDKå·¥ç¨‹è¯·ä½¿ç”¨ MDK4.53ä»¥ä¸Šç‰ˆæœ¬æ‰“å¼€ IAR è¯·ç”¨6.6ä»¥ä¸Šç‰ˆæœ¬æ‰“å¼€
+3.æœ¬æ–‡ä»¶å¤¹è¯·æ”¾åœ¨è‹±æ–‡ç›®å½•ä¸‹ï¼Œæ¯”å¦‚ ä¸ è¦æ”¾åˆ°  /D/å­¦ä¹ /...
 
 
 
-ÖÐÎÄÄ¿Â¼½á¹¹
+ä¸­æ–‡ç›®å½•ç»“æž„
 
-CH-KinetisV2.40
-©¦
-©À©¤Doc: ²Î¿¼ÎÄµµ
-©¦
-©À©¤Libraries(Ô´´úÂë¿â ÇáÒ×²»Òª¸Ä¶¯ ¹Ì¼þ¿âÄ¬ÈÏÊÇÖ»¶ÁµÄ Èç¹û·ÇÒª¸Ä¶¯ ÔÚÎÄ¼þ¼ÐÊôÐÔÖÐÈ¡ÏûÖ»¶Á¼´¿É)
-©À©¤Projects(Àý³Ì ¼° ¹¤³ÌÄ£°å ËùÔÚÎÄ¼þ¼Ð Ã¿¸öÀý³ÌÖ§³ÖMDKºÍIAR)
-©¦  ©¦  
-©¦  ©¦ 
-©¦  ©¦©¤Template(normal)(¹¤³ÌÄ£°å Ê¹ÓÃJLinkµÈ±ê×¼ÏÂÔØÆ÷ÏÂÔØ 
-©¦  ©¦ 
-©¦  ©¦©¤Template(bootloader)(Èç¹ûÊ¹ÓÃBootloader²ÅÇëÊ¹ÓÃ´ËÄ£°å±à³Ì)
-©¦  ©¦      
-©¦  ©¦©¤CHK60EVB Examples (³¬ºËK60¿ª·¢°å Àý³Ì ËùÓÐÀý³Ì¶¼ÊÇ ÆÕÍ¨°æ±¾ÏÂµÄ,²»ÊÇBootloader°æ±¾)
-©¦  ©¦  ©À©¤1-Warmup(GPIO)  V2.4¹Ì¼þ¿âÈÈÉíÊµÑé
-©¦  ©¦  ©À©¤2-OutputControl(GPIO)               GPIOÊä³ö¿ØÖÆÊµÑé
-©¦  ©¦  ©À©¤3-InputControl(GPIO)                GPIOÊäÈë¿ØÖÆÊµÑé
-©¦  ©¦  ©À©¤4-LEDControl(GPIO)                  LED¿ØÖÆÉÁË¸ÊµÑé
-©¦  ©¦  ©À©¤5-KeyInput(GPIO)                    °´¼üÊäÈëÊµÑé
-©¦  ©¦  ©À©¤6-WatchDogTest(WDOG)                ¿´ÃÅ¹·ÊµÑé
-©¦  ©¦  ©À©¤7-SerialDebugOutput(UART)           ´®¿ÚÊä³öÈëÃÅÊµÑé
-©¦  ©¦  ©À©¤8-SerialPollingSendData(UART)       ´®¿ÚÂÖÑ¯·¢ËÍÊµÑé
-©¦  ©¦  ©À©¤9-SerialIntrruptSendData(UART)      ´®¿ÚÖÐ¶Ï·¢ËÍÊµÑé
-©¦  ©¦  ©À©¤10-SerialPollingReceiveData(UART)   ´®¿ÚÂÖÑ¯½ÓÊÕÊµÑé
-©¦  ©¦  ©À©¤11-SerialInterruptReceiveData(UART) ´®¿ÚÖÐ¶Ï½ÓÊÕÊµÑé
-©¦  ©¦  ©À©¤12-ExternalPinIntrrupt(GPIO)        Íâ²¿Òý½ÅÖÐ¶ÏÊµÑé
-©¦  ©¦  ©À©¤13-ProidicTimerTest(PIT)            ÖÜÆÚÐÔ¶¨Ê±Æ÷ÊµÑé
-©¦  ©¦  ©À©¤14-FlexTimer-PWMOutput(FTM)         PWMÊä³öÊµÑé
-©¦  ©¦  ©À©¤15-RealTimeClock(RTC)               ÊµÊ±Ê±ÖÓÊµÑé
-©¦  ©¦  ©À©¤16-LCDTest(FlexBus)                 TFTLCDÊµÑé
-©¦  ©¦  ©À©¤17-AnalogToDigtialConvert(ADC)      Ä£Êý×ª»»ÊµÑé
-©¦  ©¦  ©À©¤18-InternalTempSensor(ADC)          Ð¾Æ¬Æ¬ÄÚÎÂ¶È´«¸ÐÆ÷ÊµÑé
-©¦  ©¦  ©À©¤19-ExternalSPIFlash(SPI)            Íâ²¿SPI´æ´¢Æ÷ÊµÑé
-©¦  ©¦  ©À©¤20-TouchScreen(SPI)                 ´¥ÃþÆÁÊµÑé
-©¦  ©¦  ©À©¤21-BMPDecodeAndDisplay(CHGUI)       BMPÍ¼Æ¬½âÂëÏÔÊ¾ÊµÑé
-©¦  ©¦  ©À©¤22-SinglePulseCount(LPTMR)          µÍ¹¦ºÄ¶¨Ê±Æ÷£¬Âö³å¼ÆÊýÊµÑé
-©¦  ©¦  ©À©¤23-CANBus(CAN)                      CAN×ÜÏßÊµÑé
-©¦  ©¦  ©À©¤24-InternalFlash(FLASH)             ÄÚ²¿FLASHÊµÑé
-©¦  ©¦  ©À©¤25-NRF2401(SPI)                     NRF2401 ÎÞÏßÍ¨Ñ¶ÊµÑé
-©¦  ©¦  ©À©¤26-DMAMemCopy(DMA)                  DMAÄÚ´æ¿½±´ÈëÃÅÊµÑé
-©¦  ©¦  ©À©¤27-DMAUARTSendData(DMA)             ´®¿ÚDMA·¢ËÍÊý¾ÝÊµÑé
-©¦  ©¦  ©À©¤28-SDCard(SDIO)                     SD¿¨ÊµÑé
-©¦  ©¦  ©À©¤29-FAT32FileSystem(SDIO)            FAT32ÎÄ¼þÏµÍ³ÊµÑé
-©¦  ©¦  ©À©¤30-FAT32DataRecord(SDIO)            FAT32ÎÄ¼þÏµÍ³×öÊý¾Ý¼ÇÂ¼ÊµÑé
-©¦  ©¦  ©À©¤31-FAT32BMPDisplay(SDIO)            SD¿¨ÄÚBMPÍ¼Æ¬¶ÁÈ¡ÊµÑé
-©¦  ©¦  ©À©¤32-MiniShell(MINISHELL)             SHELLÏµÍ³Õ¹Ê¾ÊµÑé
-©¦  ©¦  ©À©¤33-EnetMAC(ENET)                    ÒÔÌ«ÍøMAC²ãÊµÑé
-©¦  ©¦  ©À©¤34-uIP(ENET)                        UIPÒÆÖ²ÊµÑé
-©¦  ©¦  ©À©¤35-USBMouse(USB)                    USBÊó±ê
-©¦  ©¦  ©À©¤36-USBKeyBorad(USB)                 USB¼üÅÌ
-©¦  ©¦  ©À©¤37-USBHIDDevices(USB)               USB ×Ô¶¨ÒåÈËÌåÑ§ÊäÈëÉè±¸
-©¦  ©¦  ©À©¤38-TaskScheduling(uCOS)             uCOS ÈÎÎñµ÷¶ÈÊµÑé
-©¦  ©¦  ©À©¤39-SoftwareTimer(uCOS)              uCOS Èí¼þ¶¨Ê±Æ÷ÊµÑé
-©¦  ©¦  ©À©¤40-MassageBox(uCOS)                 uCOS ÏûÏ¢ÓÊÏäÊµÑé
-©¦  ©¦  ©À©¤41-uCGUI(uCGUI)                     uCGUI ÒÆÖ²ÊµÑé
-©¦  ©¦  ©À©¤42-USB_Bootloader(CDC)           USBBooltoaderÊµÑé£¨ÅäºÏTemplete(Bootloader)Ä£°å
-©¦  ©¦  ©À©¤43-I2C_BusHunter(I2C)            I2C×ÜÏßÉ¨ÃèÆ÷£¬ÓÃÓÚÉ¨Ãè×ÜÏßÉÏËùÓÐI2CÉè±¸
-©¦  ©¦ 
-©¦  ©¦ 
-©¦  ©¦©¤CHKATOM Examples (³¬ºËK60Ô­×ÓºË ºËÐÄ°å Àý³Ì 
-©¦  ©¦  ©À©¤1-Warmup(GPIO)                     V2.4¹Ì¼þ¿âÈÈÉíÊµÑé
-©¦  ©¦  ©À©¤2-OutputControl(GPIO)               GPIOÊä³ö¿ØÖÆÊµÑé
-©¦  ©¦  ©À©¤3-InputControl(GPIO)                GPIOÊäÈë¿ØÖÆÊµÑé
-©¦  ©¦  ©À©¤4-LEDControl(GPIO)                  LED¿ØÖÆÉÁË¸ÊµÑé
-©¦  ©¦  ©À©¤5-KeyInput(GPIO)                    °´¼üÊäÈëÊµÑé
-©¦  ©¦  ©À©¤6-WatchDogTest(WDOG)                ¿´ÃÅ¹·ÊµÑé
-©¦  ©¦  ©À©¤7-SerialDebugOutput(UART)           ´®¿ÚÊä³öÈëÃÅÊµÑé
-©¦  ©¦  ©À©¤8-SerialPollingSendData(UART)       ´®¿ÚÂÖÑ¯·¢ËÍÊµÑé
-©¦  ©¦  ©À©¤9-SerialIntrruptSendData(UART)      ´®¿ÚÖÐ¶Ï·¢ËÍÊµÑé
-©¦  ©¦  ©À©¤10-SerialPollingReceiveData(UART)   ´®¿ÚÂÖÑ¯½ÓÊÕÊµÑé
-©¦  ©¦  ©À©¤11-SerialInterruptReceiveData(UART) ´®¿ÚÖÐ¶Ï½ÓÊÕÊµÑé
-©¦  ©¦  ©À©¤12-ExternalPinIntrrupt(GPIO)        Íâ²¿Òý½ÅÖÐ¶ÏÊµÑé
-©¦  ©¦  ©À©¤13-ProidicTimerTest(PIT)            ÖÜÆÚÐÔ¶¨Ê±Æ÷ÊµÑé
-©¦  ©¦  ©À©¤14-FlexTimer-PWMOutput(FTM)         PWMÊä³öÊµÑé
-©¦  ©¦  ©À©¤15-RealTimeClock(RTC)               ÊµÊ±Ê±ÖÓÊµÑé
-©¦  ©¦  ©À©¤16-LCDTest(FlexBus)                 TFTLCDÊµÑé
-©¦  ©¦  ©À©¤17-AnalogToDigtialConvert(ADC)      Ä£Êý×ª»»ÊµÑé
-©¦  ©¦  ©À©¤18-InternalTempSensor(ADC)          Ð¾Æ¬Æ¬ÄÚÎÂ¶È´«¸ÐÆ÷ÊµÑé
-©¦  ©¦  ©À©¤19-MMA845xAccelerometer(I2C)        MMA845x¼ÓËÙ¶È´«¸ÐÆ÷
-©¦  ©¦  ©À©¤20-OV7620(GPIO DMA I2C)             OV7620ÉãÏñÍ·ÊµÑé
-©¦  ©¦  ©À©¤21-BMPDecodeAndDisplay(CHGUI)       BMPÍ¼Æ¬½âÂëÏÔÊ¾ÊµÑé
-©¦  ©¦  ©À©¤22-SinglePulseCount(LPTMR)          µÍ¹¦ºÄ¶¨Ê±Æ÷£¬Âö³å¼ÆÊýÊµÑé
-©¦  ©¦  ©À©¤23-CANBus(CAN)                      CAN×ÜÏßÊµÑé
-©¦  ©¦  ©À©¤24-InternalFlash(FLASH)             ÄÚ²¿FLASHÊµÑé
-©¦  ©¦  ©À©¤25-NRF2401(SPI)                     NRF2401 ÎÞÏßÍ¨Ñ¶ÊµÑé
-©¦  ©¦  ©À©¤26-DMAMemCopy(DMA)                  DMAÄÚ´æ¿½±´ÈëÃÅÊµÑé
-©¦  ©¦  ©À©¤27-DMAUARTSendData(DMA)             ´®¿ÚDMA·¢ËÍÊý¾ÝÊµÑé
-©¦  ©¦  ©À©¤28-SDCard(SDIO)                     SD¿¨ÊµÑé
-©¦  ©¦  ©À©¤29-FAT32FileSystem(SDIO)            FAT32ÎÄ¼þÏµÍ³ÊµÑé
-©¦  ©¦  ©À©¤30-FAT32DataRecord(SDIO)            FAT32ÎÄ¼þÏµÍ³×öÊý¾Ý¼ÇÂ¼ÊµÑé
-©¦  ©¦  ©À©¤31-FAT32BMPDisplay(SDIO)            SD¿¨ÄÚBMPÍ¼Æ¬¶ÁÈ¡ÊµÑé
-©¦  ©¦  ©À©¤32-MiniShell(MINISHELL)             SHELLÏµÍ³Õ¹Ê¾ÊµÑé
-©¦  ©¦  ©À©¤33-EnetMAC(ENET)                    ÒÔÌ«ÍøMAC²ãÊµÑé
-©¦  ©¦  ©À©¤34-uIP(ENET)                        UIPÒÆÖ²ÊµÑé
-©¦  ©¦  ©À©¤35-USBMouse(USB)                    USBÊó±ê
-©¦  ©¦  ©À©¤36-USBKeyBorad(USB)                 USB¼üÅÌ
-©¦  ©¦  ©À©¤37-USBHIDDevices(USB)               USB ×Ô¶¨ÒåÈËÌåÑ§ÊäÈëÉè±¸
-©¦  ©¦  ©À©¤38-TaskScheduling(uCOS)             uCOS ÈÎÎñµ÷¶ÈÊµÑé
-©¦  ©¦  ©À©¤39-SoftwareTimer(uCOS)              uCOS Èí¼þ¶¨Ê±Æ÷ÊµÑé
-©¦  ©¦  ©À©¤40-MassageBox(uCOS)                 uCOS ÏûÏ¢ÓÊÏäÊµÑé
-©¦  ©¦  ©À©¤41-uCGUI(uCGUI)                     uCGUI ÒÆÖ²ÊµÑé
-©¦  ©¦  ©À©¤42-USB_Bootloader(CDC)              USBBooltoaderÊµÑé£¨ÅäºÏTemplete(Bootloader)Ä£°å
-©¦  ©¦  ©À©¤43-MAG3110(I2C)                     MAG3110µØ´Å³¡´«¸ÐÆ÷
-©¦  ©¦  ©À©¤43-44-QuadratureDecoder(FTM)        Õý½»½âÂëÊÔÑé
-©À©¤Tools: ¹¤¾ß
-©¦  ©¦  
-©¦  ©¦ 
-©¦  ©¦©¤ PuTTY ´®¿Ú¹¤¾ß
-©¦  ©¦ 
-©¦  ©¦©¤ CHKinetisBootloaderV1.1.exe ³¬ºËBootloaderÏÂÔØÉÏÎ»»ú
-©¦  ©¦©¤ HIDTester.exe HID²âÊÔÉÏÎ»»ú£¬ÅäºÏ HIDÊµÑé
+CH-KinetisV2.41
+â”‚
+â”œâ”€Doc: å‚è€ƒæ–‡æ¡£
+â”‚
+â”œâ”€Libraries(æºä»£ç åº“ è½»æ˜“ä¸è¦æ”¹åŠ¨ å›ºä»¶åº“é»˜è®¤æ˜¯åªè¯»çš„ å¦‚æžœéžè¦æ”¹åŠ¨ åœ¨æ–‡ä»¶å¤¹å±žæ€§ä¸­å–æ¶ˆåªè¯»å³å¯)
+â”œâ”€Projects(ä¾‹ç¨‹ åŠ å·¥ç¨‹æ¨¡æ¿ æ‰€åœ¨æ–‡ä»¶å¤¹ æ¯ä¸ªä¾‹ç¨‹æ”¯æŒMDKå’ŒIAR)
+â”‚  â”‚  
+â”‚  â”‚ 
+â”‚  â”‚â”€Template(normal)(å·¥ç¨‹æ¨¡æ¿ ä½¿ç”¨JLinkç­‰æ ‡å‡†ä¸‹è½½å™¨ä¸‹è½½ 
+â”‚  â”‚ 
+â”‚  â”‚â”€Template(bootloader)(å¦‚æžœä½¿ç”¨Bootloaderæ‰è¯·ä½¿ç”¨æ­¤æ¨¡æ¿ç¼–ç¨‹)
+â”‚  â”‚      
+â”‚  â”‚â”€CHK60EVB Examples (è¶…æ ¸K60å¼€å‘æ¿ ä¾‹ç¨‹ æ‰€æœ‰ä¾‹ç¨‹éƒ½æ˜¯ æ™®é€šç‰ˆæœ¬ä¸‹çš„,ä¸æ˜¯Bootloaderç‰ˆæœ¬)
+â”‚  â”‚  â”œâ”€1-Warmup(GPIO)  V2.4å›ºä»¶åº“çƒ­èº«å®žéªŒ
+â”‚  â”‚  â”œâ”€2-OutputControl(GPIO)               GPIOè¾“å‡ºæŽ§åˆ¶å®žéªŒ
+â”‚  â”‚  â”œâ”€3-InputControl(GPIO)                GPIOè¾“å…¥æŽ§åˆ¶å®žéªŒ
+â”‚  â”‚  â”œâ”€4-LEDControl(GPIO)                  LEDæŽ§åˆ¶é—ªçƒå®žéªŒ
+â”‚  â”‚  â”œâ”€5-KeyInput(GPIO)                    æŒ‰é”®è¾“å…¥å®žéªŒ
+â”‚  â”‚  â”œâ”€6-WatchDogTest(WDOG)                çœ‹é—¨ç‹—å®žéªŒ
+â”‚  â”‚  â”œâ”€7-SerialDebugOutput(UART)           ä¸²å£è¾“å‡ºå…¥é—¨å®žéªŒ
+â”‚  â”‚  â”œâ”€8-SerialPollingSendData(UART)       ä¸²å£è½®è¯¢å‘é€å®žéªŒ
+â”‚  â”‚  â”œâ”€9-SerialIntrruptSendData(UART)      ä¸²å£ä¸­æ–­å‘é€å®žéªŒ
+â”‚  â”‚  â”œâ”€10-SerialPollingReceiveData(UART)   ä¸²å£è½®è¯¢æŽ¥æ”¶å®žéªŒ
+â”‚  â”‚  â”œâ”€11-SerialInterruptReceiveData(UART) ä¸²å£ä¸­æ–­æŽ¥æ”¶å®žéªŒ
+â”‚  â”‚  â”œâ”€12-ExternalPinIntrrupt(GPIO)        å¤–éƒ¨å¼•è„šä¸­æ–­å®žéªŒ
+â”‚  â”‚  â”œâ”€13-ProidicTimerTest(PIT)            å‘¨æœŸæ€§å®šæ—¶å™¨å®žéªŒ
+â”‚  â”‚  â”œâ”€14-FlexTimer-PWMOutput(FTM)         PWMè¾“å‡ºå®žéªŒ
+â”‚  â”‚  â”œâ”€15-RealTimeClock(RTC)               å®žæ—¶æ—¶é’Ÿå®žéªŒ
+â”‚  â”‚  â”œâ”€16-LCDTest(FlexBus)                 TFTLCDå®žéªŒ
+â”‚  â”‚  â”œâ”€17-AnalogToDigtialConvert(ADC)      æ¨¡æ•°è½¬æ¢å®žéªŒ
+â”‚  â”‚  â”œâ”€18-InternalTempSensor(ADC)          èŠ¯ç‰‡ç‰‡å†…æ¸©åº¦ä¼ æ„Ÿå™¨å®žéªŒ
+â”‚  â”‚  â”œâ”€19-ExternalSPIFlash(SPI)            å¤–éƒ¨SPIå­˜å‚¨å™¨å®žéªŒ
+â”‚  â”‚  â”œâ”€20-TouchScreen(SPI)                 è§¦æ‘¸å±å®žéªŒ
+â”‚  â”‚  â”œâ”€21-BMPDecodeAndDisplay(CHGUI)       BMPå›¾ç‰‡è§£ç æ˜¾ç¤ºå®žéªŒ
+â”‚  â”‚  â”œâ”€22-SinglePulseCount(LPTMR)          ä½ŽåŠŸè€—å®šæ—¶å™¨ï¼Œè„‰å†²è®¡æ•°å®žéªŒ
+â”‚  â”‚  â”œâ”€23-CANBus(CAN)                      CANæ€»çº¿å®žéªŒ
+â”‚  â”‚  â”œâ”€24-InternalFlash(FLASH)             å†…éƒ¨FLASHå®žéªŒ
+â”‚  â”‚  â”œâ”€25-NRF2401(SPI)                     NRF2401 æ— çº¿é€šè®¯å®žéªŒ
+â”‚  â”‚  â”œâ”€26-DMAMemCopy(DMA)                  DMAå†…å­˜æ‹·è´å…¥é—¨å®žéªŒ
+â”‚  â”‚  â”œâ”€27-DMAUARTSendData(DMA)             ä¸²å£DMAå‘é€æ•°æ®å®žéªŒ
+â”‚  â”‚  â”œâ”€28-SDCard(SDIO)                     SDå¡å®žéªŒ
+â”‚  â”‚  â”œâ”€29-FAT32FileSystem(SDIO)            FAT32æ–‡ä»¶ç³»ç»Ÿå®žéªŒ
+â”‚  â”‚  â”œâ”€30-FAT32DataRecord(SDIO)            FAT32æ–‡ä»¶ç³»ç»Ÿåšæ•°æ®è®°å½•å®žéªŒ
+â”‚  â”‚  â”œâ”€31-FAT32BMPDisplay(SDIO)            SDå¡å†…BMPå›¾ç‰‡è¯»å–å®žéªŒ
+â”‚  â”‚  â”œâ”€32-MiniShell(MINISHELL)             SHELLç³»ç»Ÿå±•ç¤ºå®žéªŒ
+â”‚  â”‚  â”œâ”€33-EnetMAC(ENET)                    ä»¥å¤ªç½‘MACå±‚å®žéªŒ
+â”‚  â”‚  â”œâ”€34-uIP(ENET)                        UIPç§»æ¤å®žéªŒ
+â”‚  â”‚  â”œâ”€35-USBMouse(USB)                    USBé¼ æ ‡
+â”‚  â”‚  â”œâ”€36-USBKeyBorad(USB)                 USBé”®ç›˜
+â”‚  â”‚  â”œâ”€37-USBHIDDevices(USB)               USB è‡ªå®šä¹‰äººä½“å­¦è¾“å…¥è®¾å¤‡
+â”‚  â”‚  â”œâ”€38-TaskScheduling(uCOS)             uCOS ä»»åŠ¡è°ƒåº¦å®žéªŒ
+â”‚  â”‚  â”œâ”€39-SoftwareTimer(uCOS)              uCOS è½¯ä»¶å®šæ—¶å™¨å®žéªŒ
+â”‚  â”‚  â”œâ”€40-MassageBox(uCOS)                 uCOS æ¶ˆæ¯é‚®ç®±å®žéªŒ
+â”‚  â”‚  â”œâ”€41-uCGUI(uCGUI)                     uCGUI ç§»æ¤å®žéªŒ
+â”‚  â”‚  â”œâ”€42-USB_Bootloader(CDC)           USBBooltoaderå®žéªŒï¼ˆé…åˆTemplete(Bootloader)æ¨¡æ¿
+â”‚  â”‚  â”œâ”€43-I2C_BusHunter(I2C)            I2Cæ€»çº¿æ‰«æå™¨ï¼Œç”¨äºŽæ‰«ææ€»çº¿ä¸Šæ‰€æœ‰I2Cè®¾å¤‡
+â”‚  â”‚ 
+â”‚  â”‚ 
+â”‚  â”‚â”€CHKATOM Examples (è¶…æ ¸K60åŽŸå­æ ¸ æ ¸å¿ƒæ¿ ä¾‹ç¨‹ 
+â”‚  â”‚  â”œâ”€1-Warmup(GPIO)                     V2.4å›ºä»¶åº“çƒ­èº«å®žéªŒ
+â”‚  â”‚  â”œâ”€2-OutputControl(GPIO)               GPIOè¾“å‡ºæŽ§åˆ¶å®žéªŒ
+â”‚  â”‚  â”œâ”€3-InputControl(GPIO)                GPIOè¾“å…¥æŽ§åˆ¶å®žéªŒ
+â”‚  â”‚  â”œâ”€4-LEDControl(GPIO)                  LEDæŽ§åˆ¶é—ªçƒå®žéªŒ
+â”‚  â”‚  â”œâ”€5-KeyInput(GPIO)                    æŒ‰é”®è¾“å…¥å®žéªŒ
+â”‚  â”‚  â”œâ”€6-WatchDogTest(WDOG)                çœ‹é—¨ç‹—å®žéªŒ
+â”‚  â”‚  â”œâ”€7-SerialDebugOutput(UART)           ä¸²å£è¾“å‡ºå…¥é—¨å®žéªŒ
+â”‚  â”‚  â”œâ”€8-SerialPollingSendData(UART)       ä¸²å£è½®è¯¢å‘é€å®žéªŒ
+â”‚  â”‚  â”œâ”€9-SerialIntrruptSendData(UART)      ä¸²å£ä¸­æ–­å‘é€å®žéªŒ
+â”‚  â”‚  â”œâ”€10-SerialPollingReceiveData(UART)   ä¸²å£è½®è¯¢æŽ¥æ”¶å®žéªŒ
+â”‚  â”‚  â”œâ”€11-SerialInterruptReceiveData(UART) ä¸²å£ä¸­æ–­æŽ¥æ”¶å®žéªŒ
+â”‚  â”‚  â”œâ”€12-ExternalPinIntrrupt(GPIO)        å¤–éƒ¨å¼•è„šä¸­æ–­å®žéªŒ
+â”‚  â”‚  â”œâ”€13-ProidicTimerTest(PIT)            å‘¨æœŸæ€§å®šæ—¶å™¨å®žéªŒ
+â”‚  â”‚  â”œâ”€14-FlexTimer-PWMOutput(FTM)         PWMè¾“å‡ºå®žéªŒ
+â”‚  â”‚  â”œâ”€15-RealTimeClock(RTC)               å®žæ—¶æ—¶é’Ÿå®žéªŒ
+â”‚  â”‚  â”œâ”€16-LCDTest(FlexBus)                 TFTLCDå®žéªŒ
+â”‚  â”‚  â”œâ”€17-AnalogToDigtialConvert(ADC)      æ¨¡æ•°è½¬æ¢å®žéªŒ
+â”‚  â”‚  â”œâ”€18-InternalTempSensor(ADC)          èŠ¯ç‰‡ç‰‡å†…æ¸©åº¦ä¼ æ„Ÿå™¨å®žéªŒ
+â”‚  â”‚  â”œâ”€19-MMA845xAccelerometer(I2C)        MMA845xåŠ é€Ÿåº¦ä¼ æ„Ÿå™¨
+â”‚  â”‚  â”œâ”€20-OV7620(GPIO DMA I2C)             OV7620æ‘„åƒå¤´å®žéªŒ
+â”‚  â”‚  â”œâ”€21-BMPDecodeAndDisplay(CHGUI)       BMPå›¾ç‰‡è§£ç æ˜¾ç¤ºå®žéªŒ
+â”‚  â”‚  â”œâ”€22-SinglePulseCount(LPTMR)          ä½ŽåŠŸè€—å®šæ—¶å™¨ï¼Œè„‰å†²è®¡æ•°å®žéªŒ
+â”‚  â”‚  â”œâ”€23-CANBus(CAN)                      CANæ€»çº¿å®žéªŒ
+â”‚  â”‚  â”œâ”€24-InternalFlash(FLASH)             å†…éƒ¨FLASHå®žéªŒ
+â”‚  â”‚  â”œâ”€25-NRF2401(SPI)                     NRF2401 æ— çº¿é€šè®¯å®žéªŒ
+â”‚  â”‚  â”œâ”€26-DMAMemCopy(DMA)                  DMAå†…å­˜æ‹·è´å…¥é—¨å®žéªŒ
+â”‚  â”‚  â”œâ”€27-DMAUARTSendData(DMA)             ä¸²å£DMAå‘é€æ•°æ®å®žéªŒ
+â”‚  â”‚  â”œâ”€28-SDCard(SDIO)                     SDå¡å®žéªŒ
+â”‚  â”‚  â”œâ”€29-FAT32FileSystem(SDIO)            FAT32æ–‡ä»¶ç³»ç»Ÿå®žéªŒ
+â”‚  â”‚  â”œâ”€30-FAT32DataRecord(SDIO)            FAT32æ–‡ä»¶ç³»ç»Ÿåšæ•°æ®è®°å½•å®žéªŒ
+â”‚  â”‚  â”œâ”€31-FAT32BMPDisplay(SDIO)            SDå¡å†…BMPå›¾ç‰‡è¯»å–å®žéªŒ
+â”‚  â”‚  â”œâ”€32-MiniShell(MINISHELL)             SHELLç³»ç»Ÿå±•ç¤ºå®žéªŒ
+â”‚  â”‚  â”œâ”€33-EnetMAC(ENET)                    ä»¥å¤ªç½‘MACå±‚å®žéªŒ
+â”‚  â”‚  â”œâ”€34-uIP(ENET)                        UIPç§»æ¤å®žéªŒ
+â”‚  â”‚  â”œâ”€35-USBMouse(USB)                    USBé¼ æ ‡
+â”‚  â”‚  â”œâ”€36-USBKeyBorad(USB)                 USBé”®ç›˜
+â”‚  â”‚  â”œâ”€37-USBHIDDevices(USB)               USB è‡ªå®šä¹‰äººä½“å­¦è¾“å…¥è®¾å¤‡
+â”‚  â”‚  â”œâ”€38-TaskScheduling(uCOS)             uCOS ä»»åŠ¡è°ƒåº¦å®žéªŒ
+â”‚  â”‚  â”œâ”€39-SoftwareTimer(uCOS)              uCOS è½¯ä»¶å®šæ—¶å™¨å®žéªŒ
+â”‚  â”‚  â”œâ”€40-MassageBox(uCOS)                 uCOS æ¶ˆæ¯é‚®ç®±å®žéªŒ
+â”‚  â”‚  â”œâ”€41-uCGUI(uCGUI)                     uCGUI ç§»æ¤å®žéªŒ
+â”‚  â”‚  â”œâ”€42-USB_Bootloader(CDC)              USBBooltoaderå®žéªŒï¼ˆé…åˆTemplete(Bootloader)æ¨¡æ¿
+â”‚  â”‚  â”œâ”€43-MAG3110(I2C)                     MAG3110åœ°ç£åœºä¼ æ„Ÿå™¨
+â”‚  â”‚  â”œâ”€43-44-QuadratureDecoder(FTM)        æ­£äº¤è§£ç è¯•éªŒ
+â”œâ”€Tools: å·¥å…·
+â”‚  â”‚  
+â”‚  â”‚ 
+â”‚  â”‚â”€ PuTTY ä¸²å£å·¥å…·
+â”‚  â”‚ 
+â”‚  â”‚â”€ CHKinetisBootloaderV1.1.exe è¶…æ ¸Bootloaderä¸‹è½½ä¸Šä½æœº
+â”‚  â”‚â”€ HIDTester.exe HIDæµ‹è¯•ä¸Šä½æœºï¼Œé…åˆ HIDå®žéªŒ
