@@ -1,8 +1,8 @@
-#ifndef __COURIERNEW8X16B_H__
+﻿#ifndef __COURIERNEW8X16B_H__
 #define __COURIERNEW8X16B_H__ 
 
 
-//��������: PCtoLCD2002������ ѡ����ȥ�� ǰ׺�� ��׺ ѡ�� ����ʽɨ��
+//字体制作: PCtoLCD2002完美版 选项里去掉 前缀和 后缀 选成 行列式扫描
 
 #define FONT_CourierNew8x16B_XSize   (8)
 #define FONT_CourierNew8x16B_YSize   (16)

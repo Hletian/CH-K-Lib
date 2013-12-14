@@ -1,4 +1,4 @@
-#include "led_chkatom.h"
+﻿#include "led_chkatom.h"
 
 //! @brief LEDs in CHK Atom core board
 const LED_PinLookup_TypeDef LED_PinLookup_CHKATOM[kNumOfLED] = 

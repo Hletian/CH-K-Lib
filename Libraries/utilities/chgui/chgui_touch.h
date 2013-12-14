@@ -1,4 +1,4 @@
-#ifndef _CHGUI_TOUCH_H_
+﻿#ifndef _CHGUI_TOUCH_H_
 #define _CHGUI_TOUCH_H_
 #include <stdint.h>
 

@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    uart.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.25
-  * @brief   ³¬ºËK60¹Ì¼ş¿â UART ´®¿Ú Çı¶¯¿â Í·ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ UART ä¸²å£ é©±åŠ¨åº“ å¤´æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __UART_H__
@@ -16,7 +16,7 @@
 
 #include "sys.h"
 	 
-//´®¿Ú³õÊ¼»¯Î»Í¼Ó³Éä½á¹¹
+//ä¸²å£åˆå§‹åŒ–ä½å›¾æ˜ å°„ç»“æ„
 typedef struct
 {
     uint32_t UART_Index:3;
@@ -29,8 +29,8 @@ typedef struct
 }UART_MapTypeDef;
 
 
-//¿ÉÊ¹ÓÃµÄUART³õÊ¼»¯½á¹¹
-//ÀıÈç: UART0_RX_PA1_TX_PA2: UART0 PA1Òı½Å×÷ÎªTX  PA2Òı½Å×÷ÎªRX
+//å¯ä½¿ç”¨çš„UARTåˆå§‹åŒ–ç»“æ„
+//ä¾‹å¦‚: UART0_RX_PA1_TX_PA2: UART0 PA1å¼•è„šä½œä¸ºTX  PA2å¼•è„šä½œä¸ºRX
 #define UART0_RX_PA1_TX_PA2    (0x00004410U)
 #define UART0_RX_PA14_TX_PA15  (0x00039E18U)
 #define UART0_RX_PB16_TX_PB17  (0x00042258U)
@@ -44,7 +44,7 @@ typedef struct
 #define UART4_RX_E24_TX_E25    (0x0006331CU)
 #define UART4_RX_C14_TX_C15    (0x00039E9CU)
 
-//²ÎÊı¼ì²éÆ÷
+//å‚æ•°æ£€æŸ¥å™¨
 #define IS_UART_MAP(MAP)        (((MAP) == UART0_RX_PA1_TX_PA2)   || \
 																((MAP) == UART0_RX_PA14_TX_PA15)  || \
 																((MAP) == UART0_RX_PB16_TX_PB17)  || \
@@ -57,18 +57,18 @@ typedef struct
 																((MAP) == UART3_RX_E4_TX_E5)      || \
 																((MAP) == UART4_RX_E24_TX_E25)    || \
 																((MAP) == UART4_RX_C14_TX_C15))
-//²ÎÊı¼ì²éÆ÷														
+//å‚æ•°æ£€æŸ¥å™¨														
 #define IS_UART_ALL_PERIPH(PERIPH) (((PERIPH) == UART0) || \
                                     ((PERIPH) == UART1) || \
                                     ((PERIPH) == UART2) || \
                                     ((PERIPH) == UART3) || \
                                     ((PERIPH) == UART4))												
 																
-//´®¿Ú³õÊ¼»¯½á¹¹
+//ä¸²å£åˆå§‹åŒ–ç»“æ„
 typedef struct
 {
-  uint32_t UART_BaudRate;      //²¨ÌØÂÊ
-	uint32_t UARTxMAP;           //³õÊ¼»¯½á¹¹
+  uint32_t UART_BaudRate;      //æ³¢ç‰¹ç‡
+	uint32_t UARTxMAP;           //åˆå§‹åŒ–ç»“æ„
 } UART_InitTypeDef;
 
 
@@ -78,7 +78,7 @@ typedef struct
                                     ((PERIPH) == UART3) || \
                                     ((PERIPH) == UART4))												
 																
-//ÖĞ¶Ï¶¨Òå
+//ä¸­æ–­å®šä¹‰
 #define UART_IT_TDRE        (uint16_t)(0)
 #define UART_IT_TC          (uint16_t)(1)
 #define UART_IT_RDRF        (uint16_t)(2)
@@ -88,12 +88,12 @@ typedef struct
                         ((IT) == UART_IT_RDRF)   || \
                         ((IT) == UART_IT_IDLE))
 
-//DMAÃüÁî
+//DMAå‘½ä»¤
 #define UART_DMAReq_Tx                      ((uint16_t)0)
 #define UART_DMAReq_Rx                      ((uint16_t)1)
 #define UART_DMAREQ(REQ)  (((REQ) == UART_DMAReq_Tx) || ((REQ) == UART_DMAReq_Rx))
 
-//»º³åÇø×î´óÖµ
+//ç¼“å†²åŒºæœ€å¤§å€¼
 #define MAX_TX_BUF_SIZE     128
 
 typedef struct
@@ -104,10 +104,10 @@ typedef struct
 	uint8_t IsComplete;
 	uint16_t MaxBufferSize;
 }UART_TxSendTypeDef;
-//´®¿ÚÖĞ¶Ï·¢ËÍ½á¹¹
+//ä¸²å£ä¸­æ–­å‘é€ç»“æ„
 extern UART_TxSendTypeDef UART_TxIntStruct1;
 
-//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯ÊıÁĞ±í
+//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°åˆ—è¡¨
 void UART_SendData(UART_Type* UARTx,uint8_t Data);
 uint8_t UART_ReceiveData(UART_Type *UARTx,uint8_t *ch);
 void UART_SendDataInt(UART_Type* UARTx,uint8_t* DataBuf,uint8_t Len);

@@ -1,4 +1,4 @@
-#ifndef _LCD_CHK60EVB_H_
+ï»¿#ifndef _LCD_CHK60EVB_H_
 #define _LCD_CHK60EVB_H_
 
 #include "sys.h"
@@ -22,20 +22,20 @@
 
 #endif
 
-//RSTÒı½Å¶¨Òå
+//RSTå¼•è„šå®šä¹‰
 #define LCD_RST_PORT   PTC
 #define LCD_RST_PIN    3
 
-//±³¹âÒı½Å¶¨Òå
+//èƒŒå…‰å¼•è„šå®šä¹‰
 #define LCD_BK_PORT    PTC
 #define LCD_BK_PIN     11
 
-//FlexBus×ÜÏß¶¨Òå
+//FlexBusæ€»çº¿å®šä¹‰
 #define FLEXBUS_BASE_ADDRESS  0x70000000
 #define LCD_COMMAND_ADDRESS		*(unsigned short *)0x70000000
 #define LCD_DATA_ADDRESS		  *(unsigned short *)0x78000000
 
-//Ğ´Êı¾İ£¬Ğ´ÃüÁî
+//å†™æ•°æ®ï¼Œå†™å‘½ä»¤
 #define WMLCDCOM(cmd)	   {LCD_COMMAND_ADDRESS = cmd;}
 #define WMLCDDATA(data)	   {LCD_DATA_ADDRESS = data;}
 

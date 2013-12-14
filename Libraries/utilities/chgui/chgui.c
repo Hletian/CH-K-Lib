@@ -1,4 +1,4 @@
-#include "chgui.h"
+ï»¿#include "chgui.h"
 
 //Global operation
  CHGUI_InitTypeDef* gpCHGUI = NULL;
@@ -51,7 +51,7 @@ void GUI_DrawPixel(uint16_t x, uint16_t y)
 
 void GUI_DrawPoint(uint16_t x, uint16_t y)
 {	    
-	GUI_DrawPixel(x,y);//ÖĞĞÄµã 
+	GUI_DrawPixel(x,y);//ä¸­å¿ƒç‚¹ 
 	GUI_DrawPixel(x+1,y);
 	GUI_DrawPixel(x,y+1);
 	GUI_DrawPixel(x+1,y+1);	 	  	
@@ -70,72 +70,72 @@ void GUI_VLine(uint16_t x0, uint16_t y0, uint16_t y1)
 
 void GUI_Line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
 {
-   int32_t   dx;						// Ö±ÏßxÖá²îÖµ±äÁ¿
-   int32_t   dy;          			// Ö±ÏßyÖá²îÖµ±äÁ¿
-   int8_t    dx_sym;					// xÖáÔö³¤·½Ïò£¬Îª-1Ê±¼õÖµ·½Ïò£¬Îª1Ê±ÔöÖµ·½Ïò
-   int8_t    dy_sym;					// yÖáÔö³¤·½Ïò£¬Îª-1Ê±¼õÖµ·½Ïò£¬Îª1Ê±ÔöÖµ·½Ïò
-   int32_t   dx_x2;					// dx*2Öµ±äÁ¿£¬ÓÃÓÚ¼Ó¿ìÔËËãËÙ¶È
-   int32_t   dy_x2;					// dy*2Öµ±äÁ¿£¬ÓÃÓÚ¼Ó¿ìÔËËãËÙ¶È
-   int32_t   di;						// ¾ö²ß±äÁ¿
+   int32_t   dx;						// ç›´çº¿xè½´å·®å€¼å˜é‡
+   int32_t   dy;          			// ç›´çº¿yè½´å·®å€¼å˜é‡
+   int8_t    dx_sym;					// xè½´å¢é•¿æ–¹å‘ï¼Œä¸º-1æ—¶å‡å€¼æ–¹å‘ï¼Œä¸º1æ—¶å¢å€¼æ–¹å‘
+   int8_t    dy_sym;					// yè½´å¢é•¿æ–¹å‘ï¼Œä¸º-1æ—¶å‡å€¼æ–¹å‘ï¼Œä¸º1æ—¶å¢å€¼æ–¹å‘
+   int32_t   dx_x2;					// dx*2å€¼å˜é‡ï¼Œç”¨äºåŠ å¿«è¿ç®—é€Ÿåº¦
+   int32_t   dy_x2;					// dy*2å€¼å˜é‡ï¼Œç”¨äºåŠ å¿«è¿ç®—é€Ÿåº¦
+   int32_t   di;						// å†³ç­–å˜é‡
    
    
-   dx = x1-x0;						// ÇóÈ¡Á½µãÖ®¼äµÄ²îÖµ
+   dx = x1-x0;						// æ±‚å–ä¸¤ç‚¹ä¹‹é—´çš„å·®å€¼
    dy = y1-y0;
    
-   /* ÅĞ¶ÏÔö³¤·½Ïò£¬»òÊÇ·ñÎªË®Æ½Ïß¡¢´¹Ö±Ïß¡¢µã */
-   if(dx>0)							// ÅĞ¶ÏxÖá·½Ïò
-   {  dx_sym = 1;					// dx>0£¬ÉèÖÃdx_sym=1
+   /* åˆ¤æ–­å¢é•¿æ–¹å‘ï¼Œæˆ–æ˜¯å¦ä¸ºæ°´å¹³çº¿ã€å‚ç›´çº¿ã€ç‚¹ */
+   if(dx>0)							// åˆ¤æ–­xè½´æ–¹å‘
+   {  dx_sym = 1;					// dx>0ï¼Œè®¾ç½®dx_sym=1
    }
    else
    {  if(dx<0)
-      {  dx_sym = -1;				// dx<0£¬ÉèÖÃdx_sym=-1
+      {  dx_sym = -1;				// dx<0ï¼Œè®¾ç½®dx_sym=-1
       }
       else
-      {  // dx==0£¬»­´¹Ö±Ïß£¬»òÒ»µã
+      {  // dx==0ï¼Œç”»å‚ç›´çº¿ï¼Œæˆ–ä¸€ç‚¹
          GUI_VLine(x0, y0, y1);
       	 return;
       }
    }
    
-   if(dy>0)							// ÅĞ¶ÏyÖá·½Ïò
-   {  dy_sym = 1;					// dy>0£¬ÉèÖÃdy_sym=1
+   if(dy>0)							// åˆ¤æ–­yè½´æ–¹å‘
+   {  dy_sym = 1;					// dy>0ï¼Œè®¾ç½®dy_sym=1
    }
    else
    {  if(dy<0)
-      {  dy_sym = -1;				// dy<0£¬ÉèÖÃdy_sym=-1
+      {  dy_sym = -1;				// dy<0ï¼Œè®¾ç½®dy_sym=-1
       }
       else
-      {  // dy==0£¬»­Ë®Æ½Ïß£¬»òÒ»µã
+      {  // dy==0ï¼Œç”»æ°´å¹³çº¿ï¼Œæˆ–ä¸€ç‚¹
          GUI_HLine(y0, x0, x1);
       	 return;
       }
    }
     
-   /* ½«dx¡¢dyÈ¡¾ø¶ÔÖµ */
+   /* å°†dxã€dyå–ç»å¯¹å€¼ */
    dx = dx_sym * dx;
    dy = dy_sym * dy;
  
-   /* ¼ÆËã2±¶µÄdx¼°dyÖµ */
+   /* è®¡ç®—2å€çš„dxåŠdyå€¼ */
    dx_x2 = dx*2;
    dy_x2 = dy*2;
    
-   /* Ê¹ÓÃBresenham·¨½øĞĞ»­Ö±Ïß */
-   if(dx>=dy)						// ¶ÔÓÚdx>=dy£¬ÔòÊ¹ÓÃxÖáÎª»ù×¼
+   /* ä½¿ç”¨Bresenhamæ³•è¿›è¡Œç”»ç›´çº¿ */
+   if(dx>=dy)						// å¯¹äºdx>=dyï¼Œåˆ™ä½¿ç”¨xè½´ä¸ºåŸºå‡†
    {  di = dy_x2 - dx;
       while(x0!=x1)
       {  GUI_DrawPixel(x0, y0);
          x0 += dx_sym;
          if(di<0)
-         {  di += dy_x2;			// ¼ÆËã³öÏÂÒ»²½µÄ¾ö²ßÖµ
+         {  di += dy_x2;			// è®¡ç®—å‡ºä¸‹ä¸€æ­¥çš„å†³ç­–å€¼
          }
          else
          {  di += dy_x2 - dx_x2;
             y0 += dy_sym;
          }
       }
-      GUI_DrawPixel(x0, y0);		// ÏÔÊ¾×îºóÒ»µã
+      GUI_DrawPixel(x0, y0);		// æ˜¾ç¤ºæœ€åä¸€ç‚¹
    }
-   else								// ¶ÔÓÚdx<dy£¬ÔòÊ¹ÓÃyÖáÎª»ù×¼
+   else								// å¯¹äºdx<dyï¼Œåˆ™ä½¿ç”¨yè½´ä¸ºåŸºå‡†
    {  di = dx_x2 - dy;
       while(y0!=y1)
       {  GUI_DrawPixel(x0, y0);
@@ -148,7 +148,7 @@ void GUI_Line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
             x0 += dx_sym;
          }
       }
-      GUI_DrawPixel(x0, y0);		// ÏÔÊ¾×îºóÒ»µã
+      GUI_DrawPixel(x0, y0);		// æ˜¾ç¤ºæœ€åä¸€ç‚¹
    } 
   
 }
@@ -156,37 +156,37 @@ void GUI_Line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
 
 void GUI_LineWith(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, int8_t with)
 { 
- 	 int32_t   dx;						// Ö±ÏßxÖá²îÖµ±äÁ¿
-   int32_t   dy;          			// Ö±ÏßyÖá²îÖµ±äÁ¿
-   int8_t    dx_sym;					// xÖáÔö³¤·½Ïò£¬Îª-1Ê±¼õÖµ·½Ïò£¬Îª1Ê±ÔöÖµ·½Ïò
-   int8_t    dy_sym;					// yÖáÔö³¤·½Ïò£¬Îª-1Ê±¼õÖµ·½Ïò£¬Îª1Ê±ÔöÖµ·½Ïò
-   int32_t   dx_x2;					// dx*2Öµ±äÁ¿£¬ÓÃÓÚ¼Ó¿ìÔËËãËÙ¶È
-   int32_t   dy_x2;					// dy*2Öµ±äÁ¿£¬ÓÃÓÚ¼Ó¿ìÔËËãËÙ¶È
-   int32_t   di;						// ¾ö²ß±äÁ¿
+ 	 int32_t   dx;						// ç›´çº¿xè½´å·®å€¼å˜é‡
+   int32_t   dy;          			// ç›´çº¿yè½´å·®å€¼å˜é‡
+   int8_t    dx_sym;					// xè½´å¢é•¿æ–¹å‘ï¼Œä¸º-1æ—¶å‡å€¼æ–¹å‘ï¼Œä¸º1æ—¶å¢å€¼æ–¹å‘
+   int8_t    dy_sym;					// yè½´å¢é•¿æ–¹å‘ï¼Œä¸º-1æ—¶å‡å€¼æ–¹å‘ï¼Œä¸º1æ—¶å¢å€¼æ–¹å‘
+   int32_t   dx_x2;					// dx*2å€¼å˜é‡ï¼Œç”¨äºåŠ å¿«è¿ç®—é€Ÿåº¦
+   int32_t   dy_x2;					// dy*2å€¼å˜é‡ï¼Œç”¨äºåŠ å¿«è¿ç®—é€Ÿåº¦
+   int32_t   di;						// å†³ç­–å˜é‡
    
-   int32_t   wx, wy;					// Ïß¿í±äÁ¿
+   int32_t   wx, wy;					// çº¿å®½å˜é‡
    int32_t   draw_a, draw_b;
    
-   /* ²ÎÊı¹ıÂË */
+   /* å‚æ•°è¿‡æ»¤ */
    if(with==0) return;
    if(with>50) with = 50;
    
-   dx = x1-x0;						// ÇóÈ¡Á½µãÖ®¼äµÄ²îÖµ
+   dx = x1-x0;						// æ±‚å–ä¸¤ç‚¹ä¹‹é—´çš„å·®å€¼
    dy = y1-y0;
    
    wx = with/2;
    wy = with-wx-1;
    
-   /* ÅĞ¶ÏÔö³¤·½Ïò£¬»òÊÇ·ñÎªË®Æ½Ïß¡¢´¹Ö±Ïß¡¢µã */
-   if(dx>0)							// ÅĞ¶ÏxÖá·½Ïò
-   {  dx_sym = 1;					// dx>0£¬ÉèÖÃdx_sym=1
+   /* åˆ¤æ–­å¢é•¿æ–¹å‘ï¼Œæˆ–æ˜¯å¦ä¸ºæ°´å¹³çº¿ã€å‚ç›´çº¿ã€ç‚¹ */
+   if(dx>0)							// åˆ¤æ–­xè½´æ–¹å‘
+   {  dx_sym = 1;					// dx>0ï¼Œè®¾ç½®dx_sym=1
    }
    else
    {  if(dx<0)
-      {  dx_sym = -1;				// dx<0£¬ÉèÖÃdx_sym=-1
+      {  dx_sym = -1;				// dx<0ï¼Œè®¾ç½®dx_sym=-1
       }
       else
-      {  /* dx==0£¬»­´¹Ö±Ïß£¬»òÒ»µã */
+      {  /* dx==0ï¼Œç”»å‚ç›´çº¿ï¼Œæˆ–ä¸€ç‚¹ */
          wx = x0-wx;
          if(wx<0) wx = 0;
          wy = x0+wy;
@@ -202,15 +202,15 @@ void GUI_LineWith(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, int8_t wit
       }
    }
    
-   if(dy>0)							// ÅĞ¶ÏyÖá·½Ïò
-   {  dy_sym = 1;					// dy>0£¬ÉèÖÃdy_sym=1
+   if(dy>0)							// åˆ¤æ–­yè½´æ–¹å‘
+   {  dy_sym = 1;					// dy>0ï¼Œè®¾ç½®dy_sym=1
    }
    else
    {  if(dy<0)
-      {  dy_sym = -1;				// dy<0£¬ÉèÖÃdy_sym=-1
+      {  dy_sym = -1;				// dy<0ï¼Œè®¾ç½®dy_sym=-1
       }
       else
-      {  /* dy==0£¬»­Ë®Æ½Ïß£¬»òÒ»µã */
+      {  /* dy==0ï¼Œç”»æ°´å¹³çº¿ï¼Œæˆ–ä¸€ç‚¹ */
          wx = y0-wx;
          if(wx<0) wx = 0;
          wy = y0+wy;
@@ -225,19 +225,19 @@ void GUI_LineWith(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, int8_t wit
       }
    }
     
-   /* ½«dx¡¢dyÈ¡¾ø¶ÔÖµ */
+   /* å°†dxã€dyå–ç»å¯¹å€¼ */
    dx = dx_sym * dx;
    dy = dy_sym * dy;
  
-   /* ¼ÆËã2±¶µÄdx¼°dyÖµ */
+   /* è®¡ç®—2å€çš„dxåŠdyå€¼ */
    dx_x2 = dx*2;
    dy_x2 = dy*2;
    
-   /* Ê¹ÓÃBresenham·¨½øĞĞ»­Ö±Ïß */
-   if(dx>=dy)						// ¶ÔÓÚdx>=dy£¬ÔòÊ¹ÓÃxÖáÎª»ù×¼
+   /* ä½¿ç”¨Bresenhamæ³•è¿›è¡Œç”»ç›´çº¿ */
+   if(dx>=dy)						// å¯¹äºdx>=dyï¼Œåˆ™ä½¿ç”¨xè½´ä¸ºåŸºå‡†
    {  di = dy_x2 - dx;
       while(x0!=x1)
-      {  /* xÖáÏòÔö³¤£¬Ôò¿í¶ÈÔÚy·½Ïò£¬¼´»­´¹Ö±Ïß */
+      {  /* xè½´å‘å¢é•¿ï¼Œåˆ™å®½åº¦åœ¨yæ–¹å‘ï¼Œå³ç”»å‚ç›´çº¿ */
          draw_a = y0-wx;
          if(draw_a<0) draw_a = 0;
          draw_b = y0+wy;
@@ -245,7 +245,7 @@ void GUI_LineWith(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, int8_t wit
          
          x0 += dx_sym;				
          if(di<0)
-         {  di += dy_x2;			// ¼ÆËã³öÏÂÒ»²½µÄ¾ö²ßÖµ
+         {  di += dy_x2;			// è®¡ç®—å‡ºä¸‹ä¸€æ­¥çš„å†³ç­–å€¼
          }
          else
          {  di += dy_x2 - dx_x2;
@@ -257,10 +257,10 @@ void GUI_LineWith(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, int8_t wit
       draw_b = y0+wy;
       GUI_VLine(x0, draw_a, draw_b);
    }
-   else								// ¶ÔÓÚdx<dy£¬ÔòÊ¹ÓÃyÖáÎª»ù×¼
+   else								// å¯¹äºdx<dyï¼Œåˆ™ä½¿ç”¨yè½´ä¸ºåŸºå‡†
    {  di = dx_x2 - dy;
       while(y0!=y1)
-      {  /* yÖáÏòÔö³¤£¬Ôò¿í¶ÈÔÚx·½Ïò£¬¼´»­Ë®Æ½Ïß */
+      {  /* yè½´å‘å¢é•¿ï¼Œåˆ™å®½åº¦åœ¨xæ–¹å‘ï¼Œå³ç”»æ°´å¹³çº¿ */
          draw_a = x0-wx;
          if(draw_a<0) draw_a = 0;
          draw_b = x0+wy;

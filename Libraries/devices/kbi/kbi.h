@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    kbi.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËÔ­×ÓºËºËĞÄ°å BSP¹¹¼ş KEYÇı¶¯
+  * @brief   è¶…æ ¸åŸå­æ ¸æ ¸å¿ƒæ¿ BSPæ„ä»¶ KEYé©±åŠ¨
   ******************************************************************************
   */
 #ifndef _KBI_H_
@@ -16,26 +16,26 @@
  extern "C" {
 #endif
 
-//!< KEY±»°´ÏÂÊ±µçÆ½×´Ì¬
+//!< KEYè¢«æŒ‰ä¸‹æ—¶ç”µå¹³çŠ¶æ€
 #define	KBI_STATE_DOWN                Bit_SET
 
 
 #define KBI_STATE_UP                  !KBI_STATE_DOWN
-//!< KEY_SCANº¯ÊıÉ¨ÃèÖÜÆÚ
+//!< KEY_SCANå‡½æ•°æ‰«æå‘¨æœŸ
 #define KBI_SCAN_PERIOD_IN_US         (1000*10)
-//!< ×î¶àÖ§³ÖµÄ°´¼üÊı
+//!< æœ€å¤šæ”¯æŒçš„æŒ‰é”®æ•°
 #define KBI_MAX_KEY_CNT               (8)
-//!< ÅĞ¶ÏÎª³¤°´ µÄÉè¶¨Ê±¼ä 
+//!< åˆ¤æ–­ä¸ºé•¿æŒ‰ çš„è®¾å®šæ—¶é—´ 
 #define KBI_LONG_KEY_TIMEIN_US        (1000*500)
 	 
-//!< KBI °´¼ü°²×°½á¹¹
+//!< KBI æŒ‰é”®å®‰è£…ç»“æ„
 typedef struct
 {
     uint32_t KBI_PortMoudle;
     uint32_t KBI_PinIndex;
 }KBI_PinLookup_TypeDef;
 	 
-//!< KBI¹¹¼ş ·µ»ØÖµ¶¨Òå
+//!< KBIæ„ä»¶ è¿”å›å€¼å®šä¹‰
 typedef enum
 {
     kKBI_NO_KEY,

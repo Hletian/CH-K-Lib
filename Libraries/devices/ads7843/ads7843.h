@@ -1,14 +1,14 @@
-#ifndef __ADS7843_H__
+ï»¿#ifndef __ADS7843_H__
 #define __ADS7843_H__
 #include "sys.h"
 #include "spi.h"
 
 
 
-//Óë´¥ÃşÆÁĞ¾Æ¬Á¬½ÓÒı½Å	   
+//ä¸è§¦æ‘¸å±èŠ¯ç‰‡è¿æ¥å¼•è„š	   
 #define GPIO_ADS7843_CS_PORT   PTB
 #define GPIO_ADS7843_CS_PIN    GPIO_Pin_20
-//¶¨ÒåÓ²¼şSPI¶Ë¿Ú
+//å®šä¹‰ç¡¬ä»¶SPIç«¯å£
 #define SPI_ADS7843_PORT      SPI2_SCK_PB21_SOUT_PB22_SIN_PB23
 #define SPI_ADS7843_CS_PORT   SPI2_PCS0_PB20
 

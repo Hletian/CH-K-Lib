@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    adc.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â ADCÄ£¿éÇı¶¯ Í·ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ADCæ¨¡å—é©±åŠ¨ å¤´æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __ADC_H__
@@ -17,41 +17,41 @@
 #include "sys.h"
 
 
-//ADC ¾«¶È¶¨Òå
+//ADC ç²¾åº¦å®šä¹‰
 #define ADC_PRECISION_8BIT    (0x00U)
 #define ADC_PRECISION_10BIT   (0x02U)
 #define ADC_PRECISION_12BIT   (0x01U)
 #define ADC_PRECISION_16BIT   (0x03U)
-//²ÎÊı¼ì²é
+//å‚æ•°æ£€æŸ¥
 #define IS_ADC_PRECISION(VALUE) (((VALUE) == ADC_PRECISION_8BIT) ||  \
 	                               ((VALUE) == ADC_PRECISION_10BIT) || \
 	                               ((VALUE) == ADC_PRECISION_12BIT) || \
 	                               ((VALUE) == ADC_PRECISION_16BIT))
-//ADC³õÊ¼»¯½á¹¹
+//ADCåˆå§‹åŒ–ç»“æ„
 typedef struct
 {
   uint32_t ADCxMap;              
 	uint32_t ADC_Precision;
-	uint16_t ADC_TriggerSelect; //´¥·¢Ô´Ñ¡Ôñ
+	uint16_t ADC_TriggerSelect; //è§¦å‘æºé€‰æ‹©
 }ADC_InitTypeDef;
 
 #define IS_ADC_ALL_PERIPH(PERIPH)  (((PERIPH) == ADC0) || \
                                     ((PERIPH) == ADC1))		
 
 
-//AD×ª»»´¥·¢Ô´¶¨Òå
+//ADè½¬æ¢è§¦å‘æºå®šä¹‰
 #define ADC_TRIGGER_HW     (uint16_t)(0)
 #define ADC_TRIGGER_SW     (uint16_t)(1)
 #define IS_ADC_TRIGGER_SELECT(TRIGGER)  (((TRIGGER) == ADC_TRIGGER_HW) || ((TRIGGER) == ADC_TRIGGER_SW))
 
-//ÖĞ¶ÏÔ´¶¨Òå
+//ä¸­æ–­æºå®šä¹‰
 #define ADC_IT_AI       (uint16_t)(0)
 #define IS_ADC_IT(IT)  ((IT) == ADC_IT_AI)
-//DMAÃüÁî
+//DMAå‘½ä»¤
 #define ADC_DMAReq_COCO                     ((uint16_t)0)
 #define IS_ADC_DMAREQ(REQ)   ((REQ) == ADC_DMAReq_COCO)
 
-//ADC Í¨µÀÎ»Í¼¶¨Òå
+//ADC é€šé“ä½å›¾å®šä¹‰
 typedef struct
 {
     uint32_t ADC_Index:6;
@@ -64,13 +64,13 @@ typedef struct
 	  uint32_t ADC_Chl:6;
 }ADC_MapTypeDef;
 
-//ADC0²é·ÖĞÅºÅÊäÈëÑ¡Ôñ
+//ADC0æŸ¥åˆ†ä¿¡å·è¾“å…¥é€‰æ‹©
 #define ADC0_DP0_DM0          (0x00500000U)    
 #define ADC0_DP1_DM1          (0x04500000U)
 #define ADC0_PGA0_DP_DM       (0x08500000U)
 #define ADC0_DP3_DM3          (0x0c500000U)
 #define ADC0_TEMP_SENSOR_DIFF  (0x68500000U)
-//ADC0µ¥¶ËĞÅºÅÊäÈëÑ¡Ôñ
+//ADC0å•ç«¯ä¿¡å·è¾“å…¥é€‰æ‹©
 #define ADC0_SE0_DP0           (0x00400000U)
 #define ADC0_SE1_DP1           (0x04400000U)
 #define ADC0_SE2_PGA0_DP       (0x08400000U)
@@ -90,13 +90,13 @@ typedef struct
 #define ADC0_SE19_DM0          (0x4c400000U)
 #define ADC0_SE20_DM1          (0x50400000U)
 #define ADC0_TEMP_SENSOR_SE     (0x68400000U)
-//ADC1²é·ÖÊäÈëÑ¡Ôñ
+//ADC1æŸ¥åˆ†è¾“å…¥é€‰æ‹©
 #define ADC1_DP0_DM0           (0x00500001U)   
 #define ADC1_DP1_DM1           (0x04500001U)
 #define ADC1_PGA1_DP_DM        (0x08500001U)
 #define ADC1_DP3_DM3           (0x0c500001U)
 #define ADC1_TEMP_SENSOR_DIFF   (0x68500001U)
-//ADC1µ¥¶ËÊäÈëÍ¨µÀ
+//ADC1å•ç«¯è¾“å…¥é€šé“
 #define ADC1_SE0_DP0           (0x00400001U)
 #define ADC1_SE1_DP1           (0x04400001U)
 #define ADC1_SE2_PGA1_DP       (0x08400001U)
@@ -270,7 +270,7 @@ typedef struct
 #define PGAG_64            0x06
 
 
-//±¾¹¹¼şËùÊµÏÖµÄº¯Êı½Ó¿Ú
+//æœ¬æ„ä»¶æ‰€å®ç°çš„å‡½æ•°æ¥å£
 void ADC_Init(ADC_InitTypeDef* ADC_InitStruct);
 uint16_t ADC_GetConversionValue(uint32_t ADCxMap);
 void ADC_ITConfig(ADC_Type* ADCx,uint8_t ADC_Mux, uint16_t ADC_IT, FunctionalState NewState);

@@ -1,32 +1,32 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    gpio.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.25
-  * @brief   ³¬ºËK60¹Ì¼þ¿â GPIO º¯Êý¿â APIº¯Êý
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ GPIO å‡½æ•°åº“ APIå‡½æ•°
   ******************************************************************************
   */
  #include "gpio.h"
  
 /***********************************************************************************************
- ¹¦ÄÜ£ºGPIO³õÊ¼»¯
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
+ åŠŸèƒ½ï¼šGPIOåˆå§‹åŒ–
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
 			 GPIO_InitStruct
-       GPIO ³õÊ¼»¯½á¹¹
- ·µ»Ø£º0
- Ïê½â£º0
+       GPIO åˆå§‹åŒ–ç»“æž„
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void GPIO_Init(GPIO_InitTypeDef* GPIO_InitStruct)
 {
 	GPIO_Type *GPIOx = NULL;
 	PORT_Type *PORTx = NULL;
-	//²ÎÊý¼ì²â
+	//å‚æ•°æ£€æµ‹
 	assert_param(IS_GPIO_ALL_PERIPH(GPIO_InitStruct->GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_InitStruct->GPIO_Pin));
 	assert_param(IS_GPIO_BIT_ACTION(GPIO_InitStruct->GPIO_InitState )); 
@@ -34,29 +34,29 @@ void GPIO_Init(GPIO_InitTypeDef* GPIO_InitStruct)
 	assert_param(IS_GPIO_MODE(GPIO_InitStruct->GPIO_Mode));
 	
 	GPIOx = GPIO_InitStruct->GPIOx;
-	//¿ª¶Ë¿ÚÊ±ÖÓ
+	//å¼€ç«¯å£æ—¶é’Ÿ
 	switch((uint32_t)GPIOx)
 	{
-		case PTA_BASE:PORTx=PORTA;SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;break; //¿ªÆôPORTA¿ÚÊ¹ÄÜÊ±ÖÓ£¬ÔÚÉèÖÃÇ°Ê×ÏÈ¿ªÆôÊ¹ÄÜÊ±ÖÓ²Î¼ûk10ÊÖ²á268Ò³£¬
-	  case PTB_BASE:PORTx=PORTB;SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;break;	//¿ªÆôPORTB¿ÚÊ¹ÄÜÊ±ÖÓ
-	  case PTC_BASE:PORTx=PORTC;SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;break;	//¿ªÆôPORTC¿ÚÊ¹ÄÜÊ±ÖÓ
-	  case PTD_BASE:PORTx=PORTD;SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;break;	//¿ªÆôPORTD¿ÚÊ¹ÄÜÊ±ÖÓ
-	  case PTE_BASE:PORTx=PORTE;SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;break;	//¿ªÆôPORTE¿ÚÊ¹ÄÜÊ±ÖÓ
+		case PTA_BASE:PORTx=PORTA;SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;break; //å¼€å¯PORTAå£ä½¿èƒ½æ—¶é’Ÿï¼Œåœ¨è®¾ç½®å‰é¦–å…ˆå¼€å¯ä½¿èƒ½æ—¶é’Ÿå‚è§k10æ‰‹å†Œ268é¡µï¼Œ
+	  case PTB_BASE:PORTx=PORTB;SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;break;	//å¼€å¯PORTBå£ä½¿èƒ½æ—¶é’Ÿ
+	  case PTC_BASE:PORTx=PORTC;SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;break;	//å¼€å¯PORTCå£ä½¿èƒ½æ—¶é’Ÿ
+	  case PTD_BASE:PORTx=PORTD;SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;break;	//å¼€å¯PORTDå£ä½¿èƒ½æ—¶é’Ÿ
+	  case PTE_BASE:PORTx=PORTE;SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;break;	//å¼€å¯PORTEå£ä½¿èƒ½æ—¶é’Ÿ
 	  default : break;
 	} 
-	//ÉèÖÃÎªGPIOÄ£Ê½
+	//è®¾ç½®ä¸ºGPIOæ¨¡å¼
 	PORTx->PCR[GPIO_InitStruct->GPIO_Pin]&=~(PORT_PCR_MUX_MASK);    
 	PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|=PORT_PCR_MUX(1); 
-	//È·¶¨ÊÇÊäÈë»¹ÊÇÊä³ö
+	//ç¡®å®šæ˜¯è¾“å…¥è¿˜æ˜¯è¾“å‡º
 	if((GPIO_InitStruct->GPIO_Mode == GPIO_Mode_OOD) || (GPIO_InitStruct->GPIO_Mode == GPIO_Mode_OPP))
 	{
-		//ÅäÖÃGPIOx¿ÚµÄµÚGPIO_PinÒý½ÅÎªÊä³ö
+		//é…ç½®GPIOxå£çš„ç¬¬GPIO_Pinå¼•è„šä¸ºè¾“å‡º
 		GPIOx->PDDR |= (1<<(GPIO_InitStruct->GPIO_Pin));	
-		//×÷ÎªÊä³ö¿ÚÊ±¹Ø±Õ¸ÃÒý½ÅµÄÉÏÏÂÀ­µç×è¹¦ÄÜ
+		//ä½œä¸ºè¾“å‡ºå£æ—¶å…³é—­è¯¥å¼•è„šçš„ä¸Šä¸‹æ‹‰ç”µé˜»åŠŸèƒ½
 	  PORTx->PCR[(GPIO_InitStruct->GPIO_Pin)]&=~(PORT_PCR_PE_MASK); 
-		//Êä³öµçÆ½ÅäÖÃ
+		//è¾“å‡ºç”µå¹³é…ç½®
 		(Bit_SET == GPIO_InitStruct->GPIO_InitState)?(GPIOx->PDOR |= (1<<(GPIO_InitStruct->GPIO_Pin))):(GPIOx->PDOR &= ~(1<<(GPIO_InitStruct->GPIO_Pin)));
-		//¿ªÂ©»òÕßÍÆÍìÊä³ö
+		//å¼€æ¼æˆ–è€…æŽ¨æŒ½è¾“å‡º
 		if(GPIO_InitStruct->GPIO_Mode == GPIO_Mode_OOD)
 		{
 			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|= PORT_PCR_ODE_MASK;
@@ -66,51 +66,51 @@ void GPIO_Init(GPIO_InitTypeDef* GPIO_InitStruct)
 			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]&= ~PORT_PCR_ODE_MASK;
 		}
 	}
-	//Èç¹ûÊÇÊäÈëÄ£Ê½
+	//å¦‚æžœæ˜¯è¾“å…¥æ¨¡å¼
 	else if ((GPIO_InitStruct->GPIO_Mode == GPIO_Mode_IN_FLOATING) || (GPIO_InitStruct->GPIO_Mode == GPIO_Mode_IPD) || (GPIO_InitStruct->GPIO_Mode == GPIO_Mode_IPU))
 	{
-		//ÅäÖÃGPIOx¿ÚµÄµÚGPIO_PinÒý½ÅÎªÊäÈë
+		//é…ç½®GPIOxå£çš„ç¬¬GPIO_Pinå¼•è„šä¸ºè¾“å…¥
 		GPIOx->PDDR &= ~(1<<(GPIO_InitStruct->GPIO_Pin));		
 		if(GPIO_InitStruct->GPIO_Mode == GPIO_Mode_IN_FLOATING)
 		{
-			//¹Ø±ÕÉÏÏÂÀ­µç×è
-			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]&=~PORT_PCR_PE_MASK; 	//ÉÏÏÂÀ­µç×èDISABLE
+			//å…³é—­ä¸Šä¸‹æ‹‰ç”µé˜»
+			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]&=~PORT_PCR_PE_MASK; 	//ä¸Šä¸‹æ‹‰ç”µé˜»DISABLE
 		}
-		else if (GPIO_InitStruct->GPIO_Mode == GPIO_Mode_IPD) //ÏÂÀ­
+		else if (GPIO_InitStruct->GPIO_Mode == GPIO_Mode_IPD) //ä¸‹æ‹‰
 		{
-			//¿ªÆôÉÏÀ­µç×è
-			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|= PORT_PCR_PE_MASK; 	//ÉÏÏÂÀ­µç×èÊ¹ÄÜ
+			//å¼€å¯ä¸Šæ‹‰ç”µé˜»
+			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|= PORT_PCR_PE_MASK; 	//ä¸Šä¸‹æ‹‰ç”µé˜»ä½¿èƒ½
 			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]&= ~PORT_PCR_PS_MASK;
 			
 		}
-		else if (GPIO_InitStruct->GPIO_Mode == GPIO_Mode_IPU) //ÉÏÀ­
+		else if (GPIO_InitStruct->GPIO_Mode == GPIO_Mode_IPU) //ä¸Šæ‹‰
 		{
-			//¿ªÆôÉÏÀ­µç×è
-			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|= PORT_PCR_PE_MASK; 	//ÉÏÏÂÀ­µç×èÊ¹ÄÜ
+			//å¼€å¯ä¸Šæ‹‰ç”µé˜»
+			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|= PORT_PCR_PE_MASK; 	//ä¸Šä¸‹æ‹‰ç”µé˜»ä½¿èƒ½
 			PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|= PORT_PCR_PS_MASK;
 		}
 	}
-	//ÅäÖÃÖÐ¶ÏÄ£Ê½
+	//é…ç½®ä¸­æ–­æ¨¡å¼
 	PORTx->PCR[GPIO_InitStruct->GPIO_Pin]&=~PORT_PCR_IRQC_MASK;
-	PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|=PORT_PCR_IRQC(GPIO_InitStruct->GPIO_IRQMode);//Íâ²¿ÖÐ¶Ï´¥·¢ÉèÖÃ 
+	PORTx->PCR[GPIO_InitStruct->GPIO_Pin]|=PORT_PCR_IRQC(GPIO_InitStruct->GPIO_IRQMode);//å¤–éƒ¨ä¸­æ–­è§¦å‘è®¾ç½® 
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºGPIO»ñµÃÖÐ¶Ï±êÖ¾
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
+ åŠŸèƒ½ï¼šGPIOèŽ·å¾—ä¸­æ–­æ ‡å¿—
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
 			 GPIO_Pin
-       GPIO ¶Ë¿ÚºÅ GPIO_Pin_0 - GPIO_Pin_31
- ·µ»Ø£º0
- Ïê½â£º0
+       GPIO ç«¯å£å· GPIO_Pin_0 - GPIO_Pin_31
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 ITStatus GPIO_GetITStates(GPIO_Type *GPIOx,uint16_t GPIO_Pin)
 {
 	PORT_Type *PORTx = NULL;
-	//¿ª¶Ë¿ÚÊ±ÖÓ
+	//å¼€ç«¯å£æ—¶é’Ÿ
 	switch((uint32_t)GPIOx)
 	{
 		case PTA_BASE:PORTx = PORTA;break;
@@ -120,7 +120,7 @@ ITStatus GPIO_GetITStates(GPIO_Type *GPIOx,uint16_t GPIO_Pin)
 	  case PTE_BASE:PORTx = PORTE;break;
 	  default : break;
 	} 
-	//·µ»Ø±êÖ¾Î»
+	//è¿”å›žæ ‡å¿—ä½
 	if(PORTx->ISFR & (1<<GPIO_Pin))
 	{
 		return SET;
@@ -131,38 +131,38 @@ ITStatus GPIO_GetITStates(GPIO_Type *GPIOx,uint16_t GPIO_Pin)
 	}
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºGPIOÇå³þÖÐ¶Ï±êÖ¾
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
+ åŠŸèƒ½ï¼šGPIOæ¸…æ¥šä¸­æ–­æ ‡å¿—
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
 			 GPIO_Pin
-       GPIO ¶Ë¿ÚºÅ GPIO_Pin_0 - GPIO_Pin_31
- ·µ»Ø£º0
- Ïê½â£ºÔÚGPIOÖÐ¶ÏÖÐµ÷ÓÃ´Ëº¯ÊýÇå³þ±êÖ¾Î»
+       GPIO ç«¯å£å· GPIO_Pin_0 - GPIO_Pin_31
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼šåœ¨GPIOä¸­æ–­ä¸­è°ƒç”¨æ­¤å‡½æ•°æ¸…æ¥šæ ‡å¿—ä½
 ************************************************************************************************/
 void GPIO_ClearITPendingBit(GPIO_Type *GPIOx,uint16_t GPIO_Pin)
 {
 	PORT_Type *PORTx = NULL;
-	//¿ª¶Ë¿ÚÊ±ÖÓ
+	//å¼€ç«¯å£æ—¶é’Ÿ
 	switch((uint32_t)GPIOx)
 	{
-		case PTA_BASE:PORTx=PORTA;SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;break; //¿ªÆôPORTA¿ÚÊ¹ÄÜÊ±ÖÓ£¬ÔÚÉèÖÃÇ°Ê×ÏÈ¿ªÆôÊ¹ÄÜÊ±ÖÓ²Î¼ûk10ÊÖ²á268Ò³£¬
-	  case PTB_BASE:PORTx=PORTB;SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;break;	//¿ªÆôPORTB¿ÚÊ¹ÄÜÊ±ÖÓ
-	  case PTC_BASE:PORTx=PORTC;SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;break;	//¿ªÆôPORTC¿ÚÊ¹ÄÜÊ±ÖÓ
-	  case PTD_BASE:PORTx=PORTD;SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;break;	//¿ªÆôPORTD¿ÚÊ¹ÄÜÊ±ÖÓ
-	  case PTE_BASE:PORTx=PORTE;SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;break;	//¿ªÆôPORTE¿ÚÊ¹ÄÜÊ±ÖÓ
+		case PTA_BASE:PORTx=PORTA;SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;break; //å¼€å¯PORTAå£ä½¿èƒ½æ—¶é’Ÿï¼Œåœ¨è®¾ç½®å‰é¦–å…ˆå¼€å¯ä½¿èƒ½æ—¶é’Ÿå‚è§k10æ‰‹å†Œ268é¡µï¼Œ
+	  case PTB_BASE:PORTx=PORTB;SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;break;	//å¼€å¯PORTBå£ä½¿èƒ½æ—¶é’Ÿ
+	  case PTC_BASE:PORTx=PORTC;SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;break;	//å¼€å¯PORTCå£ä½¿èƒ½æ—¶é’Ÿ
+	  case PTD_BASE:PORTx=PORTD;SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;break;	//å¼€å¯PORTDå£ä½¿èƒ½æ—¶é’Ÿ
+	  case PTE_BASE:PORTx=PORTE;SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;break;	//å¼€å¯PORTEå£ä½¿èƒ½æ—¶é’Ÿ
 	  default : break;
 	} 
 	PORTx->ISFR |= (1<<GPIO_Pin);
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º³õÊ¼»¯½á¹¹Ìå ÌîÈëÄ¬ÈÏ²ÎÊý
- ÐÎ²Î£ºGPIO_InitStruct: ³õÊ¼»¯½á¹¹
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šåˆå§‹åŒ–ç»“æž„ä½“ å¡«å…¥é»˜è®¤å‚æ•°
+ å½¢å‚ï¼šGPIO_InitStruct: åˆå§‹åŒ–ç»“æž„
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void GPIO_StructInit(GPIO_InitTypeDef* GPIO_InitStruct)
 {
@@ -170,24 +170,24 @@ void GPIO_StructInit(GPIO_InitTypeDef* GPIO_InitStruct)
 	GPIO_InitStruct->GPIO_Mode = GPIO_Mode_IN_FLOATING;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º½«Ò»¸öIO PinÉèÖÃÎª0 »ò 1
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
-		 	 GPIO_Pin£º
-			 @arg : 0-31 Êý×Ö
+ åŠŸèƒ½ï¼šå°†ä¸€ä¸ªIO Pinè®¾ç½®ä¸º0 æˆ– 1
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
+		 	 GPIO_Pinï¼š
+			 @arg : 0-31 æ•°å­—
 			 BitVal:
-			 @arg Bit_RESET: ÉèÖÃÎª0
-			 @arg Bit_SET  : ÉèÖÃÎª1
- ·µ»Ø£º0
- Ïê½â£º0
+			 @arg Bit_RESET: è®¾ç½®ä¸º0
+			 @arg Bit_SET  : è®¾ç½®ä¸º1
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void GPIO_WriteBit(GPIO_Type *GPIOx,uint16_t GPIO_Pin,BitAction BitVal)
 {	 
-	//¼ì²â²ÎÊý
+	//æ£€æµ‹å‚æ•°
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	assert_param(IS_GPIO_BIT_ACTION(BitVal)); 
@@ -202,103 +202,103 @@ void GPIO_WriteBit(GPIO_Type *GPIOx,uint16_t GPIO_Pin,BitAction BitVal)
   }
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º½«Ò»¸öIO PinÉèÖÃÎª1
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
-		 	 GPIO_Pin£º
-			 @arg : 0-31 Êý×Ö
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šå°†ä¸€ä¸ªIO Pinè®¾ç½®ä¸º1
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
+		 	 GPIO_Pinï¼š
+			 @arg : 0-31 æ•°å­—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void GPIO_SetBits(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
 {
-	//¼ì²â²ÎÊý
+	//æ£€æµ‹å‚æ•°
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	GPIOx->PSOR |= (1<<GPIO_Pin);
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º½«Ò»¸öIO PinÉèÖÃÎª0
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
-		 	 GPIO_Pin£º
-			 @arg : 0-31 Êý×Ö
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šå°†ä¸€ä¸ªIO Pinè®¾ç½®ä¸º0
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
+		 	 GPIO_Pinï¼š
+			 @arg : 0-31 æ•°å­—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void GPIO_ResetBits(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
 {
-	//¼ì²â²ÎÊý
+	//æ£€æµ‹å‚æ•°
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	GPIOx->PCOR |= (1<<GPIO_Pin);
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£º·­×ªÒ»¸öIO PinµÄµçÆ½
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
-		 	 GPIO_Pin£º
-			 @arg : 0-31 Êý×Ö
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šç¿»è½¬ä¸€ä¸ªIO Pinçš„ç”µå¹³
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
+		 	 GPIO_Pinï¼š
+			 @arg : 0-31 æ•°å­—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void GPIO_ToggleBit(GPIO_Type *GPIOx,uint16_t GPIO_Pin)
 {
-	//¼ì²â²ÎÊý
+	//æ£€æµ‹å‚æ•°
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	
-	GPIOx->PTOR |= (1<<GPIO_Pin);	//½«Òý½ÅµÄµçÆ½½øÐÐ·­×ª£¬²Î¿¼k10ÊÖ²á1483Ò³
+	GPIOx->PTOR |= (1<<GPIO_Pin);	//å°†å¼•è„šçš„ç”µå¹³è¿›è¡Œç¿»è½¬ï¼Œå‚è€ƒk10æ‰‹å†Œ1483é¡µ
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºÐ´Èë¶Ë¿ÚIOµçÆ½ Êä³ö
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
-		 	 PortVal£º
-			 @arg : ¶Ë¿ÚÊý¾Ý
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šå†™å…¥ç«¯å£IOç”µå¹³ è¾“å‡º
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
+		 	 PortValï¼š
+			 @arg : ç«¯å£æ•°æ®
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void GPIO_Write(GPIO_Type *GPIOx,uint32_t PortVal)
 {
-	//¼ì²â²ÎÊý
+	//æ£€æµ‹å‚æ•°
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	GPIOx->PDOR = PortVal;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º¶ÁÈ¡Ò»¸öÒÑ¾­ÉèÖÃÎªÊä³öµÄIO PinµÄ µçÆ½
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
-		 	 GPIO_Pin£º
-			 @arg 0-31: ¶Ë¿ÚºÅ
- ·µ»Ø£º¶Ë¿ÚµçÆ½
- Ïê½â£ºÊµ¼ÊÉÏ¾ÍÊÇ¶ÁÈ¡PDORµÄÖµ
+ åŠŸèƒ½ï¼šè¯»å–ä¸€ä¸ªå·²ç»è®¾ç½®ä¸ºè¾“å‡ºçš„IO Pinçš„ ç”µå¹³
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
+		 	 GPIO_Pinï¼š
+			 @arg 0-31: ç«¯å£å·
+ è¿”å›žï¼šç«¯å£ç”µå¹³
+ è¯¦è§£ï¼šå®žé™…ä¸Šå°±æ˜¯è¯»å–PDORçš„å€¼
 ************************************************************************************************/
 uint8_t GPIO_ReadOutputDataBit(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
 {
 	uint8_t bitstatus = 0x00;
-	//¼ì²â²ÎÊý
+	//æ£€æµ‹å‚æ•°
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	
@@ -313,40 +313,40 @@ uint8_t GPIO_ReadOutputDataBit(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
   return bitstatus;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º¶ÁÈ¡Ò»¸öÒÑ¾­ÉèÖÃÎªÊä³öµÄIOµÄ µçÆ½
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
- ·µ»Ø£º¶Ë¿ÚµçÆ½
- Ïê½â£ºÊµ¼ÊÉÏ¾ÍÊÇ¶ÁÈ¡PDORµÄÖµ
+ åŠŸèƒ½ï¼šè¯»å–ä¸€ä¸ªå·²ç»è®¾ç½®ä¸ºè¾“å‡ºçš„IOçš„ ç”µå¹³
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
+ è¿”å›žï¼šç«¯å£ç”µå¹³
+ è¯¦è§£ï¼šå®žé™…ä¸Šå°±æ˜¯è¯»å–PDORçš„å€¼
 ************************************************************************************************/
 uint32_t GPIO_ReadOutputData(GPIO_Type* GPIOx)
 {
-  //¼ì²â²ÎÊý
+  //æ£€æµ‹å‚æ•°
   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
     
   return ((uint16_t)GPIOx->PDOR);
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º¶ÁÈ¡Ò»¸öIO¶Ë¿ÚµÄÄ³Ò»¸öPINµÄµçÆ½
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
+ åŠŸèƒ½ï¼šè¯»å–ä¸€ä¸ªIOç«¯å£çš„æŸä¸€ä¸ªPINçš„ç”µå¹³
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
 			 GPIO_Pin:
-			 @arg 0-31 Êý×Ö
- ·µ»Ø£ºÂß¼­µçÆ½ 0 »òÕß 1
- Ïê½â£º±ØÐëÏÈÉèÖÃ¶Ë¿ÚÎªÊäÈë¶Ë¿Ú
+			 @arg 0-31 æ•°å­—
+ è¿”å›žï¼šé€»è¾‘ç”µå¹³ 0 æˆ–è€… 1
+ è¯¦è§£ï¼šå¿…é¡»å…ˆè®¾ç½®ç«¯å£ä¸ºè¾“å…¥ç«¯å£
 ************************************************************************************************/
 uint8_t GPIO_ReadInputDataBit(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
 {	 
 	uint8_t bitstatus = 0x00;
-	//¼ì²â²ÎÊý
+	//æ£€æµ‹å‚æ•°
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	
@@ -361,19 +361,19 @@ uint8_t GPIO_ReadInputDataBit(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
   return bitstatus;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º¶ÁÈ¡Ò»¸öIO¶Ë¿ÚµÄÊäÈëµçÆ½
- ÐÎ²Î£ºGPIOx:
-			 @arg PTA:A¶Ë¿Ú
-			 @arg PTB:B¶Ë¿Ú
-			 @arg PTC:C¶Ë¿Ú
-			 @arg PTD:D¶Ë¿Ú
-			 @arg PTE:E¶Ë¿Ú
- ·µ»Ø£º¶Ë¿ÚµçÆ½
- Ïê½â£º±ØÐëÏÈÉèÖÃ¶Ë¿ÚÎªÊäÈë¶Ë¿Ú
+ åŠŸèƒ½ï¼šè¯»å–ä¸€ä¸ªIOç«¯å£çš„è¾“å…¥ç”µå¹³
+ å½¢å‚ï¼šGPIOx:
+			 @arg PTA:Aç«¯å£
+			 @arg PTB:Bç«¯å£
+			 @arg PTC:Cç«¯å£
+			 @arg PTD:Dç«¯å£
+			 @arg PTE:Eç«¯å£
+ è¿”å›žï¼šç«¯å£ç”µå¹³
+ è¯¦è§£ï¼šå¿…é¡»å…ˆè®¾ç½®ç«¯å£ä¸ºè¾“å…¥ç«¯å£
 ************************************************************************************************/
 uint32_t GPIO_ReadInputData(GPIO_Type *GPIOx)
 {
-	//¼ì²â²ÎÊý
+	//æ£€æµ‹å‚æ•°
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	
 	 return(GPIOx->PDIR);

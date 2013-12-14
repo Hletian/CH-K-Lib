@@ -1,19 +1,19 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    i2c.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËK60¹Ì¼þ¿â IIC Çý¶¯ÎÄ¼þ
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ IIC é©±åŠ¨æ–‡ä»¶
   ******************************************************************************
   */
 #include "i2c.h"
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ³õÊ¼»¯
- ÐÎ²Î£ºI2C_InitStruct: I2C³õÊ¼»¯½á¹¹
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šI2C åˆå§‹åŒ–
+ å½¢å‚ï¼šI2C_InitStruct: I2Cåˆå§‹åŒ–ç»“æž„
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void I2C_Init(I2C_InitTypeDef* I2C_InitStruct)
 {
@@ -21,10 +21,10 @@ void I2C_Init(I2C_InitTypeDef* I2C_InitStruct)
 	PORT_Type *I2C_PORT = NULL;
 	uint32_t prescaler = 0;
 	I2C_MapTypeDef *pI2C_Map = (I2C_MapTypeDef*)&(I2C_InitStruct->I2CxMAP);
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_DATA_CHL(I2C_InitStruct->I2CxMAP));
 	assert_param(IS_I2C_CLOCK_SPEED(I2C_InitStruct->I2C_ClockSpeed));
-	//Ê¹ÄÜI2CÊ±ÖÓ
+	//ä½¿èƒ½I2Cæ—¶é’Ÿ
 	switch(pI2C_Map->I2C_Index)
 	{
 		case 0:
@@ -37,7 +37,7 @@ void I2C_Init(I2C_InitTypeDef* I2C_InitStruct)
 			break;
 		default:break;
 	}
-	//Ê¹ÄÜ¶ÔÓ¦µÄPORT
+	//ä½¿èƒ½å¯¹åº”çš„PORT
 	switch(pI2C_Map->I2C_GPIO_Index)
 	{
 		case 0:
@@ -62,112 +62,112 @@ void I2C_Init(I2C_InitTypeDef* I2C_InitStruct)
 			break;
 		default:break;
 	}
-	//¿ªÆô¶ÔÓ¦Òý½ÅÎªI2C¹¦ÄÜ
+	//å¼€å¯å¯¹åº”å¼•è„šä¸ºI2CåŠŸèƒ½
 	I2C_PORT->PCR[pI2C_Map->I2C_SCL_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	I2C_PORT->PCR[pI2C_Map->I2C_SDA_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	I2C_PORT->PCR[pI2C_Map->I2C_SCL_Pin_Index] |= PORT_PCR_MUX(pI2C_Map->I2C_Alt_Index)|PORT_PCR_ODE_MASK;
 	I2C_PORT->PCR[pI2C_Map->I2C_SDA_Pin_Index] |= PORT_PCR_MUX(pI2C_Map->I2C_Alt_Index)|PORT_PCR_ODE_MASK;
-	//½«Òý½ÅÉèÖÃÎªÂ©¼«Êä³ö
-	//ÉèÖÃI2C·ÖÆµÊý
+	//å°†å¼•è„šè®¾ç½®ä¸ºæ¼æžè¾“å‡º
+	//è®¾ç½®I2Cåˆ†é¢‘æ•°
 	prescaler = (((CPUInfo.BusClock /(I2C_InitStruct->I2C_ClockSpeed))-160))/32 +  0x20;
 	I2Cx->F	= prescaler;
-	//Ê¹ÄÜI2CÄ£¿é
+	//ä½¿èƒ½I2Cæ¨¡å—
 	I2Cx->C1 = I2C_C1_IICEN_MASK ;
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ·¢ËÍ¿ªÊ¼ÐÅºÅ
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
- ·µ»Ø£º0
- Ïê½â£º I2C ×ÜÏßµ±SCLÎª¸ßµçÆ½ Ê± SDAÏÂ½µÑØÌø±ä Ê¶±ðÎª¿ªÊ¼ÐÅºÅ
+ åŠŸèƒ½ï¼šI2C å‘é€å¼€å§‹ä¿¡å·
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š I2C æ€»çº¿å½“SCLä¸ºé«˜ç”µå¹³ æ—¶ SDAä¸‹é™æ²¿è·³å˜ è¯†åˆ«ä¸ºå¼€å§‹ä¿¡å·
 ************************************************************************************************/
 void I2C_GenerateSTART(I2C_Type *I2Cx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
 	I2Cx->C1 |= I2C_C1_TX_MASK;
 	I2Cx->C1 |= I2C_C1_MST_MASK;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ·¢ËÍÖØÐÂ¿ªÊ¼ÐÅºÅ
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
- ·µ»Ø£º0
- Ïê½â£º I2C ×ÜÏßµ±SCLÎª¸ßµçÆ½ Ê± SDAÏÂ½µÑØÌø±ä Ê¶±ðÎª¿ªÊ¼ÐÅºÅ
+ åŠŸèƒ½ï¼šI2C å‘é€é‡æ–°å¼€å§‹ä¿¡å·
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š I2C æ€»çº¿å½“SCLä¸ºé«˜ç”µå¹³ æ—¶ SDAä¸‹é™æ²¿è·³å˜ è¯†åˆ«ä¸ºå¼€å§‹ä¿¡å·
 ************************************************************************************************/
 void I2C_GenerateRESTART(I2C_Type *I2Cx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
 	I2Cx->C1 |= I2C_C1_RSTA_MASK;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ·¢ËÍÍ£Ö¹ÐÅºÅ
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
- ·µ»Ø£º0
- Ïê½â£º I2C ×ÜÏßµ±SCLÎª¸ßµçÆ½ Ê± SDAÉÏÉýÑØÌø±ä Ê¶±ðÎª½áÊøÐÅºÅ
+ åŠŸèƒ½ï¼šI2C å‘é€åœæ­¢ä¿¡å·
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š I2C æ€»çº¿å½“SCLä¸ºé«˜ç”µå¹³ æ—¶ SDAä¸Šå‡æ²¿è·³å˜ è¯†åˆ«ä¸ºç»“æŸä¿¡å·
 ************************************************************************************************/
 void I2C_GenerateSTOP(I2C_Type *I2Cx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
 	I2Cx->C1 &= ~I2C_C1_MST_MASK;
 	I2Cx->C1 &= ~I2C_C1_TX_MASK;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ·¢ËÍ8bitÊý¾Ý
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
-			 data8: 8bitÊý¾Ý
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šI2C å‘é€8bitæ•°æ®
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+			 data8: 8bitæ•°æ®
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void I2C_SendData(I2C_Type *I2Cx,uint8_t data8)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
 	I2Cx->D = data8;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ¶ÁÈ¡8bitÊý¾Ý
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
- ·µ»Ø£º¶ÁÈ¡µ½µÄ8bit Êý¾Ý
- Ïê½â£º0
+ åŠŸèƒ½ï¼šI2C è¯»å–8bitæ•°æ®
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+ è¿”å›žï¼šè¯»å–åˆ°çš„8bit æ•°æ®
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint8_t I2C_ReadData(I2C_Type *I2Cx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
 	return (I2Cx->D);
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ·¢ËÍ7Î»µØÖ·Âë
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
-			 Address: 7bitµØÖ·Âë
-       I2C_Direction£º
-       @arg I2C_MASTER_WRITE: Ö÷»úÐ´
-       @arg I2C_MASTER_READ:  Ö÷»ú¶Á
- ·µ»Ø£º0
- Ïê½â£º·â×°ÁËSendData
+ åŠŸèƒ½ï¼šI2C å‘é€7ä½åœ°å€ç 
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+			 Address: 7bitåœ°å€ç 
+       I2C_Directionï¼š
+       @arg I2C_MASTER_WRITE: ä¸»æœºå†™
+       @arg I2C_MASTER_READ:  ä¸»æœºè¯»
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼šå°è£…äº†SendData
 ************************************************************************************************/
 void I2C_Send7bitAddress(I2C_Type* I2Cx, uint8_t Address, uint8_t I2C_Direction)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	assert_param(IS_I2C_MASTER_DIRECTION(I2C_Direction));
 	
@@ -175,19 +175,19 @@ void I2C_Send7bitAddress(I2C_Type* I2Cx, uint8_t Address, uint8_t I2C_Direction)
 	I2Cx->D = Address;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C µÈ´ýÓ¦´ðÐÅºÅÍê³É
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
+ åŠŸèƒ½ï¼šI2C ç­‰å¾…åº”ç­”ä¿¡å·å®Œæˆ
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
 
- ·µ»Ø£º0   :³É¹¦ÊÕµ½Ó¦´ð 
-       1   :Î´ÊÕµ½Ó¦´ð
- Ïê½â£ºÖ÷»úÃ¿´«ËÍÒ»¸ö×Ö½Ú¶¼ÐèÒªµ÷ÓÃI2C_WaitAckÒ»´Î WaitAck »áµÈ´ýÕâÒ»¸ö×Ö½Ú´«Êä½áÊø °üÀ¨×îºóACKÎ»µÄ½áÊøºó·µ»Ø
+ è¿”å›žï¼š0   :æˆåŠŸæ”¶åˆ°åº”ç­” 
+       1   :æœªæ”¶åˆ°åº”ç­”
+ è¯¦è§£ï¼šä¸»æœºæ¯ä¼ é€ä¸€ä¸ªå­—èŠ‚éƒ½éœ€è¦è°ƒç”¨I2C_WaitAckä¸€æ¬¡ WaitAck ä¼šç­‰å¾…è¿™ä¸€ä¸ªå­—èŠ‚ä¼ è¾“ç»“æŸ åŒ…æ‹¬æœ€åŽACKä½çš„ç»“æŸåŽè¿”å›ž
 ************************************************************************************************/
 uint8_t I2C_WaitAck(I2C_Type *I2Cx)
 {
 
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
     //wait for transfer complete
@@ -208,70 +208,70 @@ uint8_t I2C_WaitAck(I2C_Type *I2Cx)
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ÉèÖÃÖ÷»ú¶ÁÐ´Ä£Ê½
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
-			 I2C_Direction : Ö÷»ú¶ÁÐ´·½Ïò
-			 @arg  I2C_MASTER_WRITE : Ö÷»úÐ´
-       @arg  I2C_MASTER_READ  : Ö÷»ú¶Á
- ·µ»Ø£º0
- Ïê½â£º0 
+ åŠŸèƒ½ï¼šI2C è®¾ç½®ä¸»æœºè¯»å†™æ¨¡å¼
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+			 I2C_Direction : ä¸»æœºè¯»å†™æ–¹å‘
+			 @arg  I2C_MASTER_WRITE : ä¸»æœºå†™
+       @arg  I2C_MASTER_READ  : ä¸»æœºè¯»
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0 
 ************************************************************************************************/
 void I2C_SetMasterMode(I2C_Type* I2Cx,uint8_t I2C_Direction)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_MASTER_DIRECTION(I2C_Direction));
 	
 	(I2C_Direction == I2C_MASTER_WRITE)?(I2Cx->C1 |= I2C_C1_TX_MASK):(I2Cx->C1 &= ~I2C_C1_TX_MASK);
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ÉèÖÃÎª¶ÁÈ¡Ò»¸ö×Ö½Úºó·µ»ØNACK
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
- ·µ»Ø£º0
- Ïê½â£º0 
+ åŠŸèƒ½ï¼šI2C è®¾ç½®ä¸ºè¯»å–ä¸€ä¸ªå­—èŠ‚åŽè¿”å›žNACK
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0 
 ************************************************************************************************/
 void I2C_GenerateNAck(I2C_Type *I2Cx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
 	I2Cx->C1 |= I2C_C1_TXAK_MASK;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ÉèÖÃÎª¶ÁÈ¡Ò»¸ö×Ö½Úºó·µ»ØACK
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0: I2C0 Ä£¿é
-       @arg I2C1: I2C1 Ä£¿é
- ·µ»Ø£º0
- Ïê½â£º0 
+ åŠŸèƒ½ï¼šI2C è®¾ç½®ä¸ºè¯»å–ä¸€ä¸ªå­—èŠ‚åŽè¿”å›žACK
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0: I2C0 æ¨¡å—
+       @arg I2C1: I2C1 æ¨¡å—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0 
 ************************************************************************************************/
 void I2C_GenerateAck(I2C_Type *I2Cx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
 	I2Cx->C1 &= ~I2C_C1_TXAK_MASK;
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C ÖÐ¶ÏÅäÖÃ
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0 : I2C0Ä£¿é
-       @arg I2C1 : I2C1Ä£¿é
-			 I2C_IT : ÖÐ¶ÏÔ´
-       @arg I2C_IT_TCF : I2CÖÐ¶Ï´«ÊäÍê³É
-       NewState : Ê¹ÄÜ»òÕß½ûÖ¹
-       @arg ENABLE : Ê¹ÄÜ
-       @arg DISABLE: ½ûÖ¹ 
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šI2C ä¸­æ–­é…ç½®
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0 : I2C0æ¨¡å—
+       @arg I2C1 : I2C1æ¨¡å—
+			 I2C_IT : ä¸­æ–­æº
+       @arg I2C_IT_TCF : I2Cä¸­æ–­ä¼ è¾“å®Œæˆ
+       NewState : ä½¿èƒ½æˆ–è€…ç¦æ­¢
+       @arg ENABLE : ä½¿èƒ½
+       @arg DISABLE: ç¦æ­¢ 
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void I2C_ITConfig(I2C_Type* I2Cx, uint16_t I2C_IT, FunctionalState NewState)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	assert_param(IS_I2C_IT(I2C_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -296,19 +296,19 @@ void I2C_ITConfig(I2C_Type* I2Cx, uint16_t I2C_IT, FunctionalState NewState)
 	}
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C »ñÈ¡ÖÐ¶Ï×´Ì¬
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0 : I2C0Ä£¿é
-       @arg I2C1 : I2C1Ä£¿é
-			 I2C_IT : ÖÐ¶ÏÔ´
-       @arg I2C_IT_TCF : I2CÖÐ¶Ï´«ÊäÍê³É
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šI2C èŽ·å–ä¸­æ–­çŠ¶æ€
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0 : I2C0æ¨¡å—
+       @arg I2C1 : I2C1æ¨¡å—
+			 I2C_IT : ä¸­æ–­æº
+       @arg I2C_IT_TCF : I2Cä¸­æ–­ä¼ è¾“å®Œæˆ
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 ITStatus I2C_GetITStatus(I2C_Type* I2Cx, uint16_t I2C_IT)
 {
 	ITStatus retval = RESET;
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	assert_param(IS_I2C_IT(I2C_IT));
 	switch(I2C_IT)
@@ -334,21 +334,21 @@ ITStatus I2C_GetITStatus(I2C_Type* I2Cx, uint16_t I2C_IT)
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C DMAÊ¹ÄÜ
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0 : I2C0Ä£¿é
-       @arg I2C1 : I2C1Ä£¿é
-			 I2C_DMAReq : ÖÐ¶ÏÔ´
-       @arg I2C_DMAReq_TCF : I2C´«ÊäÍê³É
-       NewState : Ê¹ÄÜ»òÕß½ûÖ¹
-       @arg ENABLE : Ê¹ÄÜ
-       @arg DISABLE: ½ûÖ¹ 
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šI2C DMAä½¿èƒ½
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0 : I2C0æ¨¡å—
+       @arg I2C1 : I2C1æ¨¡å—
+			 I2C_DMAReq : ä¸­æ–­æº
+       @arg I2C_DMAReq_TCF : I2Cä¼ è¾“å®Œæˆ
+       NewState : ä½¿èƒ½æˆ–è€…ç¦æ­¢
+       @arg ENABLE : ä½¿èƒ½
+       @arg DISABLE: ç¦æ­¢ 
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void I2C_DMACmd(I2C_Type* I2Cx, uint16_t I2C_DMAReq, FunctionalState NewState)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	assert_param(IS_I2C_DMAREQ(I2C_DMAReq));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -363,22 +363,22 @@ void I2C_DMACmd(I2C_Type* I2Cx, uint16_t I2C_DMAReq, FunctionalState NewState)
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºI2C Çå³ýÖÐ¶Ï±êÖ¾
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0 : I2C0Ä£¿é
-       @arg I2C1 : I2C1Ä£¿é
-			 I2C_IT : ÖÐ¶ÏÔ´
-       @arg I2C_IT_TCF : I2CÖÐ¶Ï´«ÊäÍê³É
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šI2C æ¸…é™¤ä¸­æ–­æ ‡å¿—
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0 : I2C0æ¨¡å—
+       @arg I2C1 : I2C1æ¨¡å—
+			 I2C_IT : ä¸­æ–­æº
+       @arg I2C_IT_TCF : I2Cä¸­æ–­ä¼ è¾“å®Œæˆ
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void I2C_ClearITPendingBit(I2C_Type* I2Cx, uint16_t I2C_IT)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	assert_param(IS_I2C_IT(I2C_IT));
 	
-	//ÇåÖÐ¶Ï±êÖ¾Î»
+	//æ¸…ä¸­æ–­æ ‡å¿—ä½
 	I2Cx->C1 |= I2C_C1_IICEN_MASK;
 	switch(I2C_IT)
 	{
@@ -398,16 +398,16 @@ void I2C_ClearITPendingBit(I2C_Type* I2Cx, uint16_t I2C_IT)
 	}
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºÅÐ¶ÏI2C ÏßÉÏÊÇ·ñ¿ÕÏÐ ¸ßµçÆ½
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0 : I2C0Ä£¿é
-       @arg I2C1 : I2C1Ä£¿é
- ·µ»Ø£ºTRUE: ¿ÕÏÐ FALSE :Ã¦
- Ïê½â£º0
+ åŠŸèƒ½ï¼šåˆ¤æ–­I2C çº¿ä¸Šæ˜¯å¦ç©ºé—² é«˜ç”µå¹³
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0 : I2C0æ¨¡å—
+       @arg I2C1 : I2C1æ¨¡å—
+ è¿”å›žï¼šTRUE: ç©ºé—² FALSE :å¿™
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint8_t I2C_IsLineBusy(I2C_Type* I2Cx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_I2C_ALL_PERIPH(I2Cx));
 	
 	if(I2Cx->S & I2C_S_BUSY_MASK)
@@ -451,15 +451,15 @@ uint8_t I2C_Write(I2C_Type *I2Cx ,uint8_t DeviceAddress, uint8_t *pBuffer, uint3
 
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºÍ¨ÓÃ I2C ¶ÁÐ´Ò»¸ö´Ó»úµÄÒ»¸ö¼Ä´æÆ÷ ÊÊÓÃÓÚ´ó¶àÊýÆÚ¼ä MMA84ÏµÁÐ´«¸ÐÆ÷µÈµÈ
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0 : I2C0Ä£¿é
-       @arg I2C1 : I2C1Ä£¿é
-       DeviceAddress: Éè±¸µØÖ·
-       RegisterAddress:¼Ä´æÆ÷ÔÚÉè±¸ÖÐµÄµØÖ·
-       Data: ÐèÒªÐ´ÈëµÄÊý¾Ý
- ·µ»Ø£º0:³É¹¦ else: ´íÎó´úÂë
- Ïê½â£ºÊµÖÊË³ÐòÎª START->ADDRESS->RegADR->Data->STOP->Wait until all stop
+ åŠŸèƒ½ï¼šé€šç”¨ I2C è¯»å†™ä¸€ä¸ªä»Žæœºçš„ä¸€ä¸ªå¯„å­˜å™¨ é€‚ç”¨äºŽå¤§å¤šæ•°æœŸé—´ MMA84ç³»åˆ—ä¼ æ„Ÿå™¨ç­‰ç­‰
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0 : I2C0æ¨¡å—
+       @arg I2C1 : I2C1æ¨¡å—
+       DeviceAddress: è®¾å¤‡åœ°å€
+       RegisterAddress:å¯„å­˜å™¨åœ¨è®¾å¤‡ä¸­çš„åœ°å€
+       Data: éœ€è¦å†™å…¥çš„æ•°æ®
+ è¿”å›žï¼š0:æˆåŠŸ else: é”™è¯¯ä»£ç 
+ è¯¦è§£ï¼šå®žè´¨é¡ºåºä¸º START->ADDRESS->RegADR->Data->STOP->Wait until all stop
 ************************************************************************************************/
 uint8_t I2C_WriteSingleRegister(I2C_Type* I2Cx, uint8_t DeviceAddress, uint8_t RegisterAddress, uint8_t Data)
 {
@@ -474,15 +474,15 @@ uint8_t I2C_WriteSingleRegister(I2C_Type* I2Cx, uint8_t DeviceAddress, uint8_t R
 
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºÍ¨ÓÃ I2C ¶ÁÐ´Ò»¸ö´Ó»úµÄÒ»¸ö¼Ä´æÆ÷ ÊÊÓÃÓÚ´ó¶àÊýÆÚ¼ä MMA84ÏµÁÐ´«¸ÐÆ÷µÈµÈ
- ÐÎ²Î£ºI2Cx: I2CÄ£¿éºÅ
-       @arg I2C0 : I2C0Ä£¿é
-       @arg I2C1 : I2C1Ä£¿é
-       DeviceAddress: Éè±¸µØÖ·
-       RegisterAddress:¼Ä´æÆ÷ÔÚÉè±¸ÖÐµÄµØÖ·
-       Data: ÐèÒªÐ´ÈëµÄÊý¾Ý
- ·µ»Ø£º0:³É¹¦ else: ´íÎó´úÂë
- Ïê½â£ºÊµÖÊË³ÐòÎª START->ADDRESS->RESTART->ADDRESS_With_READ->ReadData->SEND_NACK->STOP->Wait until all stop
+ åŠŸèƒ½ï¼šé€šç”¨ I2C è¯»å†™ä¸€ä¸ªä»Žæœºçš„ä¸€ä¸ªå¯„å­˜å™¨ é€‚ç”¨äºŽå¤§å¤šæ•°æœŸé—´ MMA84ç³»åˆ—ä¼ æ„Ÿå™¨ç­‰ç­‰
+ å½¢å‚ï¼šI2Cx: I2Cæ¨¡å—å·
+       @arg I2C0 : I2C0æ¨¡å—
+       @arg I2C1 : I2C1æ¨¡å—
+       DeviceAddress: è®¾å¤‡åœ°å€
+       RegisterAddress:å¯„å­˜å™¨åœ¨è®¾å¤‡ä¸­çš„åœ°å€
+       Data: éœ€è¦å†™å…¥çš„æ•°æ®
+ è¿”å›žï¼š0:æˆåŠŸ else: é”™è¯¯ä»£ç 
+ è¯¦è§£ï¼šå®žè´¨é¡ºåºä¸º START->ADDRESS->RESTART->ADDRESS_With_READ->ReadData->SEND_NACK->STOP->Wait until all stop
 ************************************************************************************************/
 uint8_t I2C_ReadSingleRegister(I2C_Type* I2Cx, uint8_t DeviceAddress, uint8_t RegisterAddress, uint8_t* pData)
 {

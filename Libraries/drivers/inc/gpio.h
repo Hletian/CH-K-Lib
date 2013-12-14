@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    gpio.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.25
-  * @brief   ³¬ºËK60¹Ì¼ş¿â GPIO APIº¯Êı Í·ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ GPIO APIå‡½æ•° å¤´æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __GPIO_H__
@@ -16,12 +16,12 @@
 	 
 #include "sys.h"
 
-//Î»´ø²Ù×÷,ÊµÏÖ51ÀàËÆµÄGPIO¿ØÖÆ¹¦ÄÜ
-//IO¿Ú²Ù×÷ºê¶¨Òå
+//ä½å¸¦æ“ä½œ,å®ç°51ç±»ä¼¼çš„GPIOæ§åˆ¶åŠŸèƒ½
+//IOå£æ“ä½œå®å®šä¹‰
 #define BITBAND(addr,bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2)) 
 #define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr)) 
 #define BIT_ADDR(addr, bitnum)   MEM_ADDR(BITBAND(addr, bitnum)) 
-//IO¿ÚµØÖ·Ó³Éä
+//IOå£åœ°å€æ˜ å°„
 #define GPIOA_ODR_Addr    (PTA_BASE+0) //0x4001080C 
 #define GPIOB_ODR_Addr    (PTB_BASE+0) //0x40010C0C 
 #define GPIOC_ODR_Addr    (PTC_BASE+0) //0x4001100C 
@@ -38,27 +38,27 @@
 #define GPIOF_IDR_Addr    (PTF_BASE+0x10) //0x40011A08 
 #define GPIOG_IDR_Addr    (PTG_BASE+0x10) //0x40011E08 
 
-//IO¿Ú²Ù×÷,Ö»¶Ôµ¥Ò»µÄIO¿Ú!
-#define PAout(n)   BIT_ADDR(GPIOA_ODR_Addr,n)  //Êä³ö 
-#define PAin(n)    BIT_ADDR(GPIOA_IDR_Addr,n)  //ÊäÈë 
+//IOå£æ“ä½œ,åªå¯¹å•ä¸€çš„IOå£!
+#define PAout(n)   BIT_ADDR(GPIOA_ODR_Addr,n)  //è¾“å‡º 
+#define PAin(n)    BIT_ADDR(GPIOA_IDR_Addr,n)  //è¾“å…¥ 
   
-#define PBout(n)   BIT_ADDR(GPIOB_ODR_Addr,n)  //Êä³ö 
-#define PBin(n)    BIT_ADDR(GPIOB_IDR_Addr,n)  //ÊäÈë 
+#define PBout(n)   BIT_ADDR(GPIOB_ODR_Addr,n)  //è¾“å‡º 
+#define PBin(n)    BIT_ADDR(GPIOB_IDR_Addr,n)  //è¾“å…¥ 
 
-#define PCout(n)   BIT_ADDR(GPIOC_ODR_Addr,n)  //Êä³ö 
-#define PCin(n)    BIT_ADDR(GPIOC_IDR_Addr,n)  //ÊäÈë 
+#define PCout(n)   BIT_ADDR(GPIOC_ODR_Addr,n)  //è¾“å‡º 
+#define PCin(n)    BIT_ADDR(GPIOC_IDR_Addr,n)  //è¾“å…¥ 
 
-#define PDout(n)   BIT_ADDR(GPIOD_ODR_Addr,n)  //Êä³ö 
-#define PDin(n)    BIT_ADDR(GPIOD_IDR_Addr,n)  //ÊäÈë 
+#define PDout(n)   BIT_ADDR(GPIOD_ODR_Addr,n)  //è¾“å‡º 
+#define PDin(n)    BIT_ADDR(GPIOD_IDR_Addr,n)  //è¾“å…¥ 
 
-#define PEout(n)   BIT_ADDR(GPIOE_ODR_Addr,n)  //Êä³ö 
-#define PEin(n)    BIT_ADDR(GPIOE_IDR_Addr,n)  //ÊäÈë
+#define PEout(n)   BIT_ADDR(GPIOE_ODR_Addr,n)  //è¾“å‡º 
+#define PEin(n)    BIT_ADDR(GPIOE_IDR_Addr,n)  //è¾“å…¥
 
-#define PFout(n)   BIT_ADDR(GPIOF_ODR_Addr,n)  //Êä³ö 
-#define PFin(n)    BIT_ADDR(GPIOF_IDR_Addr,n)  //ÊäÈë
+#define PFout(n)   BIT_ADDR(GPIOF_ODR_Addr,n)  //è¾“å‡º 
+#define PFin(n)    BIT_ADDR(GPIOF_IDR_Addr,n)  //è¾“å…¥
 
-#define PGout(n)   BIT_ADDR(GPIOG_ODR_Addr,n)  //Êä³ö 
-#define PGin(n)    BIT_ADDR(GPIOG_IDR_Addr,n)  //ÊäÈë
+#define PGout(n)   BIT_ADDR(GPIOG_ODR_Addr,n)  //è¾“å‡º 
+#define PGin(n)    BIT_ADDR(GPIOG_IDR_Addr,n)  //è¾“å…¥
 
 
 #define IS_GPIO_ALL_PERIPH(PERIPH) (((PERIPH) == PTA) || \
@@ -81,7 +81,7 @@ typedef enum
 #define IS_GPIO_BIT_ACTION(ACTION) (((ACTION) == Bit_RESET) || ((ACTION) == Bit_SET))
 
 
-//GPIOÒı½Å
+//GPIOå¼•è„š
 #define GPIO_Pin_0             (uint16_t)(0)
 #define GPIO_Pin_1             (uint16_t)(1)
 #define GPIO_Pin_2             (uint16_t)(2)
@@ -120,29 +120,29 @@ typedef enum
 
 typedef enum
 {
-  GPIO_Mode_IN_FLOATING = 0x04,     //¸¡¿ÕÊäÈë
-  GPIO_Mode_IPD = 0x05,             //ÏÂÀ­ÊäÈë
-  GPIO_Mode_IPU = 0x06,             //ÉÏÀ­ÊäÈë
-  GPIO_Mode_OOD = 0x07,             //¿ªÂ©Êä³ö
-  GPIO_Mode_OPP = 0x08,             //ÍÆÍìÊä³ö
+  GPIO_Mode_IN_FLOATING = 0x04,     //æµ®ç©ºè¾“å…¥
+  GPIO_Mode_IPD = 0x05,             //ä¸‹æ‹‰è¾“å…¥
+  GPIO_Mode_IPU = 0x06,             //ä¸Šæ‹‰è¾“å…¥
+  GPIO_Mode_OOD = 0x07,             //å¼€æ¼è¾“å‡º
+  GPIO_Mode_OPP = 0x08,             //æ¨æŒ½è¾“å‡º
 }GPIO_Mode_TypeDef;
 #define IS_GPIO_MODE(MODE) (((MODE) == GPIO_Mode_IN_FLOATING) || \
                             ((MODE) == GPIO_Mode_IPD)         || \
                             ((MODE) == GPIO_Mode_IPU)         || \
                             ((MODE) == GPIO_Mode_OOD)         || \
                             ((MODE) == GPIO_Mode_OPP))
-//ÖĞ¶ÏÅäÖÃ
+//ä¸­æ–­é…ç½®
 typedef enum
 {
-  GPIO_IT_DISABLE = 0x00,              //½ûÖ¹Íâ²¿ÖĞ¶Ï
-	GPIO_IT_DMA_RISING = 0x01,           //DMAÉÏÉıÑØ´¥·¢
-  GPIO_IT_DMA_FALLING = 0x02,          //DMAÏÂ½µÑØ´¥·¢
-	GPIO_IT_DMA_RASING_FALLING = 0x03,   //DMAÉÏÉı»òÏÂ½µÑØ´¥·¢
-	GPIO_IT_LOW = 0x08,                  //Âß¼­0×´Ì¬´¥·¢
-	GPIO_IT_RISING = 0x09,               //ÉÏÉıÑØ´¥·¢
-	GPIO_IT_FALLING = 0x0A,              //ÏÂ½µÑØ´¥·¢
-	GPIO_IT_RISING_FALLING = 0x0B,       //ÉÏÉı»òÏÂ½µÑØ´¥·¢
-	GPIO_IT_HIGH = 0x0C,                 //Âß¼­1´¥·¢
+  GPIO_IT_DISABLE = 0x00,              //ç¦æ­¢å¤–éƒ¨ä¸­æ–­
+	GPIO_IT_DMA_RISING = 0x01,           //DMAä¸Šå‡æ²¿è§¦å‘
+  GPIO_IT_DMA_FALLING = 0x02,          //DMAä¸‹é™æ²¿è§¦å‘
+	GPIO_IT_DMA_RASING_FALLING = 0x03,   //DMAä¸Šå‡æˆ–ä¸‹é™æ²¿è§¦å‘
+	GPIO_IT_LOW = 0x08,                  //é€»è¾‘0çŠ¶æ€è§¦å‘
+	GPIO_IT_RISING = 0x09,               //ä¸Šå‡æ²¿è§¦å‘
+	GPIO_IT_FALLING = 0x0A,              //ä¸‹é™æ²¿è§¦å‘
+	GPIO_IT_RISING_FALLING = 0x0B,       //ä¸Šå‡æˆ–ä¸‹é™æ²¿è§¦å‘
+	GPIO_IT_HIGH = 0x0C,                 //é€»è¾‘1è§¦å‘
 }GPIO_IT_TypeDef;
 
 #define IS_GPIO_IRQC(TRIGGER)    (((TRIGGER) == GPIO_IT_DISABLE)            || \
@@ -157,14 +157,14 @@ typedef enum
 
 typedef struct
 {
-  uint16_t GPIO_Pin;                //Òı½Å
-	BitAction GPIO_InitState;         //³õÊ¼×´Ì¬
-	GPIO_IT_TypeDef GPIO_IRQMode;     //GPIOÖĞ¶Ï×´Ì¬ÅäÖÃ
-  GPIO_Mode_TypeDef GPIO_Mode;      //GPIOÄ£Ê½ÅäÖÃ
-	GPIO_Type *GPIOx;                 //GPIO¶Ë¿ÚºÅ
+  uint16_t GPIO_Pin;                //å¼•è„š
+	BitAction GPIO_InitState;         //åˆå§‹çŠ¶æ€
+	GPIO_IT_TypeDef GPIO_IRQMode;     //GPIOä¸­æ–­çŠ¶æ€é…ç½®
+  GPIO_Mode_TypeDef GPIO_Mode;      //GPIOæ¨¡å¼é…ç½®
+	GPIO_Type *GPIOx;                 //GPIOç«¯å£å·
 }GPIO_InitTypeDef;
 
-//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯ÊıÁĞ±í
+//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°åˆ—è¡¨
 void GPIO_Init(GPIO_InitTypeDef* GPIO_InitStruct);
 void GPIO_WriteBit(GPIO_Type *GPIOx,uint16_t GPIO_Pin,BitAction BitVal);
 void GPIO_SetBits(GPIO_Type* GPIOx, uint16_t GPIO_Pin);

@@ -1,4 +1,4 @@
-#include "chgui.h"
+ï»¿#include "chgui.h"
 #include "chgui_char.h"
 #include "chgui_touch.h"
 #include <stdlib.h>
@@ -107,7 +107,7 @@ void GUI_TOUCH_Exec(void)
         yMax = xyMinMax[1].Min;
         yMin = xyMinMax[1].Max;
     }
-		//²ÎÊýºÏ·¨ÐÔ¼ì²â
+		//å‚æ•°åˆæ³•æ€§æ£€æµ‹
 		if((gpCHGUI->tops->ctrl_get_touch_x == NULL) || (gpCHGUI->tops->ctrl_get_touch_y == NULL))
 		{
 			return;

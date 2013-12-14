@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    kbi.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËÔ­×ÓºËºËĞÄ°å BSP¹¹¼ş KEYÇı¶¯
+  * @brief   è¶…æ ¸åŸå­æ ¸æ ¸å¿ƒæ¿ BSPæ„ä»¶ KEYé©±åŠ¨
   ******************************************************************************
   */
 
@@ -147,13 +147,13 @@ void KBI_Scan(void)
         keyPress = KBI_GetKeyValue(i);
         switch(GetKeyState(i))
         {
-            case kKBI_StateInit: //°´¼ü³õÊ¼×´Ì¬
+            case kKBI_StateInit: //æŒ‰é”®åˆå§‹çŠ¶æ€
                 if(keyPress == KBI_STATE_DOWN)
 								{
                     SetKeyState(i, kKBI_State1);
 								}
                 break;
-            case kKBI_State1:   //Ïû¶¶ÓëÈ·ÈÏÌ¬
+            case kKBI_State1:   //æ¶ˆæŠ–ä¸ç¡®è®¤æ€
                 if(keyPress == KBI_STATE_DOWN)
                 {
 									  SetKeyTime(i, 0);
@@ -164,7 +164,7 @@ void KBI_Scan(void)
                     SetKeyState(i, kKBI_StateInit);
                 }
                 break; 
-            case kKBI_State2:  // ´ËÊ±°´¼üÊÍ·Å£¬ËµÃ÷ÊÇ²úÉúÒ»´Î¶Ì²Ù×÷£¬»ØËÍS_key 
+            case kKBI_State2:  // æ­¤æ—¶æŒ‰é”®é‡Šæ”¾ï¼Œè¯´æ˜æ˜¯äº§ç”Ÿä¸€æ¬¡çŸ­æ“ä½œï¼Œå›é€S_key 
                 if(keyPress == KBI_STATE_UP)  
                 {
                     SetRetState(i, kKBI_SINGLE);
@@ -175,7 +175,7 @@ void KBI_Scan(void)
 									  SetRetState(i, kKBI_LONG);
                     SetKeyState(i, kKBI_State3);     
 								}
-                else  //¼ÌĞø°´ÏÂ£¬¼ÆÊ±¼Ó10ms£¨10msÎª±¾º¯ÊıÑ­»·Ö´ĞĞ¼ä¸ô£© 
+                else  //ç»§ç»­æŒ‰ä¸‹ï¼Œè®¡æ—¶åŠ 10msï¼ˆ10msä¸ºæœ¬å‡½æ•°å¾ªç¯æ‰§è¡Œé—´éš”ï¼‰ 
                 { 
                     SetKeyTime(i, GetKeyTime(i)+1);
                 }

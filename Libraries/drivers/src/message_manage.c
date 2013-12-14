@@ -1,4 +1,4 @@
-#include "message_manage.h"
+﻿#include "message_manage.h"
 
 #define C_MAX_SIZE          10
 //

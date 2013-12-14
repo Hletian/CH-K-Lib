@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    pdb.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â ¿É±à³ÌÑÓÊ±Ä£¿é Í·ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ å¯ç¼–ç¨‹å»¶æ—¶æ¨¡å— å¤´æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __PDB_H__
@@ -16,7 +16,7 @@
 
 #include "sys.h"
 
-//PDB·ÖÆµÏµÊıÑ¡Ôñ
+//PDBåˆ†é¢‘ç³»æ•°é€‰æ‹©
 #define PDB_PRESC_1       (0)
 #define PDB_PRESC_2       (1)
 #define PDB_PRESC_4       (2)
@@ -32,7 +32,7 @@
 #define PDB_MULT_40       (3)
 
 
-//PDB´¥·¢Ô´Ñ¡Ôñ
+//PDBè§¦å‘æºé€‰æ‹©
 #define TRIGGER_IN0      (0)
 #define TRIGGER_IN1      (1)
 #define TRIGGER_IN2      (2)
@@ -52,16 +52,16 @@
 #define TRIGGER_IN_SOFTWARE_TRIGER   TRIGGER_IN15
 
 
-//PDB¹¤×÷Ä£Ê½Ñ¡Ôñ 
+//PDBå·¥ä½œæ¨¡å¼é€‰æ‹© 
 #define PDB_CONT_MODE_ONESHOT  (0)
 #define PDB_CONT_MODE_CONTINUE (1)
 #define IS_PDB_CONT_MODE(MODE) (((MODE) == PDB_CONT_MODE_ONESHOT) || (MODE) == PDB_CONT_MODE_CONTINUE)
 
-//LoadModeÑ¡Ôñ
-//LDMOD0 µ±LDOK=1ºó MOD IDLY CHnDLYm INTx POyDLY¼Ä´æÆ÷Á¢¼´¼ÓÔØ
-//LDMOD1 LOOK=1 ºÍ PDB¼ÆÊıÆ÷µ½´ïMODºó MOD IDLY CHnDLYm INTx POyDLYÁ¢¼´¼ÓÔØ
-//LDMOD2 µ±LDOK=1 ºÍ Ò»¸öÊäÈëÊ±¼äÉèÖÃÎª1ºó Á¢¼´¼ÓÔØ
-//LDMOD3 µ±LDOK=1 ºÍÒ»¸öÊäÈëÊ±¼ä»ò PDB¼ÆÊıµ¹´øMOD
+//LoadModeé€‰æ‹©
+//LDMOD0 å½“LDOK=1å MOD IDLY CHnDLYm INTx POyDLYå¯„å­˜å™¨ç«‹å³åŠ è½½
+//LDMOD1 LOOK=1 å’Œ PDBè®¡æ•°å™¨åˆ°è¾¾MODå MOD IDLY CHnDLYm INTx POyDLYç«‹å³åŠ è½½
+//LDMOD2 å½“LDOK=1 å’Œ ä¸€ä¸ªè¾“å…¥æ—¶é—´è®¾ç½®ä¸º1å ç«‹å³åŠ è½½
+//LDMOD3 å½“LDOK=1 å’Œä¸€ä¸ªè¾“å…¥æ—¶é—´æˆ– PDBè®¡æ•°å€’å¸¦MOD
 #define LDMOD0       (0)
 #define LDMOD1       (1)
 #define LDMOD2       (2)
@@ -72,7 +72,7 @@
 												    ((MODE) == LDMOD3))
 													 
 													 
-//PDB´¥·¢Á¬½Ó
+//PDBè§¦å‘è¿æ¥
 #define PDB_ADC0_TRIGGER   (uint8_t)(0)
 #define PDB_ADC1_TRIGGER   (uint8_t)(1)
 #define PDB_DAC0_TRIGGER   (uint8_t)(2)
@@ -80,12 +80,12 @@
 #define IS_PDB_TRIGGER_CH(CHL)  ((CHL) == PDB_ADC0_TRIGGER || (CHL) == PDB_ADC1_TRIGGER)
 
 
-//PDBÔ¤´¥·¢Í¨µÀÑ¡Ôñ
+//PDBé¢„è§¦å‘é€šé“é€‰æ‹©
 #define PDB_ADC_PRE_TRIGGER_CH0        (uint8_t)(0)
 #define PDB_ADC_PRE_TRIGGER_CH1        (uint8_t)(1)
 #define IS_PDB_ADC_PRE_TRIGGER_CHL(CHL)  ((CHL) == PDB_ADC_PRE_TRIGGER_CH0 || (CHL) == PDB_ADC_PRE_TRIGGER_CH1)
 
-//PDB³õÊ¼»¯½á¹¹
+//PDBåˆå§‹åŒ–ç»“æ„
 typedef struct
 {
 	uint32_t PDB_TriggerSourceSelect;
@@ -94,29 +94,29 @@ typedef struct
 	uint32_t PDB_Period;
 }PDB_InitTypeDef;
 
-//PDB´¥·¢DAC³õÊ¼»¯½á¹¹ 
+//PDBè§¦å‘DACåˆå§‹åŒ–ç»“æ„ 
 typedef struct
 {
-	uint8_t PDB_ADC_TriggerSelect;    //´¥·¢ADC0»¹ÊÇADC1
+	uint8_t PDB_ADC_TriggerSelect;    //è§¦å‘ADC0è¿˜æ˜¯ADC1
 	uint8_t PDB_ADC_PreTriggerChl;    // 0 - 1
-	FunctionalState PDB_ADC_BBEnable; //ÊÇ·ñÊ¹ÄÜBB
-	FunctionalState PDB_ADC_Enable;   //ÊÇ·ñ¿ªÆô
+	FunctionalState PDB_ADC_BBEnable; //æ˜¯å¦ä½¿èƒ½BB
+	FunctionalState PDB_ADC_Enable;   //æ˜¯å¦å¼€å¯
 }PDB_ADC_PreTriggerInitTypeDef;
 
 
-//ÖĞ¶ÏÔ´¶¨Òå
+//ä¸­æ–­æºå®šä¹‰
 #define PDB_IT_ERR                (uint16_t)(0)
 #define PDB_IT_IF                 (uint16_t)(1)
 #define IS_PDB_IT(IT)  (((IT) == PDB_IT_ERR) || ((IT) == PDB_IT_IF))
 
-//DMAÃüÁî
+//DMAå‘½ä»¤
 #define PDB_DMAReq_IF             ((uint16_t)0)
 #define IS_PDB_DMAREQ(REQ)   ((REQ) == PDB_DMAReq_IF)
 
-//²ÎÊı¼ì²éÆ÷														
+//å‚æ•°æ£€æŸ¥å™¨														
 #define IS_PDB_ALL_PERIPH(PERIPH) ((PERIPH) == PDB0)
 
-//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
+//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
 void PDB_Init(PDB_InitTypeDef * PDB_InitStruct);
 void PDB_ADC_TriggerInit(PDB_ADC_PreTriggerInitTypeDef * PDB_ADC_InitStruct);
 void PDB_ITConfig(PDB_Type* PDBx, uint16_t PDB_IT, FunctionalState NewState);

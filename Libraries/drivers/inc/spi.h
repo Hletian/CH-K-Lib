@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    spi.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â SPIÄ£¿éÇı¶¯
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ SPIæ¨¡å—é©±åŠ¨
   ******************************************************************************
   */
 #ifndef __SPI_H_
@@ -18,17 +18,17 @@
 
 typedef struct
 {
-	uint32_t SPIxDataMap;               //Êı¾İ¶Ë¿Ú¶¨Òå
-	uint32_t SPIxPCSMap;                //Æ¬Ñ¡¶Ë¿Ú¶¨Òå
-	uint8_t SPI_DataSize;               //Êı¾İÎ»¶¨Òå
-	uint8_t SPI_CPOL;                   //SCK ¼«ĞÔ¶¨Òå
-	uint8_t SPI_Mode;                   //Ö÷´ÓÄ£Ê½¶¨Òå
-	uint8_t SPI_CPHA;                   //Ê±ÖÓÏàÎ»¶¨Òå
-  uint16_t SPI_BaudRatePrescaler;     //²¨ÌØÂÊ·ÖÆµÊı
-	uint16_t SPI_FirstBit;              //MSB »¹ÊÇ LSB
+	uint32_t SPIxDataMap;               //æ•°æ®ç«¯å£å®šä¹‰
+	uint32_t SPIxPCSMap;                //ç‰‡é€‰ç«¯å£å®šä¹‰
+	uint8_t SPI_DataSize;               //æ•°æ®ä½å®šä¹‰
+	uint8_t SPI_CPOL;                   //SCK ææ€§å®šä¹‰
+	uint8_t SPI_Mode;                   //ä¸»ä»æ¨¡å¼å®šä¹‰
+	uint8_t SPI_CPHA;                   //æ—¶é’Ÿç›¸ä½å®šä¹‰
+  uint16_t SPI_BaudRatePrescaler;     //æ³¢ç‰¹ç‡åˆ†é¢‘æ•°
+	uint16_t SPI_FirstBit;              //MSB è¿˜æ˜¯ LSB
 }SPI_InitTypeDef;
 
-//FTM_PWMÓ³Éä
+//FTM_PWMæ˜ å°„
 typedef struct
 {
     uint32_t SPI_Index:2;
@@ -38,7 +38,7 @@ typedef struct
 		uint32_t SPI_SOUT_Pin_Index:6;
 	  uint32_t SPI_SIN_Pin_Index:6;
 }SPI_DataMapTypeDef;
-//SPIÊı¾İ¶Ë¿ÚÎ»Í¼¶¨Òå
+//SPIæ•°æ®ç«¯å£ä½å›¾å®šä¹‰
 #define SPI0_SCK_PA15_SOUT_PA16_SIN_PA17   (0x01140f08U)
 #define SPI0_SCK_PC5_SOUT_PC6_SIN_PC7      (0x00718548U)
 #define SPI0_SCK_PD1_SOUT_PD2_SIN_PD3      (0x00308168U)
@@ -52,7 +52,7 @@ typedef struct
 																	((CH) == SPI1_SCK_PB11_SOUT_PB16_SIN_PB17)         || \
 																	((CH) == SPI2_SCK_PB21_SOUT_PB22_SIN_PB23))		
 
-//SPI Æ¬Ñ¡Ó³Éä
+//SPI ç‰‡é€‰æ˜ å°„
 typedef struct
 {
     uint32_t SPI_Index:2;
@@ -61,7 +61,7 @@ typedef struct
     uint32_t SPI_PCS_Pin_Index:6;
     uint32_t SPI_PCS_CH_Index:6;
 }SPI_CSMapTypeDef;
-//SPIÆ¬Ñ¡ĞÅºÅ¶¨Òå
+//SPIç‰‡é€‰ä¿¡å·å®šä¹‰
 #define SPI0_PCS0_PA14   (0x00000e08U)
 #define SPI0_PCS1_PC3    (0x00000348U)
 #define SPI0_PCS2_PC2    (0x00000248U)
@@ -84,7 +84,7 @@ typedef struct
 																	((CH) == SPI2_PCS0_PB20))		
 
 
-//SPI ·ÖÆµÑ¡Ôñ
+//SPI åˆ†é¢‘é€‰æ‹©
 #define SPI_BaudRatePrescaler_2         ((uint16_t)0x0000)
 #define SPI_BaudRatePrescaler_4         ((uint16_t)0x0001)
 #define SPI_BaudRatePrescaler_6         ((uint16_t)0x0002)
@@ -111,28 +111,28 @@ typedef struct
 																	((VALUE) == SPI_BaudRatePrescaler_1024)      || \
 																	((VALUE) == SPI_BaudRatePrescaler_2048))		
 
-//Ö÷´ÓÄ£Ê½
+//ä¸»ä»æ¨¡å¼
 #define SPI_Mode_Master                 ((uint16_t)0x0001)
 #define SPI_Mode_Slave                  ((uint16_t)0x0002)
 #define IS_SPI_MODE(MODE)  (((MODE) == SPI_Mode_Master) || ((MODE) == SPI_Mode_Slave))
-//CPHA¼«ĞÔ
+//CPHAææ€§
 #define SPI_CPHA_1Edge                  ((uint16_t)0x0000)
 #define SPI_CPHA_2Edge                  ((uint16_t)0x0001)
 #define IS_SPI_CPHA(MODE)  (((MODE) == SPI_CPHA_1Edge) || ((MODE) == SPI_CPHA_2Edge))
-//CPOL¼«ĞÔ
+//CPOLææ€§
 #define SPI_CPOL_Low                    ((uint16_t)0x0000)
 #define SPI_CPOL_High                   ((uint16_t)0x0002)
 #define IS_SPI_CPOL(MODE)  (((MODE) == SPI_CPOL_Low) || ((MODE) == SPI_CPOL_High))
-//·¢ËÍºó Æ¬Ñ¡ÊÇ·ñÀ­¸ß
+//å‘é€å ç‰‡é€‰æ˜¯å¦æ‹‰é«˜
 #define SPI_PCS_Asserted                ((uint16_t)0x0000)
 #define SPI_PCS_Inactive                ((uint16_t)0x0001)
 #define IS_SPI_PCS_STATE(MODE)  (((MODE) == SPI_PCS_Asserted) || ((MODE) == SPI_PCS_Inactive))
-//MSB»¹ÊÇLSB
+//MSBè¿˜æ˜¯LSB
 #define SPI_FirstBit_MSB                ((uint16_t)0x0000)
 #define SPI_FirstBit_LSB                ((uint16_t)0x0001)
 #define IS_SPI_FIRSTBIT(MODE)  (((MODE) == SPI_FirstBit_MSB) || ((MODE) == SPI_FirstBit_LSB))
 
-//ÖĞ¶Ï¶¨Òå
+//ä¸­æ–­å®šä¹‰
 #define SPI_IT_EOQF        (uint16_t)(0)
 #define SPI_IT_TFFF        (uint16_t)(1)
 #define SPI_IT_TCF         (uint16_t)(2)
@@ -145,18 +145,18 @@ typedef struct
                         ((IT) == SPI_IT_RFDF)  || \
                         ((IT) == SPI_IT_RFDF)  || \
                         ((IT) == SPI_IT_RFOF))
-//SPIÄ£¿éºê¶¨Òå 
+//SPIæ¨¡å—å®å®šä¹‰ 
 #define IS_SPI_ALL_PERIPH(PERIPH)  (((PERIPH) == SPI0) || \
                                     ((PERIPH) == SPI1) || \
                                     ((PERIPH) == SPI2))
 
 
-//DMAÃüÁî
+//DMAå‘½ä»¤
 #define SPI_DMAReq_TFFF                      ((uint16_t)0)
 #define SPI_DMAReq_RFDF                      ((uint16_t)1)
 #define SPI_DMAREQ(REQ)  (((REQ) == SPI_DMAReq_TFFF) || ((REQ) == SPI_DMAReq_RFDF))
 
-//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯ÊıÁĞ±í
+//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°åˆ—è¡¨
 void SPI_Init(SPI_InitTypeDef* SPI_InitStruct);
 uint16_t SPI_ReadWriteByte(uint32_t SPICSMap,uint16_t Data,uint16_t PCS_State);
 void SPI_StructInit(SPI_InitTypeDef* SPI_InitStruct);

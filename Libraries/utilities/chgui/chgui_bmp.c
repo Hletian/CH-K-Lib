@@ -1,4 +1,4 @@
-#include "chgui.h"
+ï»¿#include "chgui.h"
 #include "chgui_bmp.h"
 #include "string.h"
 
@@ -12,12 +12,12 @@ void GUI_BMP_DrawEx(uint16_t xPos, uint16_t yPos, GUI_GetDataCallbackType fpAppG
     uint16_t x ,y,color;	 
     uint16_t image_width_in_pixel;	
     BITMAPINFO BitMapInfo1;
-    uint32_t countpix=0;//¼ÇÂ¼ÏñËØ 	 
-    //x,yµÄÊµ¼Ê×ø±ê	 
-    uint8_t *databuf;    		//Êı¾İ¶ÁÈ¡´æ·ÅµØÖ·
+    uint32_t countpix=0;//è®°å½•åƒç´  	 
+    //x,yçš„å®é™…åæ ‡	 
+    uint8_t *databuf;    		//æ•°æ®è¯»å–å­˜æ”¾åœ°å€
     uint32_t TotalDataSizeInBytes;
-    uint8_t biCompression=0;		//¼ÇÂ¼Ñ¹Ëõ·½Ê½
-    uint32_t rowlen;	  		 	//Ë®Æ½·½Ïò×Ö½ÚÊı  
+    uint8_t biCompression=0;		//è®°å½•å‹ç¼©æ–¹å¼
+    uint32_t rowlen;	  		 	//æ°´å¹³æ–¹å‘å­—èŠ‚æ•°  
     uint32_t offx=0;
 	  //Get Header File Info 
     while(offx < sizeof(BITMAPINFO))
@@ -26,19 +26,19 @@ void GUI_BMP_DrawEx(uint16_t xPos, uint16_t yPos, GUI_GetDataCallbackType fpAppG
 			  memcpy(((&BitMapInfo1) + offx), databuf, br);
         offx += br;
     }
-		offx = BitMapInfo1.bmfHeader.bfOffBits;        	//Êı¾İÆ«ÒÆ,µÃµ½Êı¾İ¶ÎµÄ¿ªÊ¼µØÖ·
-		color_byte = BitMapInfo1.bmiHeader.biBitCount/8;	//²ÊÉ«Î» 16/24/32  
-		biCompression = BitMapInfo1.bmiHeader.biCompression;//Ñ¹Ëõ·½Ê½
+		offx = BitMapInfo1.bmfHeader.bfOffBits;        	//æ•°æ®åç§»,å¾—åˆ°æ•°æ®æ®µçš„å¼€å§‹åœ°å€
+		color_byte = BitMapInfo1.bmiHeader.biBitCount/8;	//å½©è‰²ä½ 16/24/32  
+		biCompression = BitMapInfo1.bmiHeader.biCompression;//å‹ç¼©æ–¹å¼
     TotalDataSizeInBytes = BitMapInfo1.bmiHeader.biSizeImage ;
-		y = BitMapInfo1.bmiHeader.biHeight;	//µÃµ½Í¼Æ¬¸ß¶È
+		y = BitMapInfo1.bmiHeader.biHeight;	//å¾—åˆ°å›¾ç‰‡é«˜åº¦
 		image_width_in_pixel = BitMapInfo1.bmiHeader.biWidth;
-		//Ë®Æ½ÏñËØ±ØĞëÊÇ4µÄ±¶Êı!!
+		//æ°´å¹³åƒç´ å¿…é¡»æ˜¯4çš„å€æ•°!!
 
 		if((image_width_in_pixel * color_byte)%4)rowlen=((image_width_in_pixel*color_byte)/4+1)*4;
 		else rowlen = image_width_in_pixel * color_byte;
 
-		//¿ªÊ¼½âÂëBMP   
-		color = 0;//ÑÕÉ«Çå¿Õ	 													 
+		//å¼€å§‹è§£ç BMP   
+		color = 0;//é¢œè‰²æ¸…ç©º	 													 
 		x = 0;
 		rgb = 0;      
     while(1)
@@ -48,7 +48,7 @@ void GUI_BMP_DrawEx(uint16_t xPos, uint16_t yPos, GUI_GetDataCallbackType fpAppG
         count = 0;
         while(count < br)
         {
-            if(color_byte == 3)   //24Î»ÑÕÉ«Í¼
+            if(color_byte == 3)   //24ä½é¢œè‰²å›¾
             {
                 switch (rgb) 
                 {
@@ -63,7 +63,7 @@ void GUI_BMP_DrawEx(uint16_t xPos, uint16_t yPos, GUI_GetDataCallbackType fpAppG
                         break;			
                 }   
             }
-						else if(color_byte == 2)  //16Î»ÑÕÉ«Í¼
+						else if(color_byte == 2)  //16ä½é¢œè‰²å›¾
             {
                 switch(rgb)
                 {
@@ -90,7 +90,7 @@ void GUI_BMP_DrawEx(uint16_t xPos, uint16_t yPos, GUI_GetDataCallbackType fpAppG
                         break ;	 
                 }		     
             }
-						else if(color_byte == 4)//32Î»ÑÕÉ«Í¼
+						else if(color_byte == 4)//32ä½é¢œè‰²å›¾
             {
                 switch (rgb)
                 {
@@ -104,24 +104,24 @@ void GUI_BMP_DrawEx(uint16_t xPos, uint16_t yPos, GUI_GetDataCallbackType fpAppG
                         color += ((uint16_t)databuf[count]<<8)&0XF800;//R	  
                         break ;			
                     case 3 :
-                        //alphabend=bmpbuf[count];//²»¶ÁÈ¡  ALPHAÍ¨µÀ
+                        //alphabend=bmpbuf[count];//ä¸è¯»å–  ALPHAé€šé“
                         break ;  		  	 
                 }	
             }
-						else if(color_byte == 1)//8Î»É«,ÔİÊ±²»Ö§³Ö,ĞèÒªÓÃµ½ÑÕÉ«±í.
+						else if(color_byte == 1)//8ä½è‰²,æš‚æ—¶ä¸æ”¯æŒ,éœ€è¦ç”¨åˆ°é¢œè‰²è¡¨.
             {
             } 
             rgb++;	  
             count++ ;		  
-            if(rgb == color_byte) //Ë®Æ½·½Ïò¶ÁÈ¡µ½1ÏñËØÊıÊı¾İºóÏÔÊ¾
+            if(rgb == color_byte) //æ°´å¹³æ–¹å‘è¯»å–åˆ°1åƒç´ æ•°æ•°æ®åæ˜¾ç¤º
             {
                 gpCHGUI->ops->ctrl_point(x + xPos, y + yPos, color);								    
-                x++; //xÖáÔö¼ÓÒ»¸öÏñËØ 
+                x++; //xè½´å¢åŠ ä¸€ä¸ªåƒç´  
                 color = 0x00; 
                 rgb = 0;  		  
             }
-            countpix++;//ÏñËØÀÛ¼Ó
-            if(countpix >= rowlen)//Ë®Æ½·½ÏòÏñËØÖµµ½ÁË.»»ĞĞ
+            countpix++;//åƒç´ ç´¯åŠ 
+            if(countpix >= rowlen)//æ°´å¹³æ–¹å‘åƒç´ å€¼åˆ°äº†.æ¢è¡Œ
             {		 
                 y--; 
                 if(y == 0)

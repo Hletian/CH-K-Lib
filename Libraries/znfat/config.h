@@ -1,82 +1,82 @@
-#ifndef _CONFIG_H_
+﻿#ifndef _CONFIG_H_
 #define _CONFIG_H_
 
 /*============================================================================================
-  ���ļ����ڶ�znFAT�����������
+  此文件用于对znFAT进行相关配置
 =============================================================================================*/
 
-//====================������znFAT�Ĺ��ܺ����ü���====Ҫʹ�õ��ĸ����ܺ������뽫��Ӧ���ע��ȥ��=======================================
+//====================以下是znFAT的功能函数裁减宏====要使用到哪个功能函数，请将相应宏的注释去掉=======================================
 
-#define ZNFAT_MAKE_FS   //�ļ�ϵͳ��ʽ��  �˹����漰ROM�������͵Ķ�д������ʵ��ROM���ݵĶ�д������֤���ȶ���ȷ
-#define ZNFAT_FLUSH_FS  //ˢ���ļ�ϵͳ  ���û��ʹ��RT_UPDATE_FSINFO���������е��ļ��������֮����Ҫ���ô˺���
+#define ZNFAT_MAKE_FS   //文件系统格式化  此功能涉及ROM数据类型的读写，请先实现ROM数据的读写，并保证其稳定正确
+#define ZNFAT_FLUSH_FS  //刷新文件系统  如果没有使用RT_UPDATE_FSINFO，则在所有的文件操作完成之后，需要调用此函数
 
-#define ZNFAT_OPEN_FILE  //���ļ�
-#define ZNFAT_CLOSE_FILE //�ر��ļ� ����ʹ��RT_UPDATE_FILESIZE��������ļ�����д��ɾ���Ȳ���֮������ô˺��������򲻵���Ҳû��ϵ
-#define ZNFAT_READDATA   //�ļ����ݶ�ȡ 
-//#define ZNFAT_READDATAX  //�ļ����ݶ�ȡ+�ض��� �˺����Ὣ��ȡ��ÿ���ֽ��͵���������������������ʹ�����ṩ���뿴��Data_Redirect
+#define ZNFAT_OPEN_FILE  //打开文件
+#define ZNFAT_CLOSE_FILE //关闭文件 若无使用RT_UPDATE_FILESIZE，则进行文件数据写入删除等操作之后，需调用此函数，否则不调用也没关系
+#define ZNFAT_READDATA   //文件数据读取 
+//#define ZNFAT_READDATAX  //文件数据读取+重定向 此函数会将读取的每个字节送到处理函数，处理函数由使用者提供，请看宏Data_Redirect
 
-#define ZNFAT_CREATE_FILE //�����ļ�
-#define ZNFAT_DELETE_FILE //ɾ���ļ�
-#define ZNFAT_WRITEDATA //д�����ݣ�д�����ݾ��Ǵ��ļ���ĩβ׷������
+#define ZNFAT_CREATE_FILE //创建文件
+#define ZNFAT_DELETE_FILE //删除文件
+#define ZNFAT_WRITEDATA //写入数据，写入数据均是从文件的末尾追加数据
 
-#define ZNFAT_CREATE_DIR //����Ŀ¼������һ���Դ����༶���Ŀ¼
-#define ZNFAT_DELETE_DIR //ɾ��Ŀ¼��Ŀ¼������Ŀ¼���ļ����Լ���״��Ŀ¼�ṹ��Ҳ��һ��ȫ��ɾ��
+#define ZNFAT_CREATE_DIR //创建目录，可以一次性创建多级深层目录
+#define ZNFAT_DELETE_DIR //删除目录，目录下有子目录和文件，以及树状子目录结构，也可一并全部删除
 
-#define ZNFAT_DUMP_DATA //�ļ����ݽضϣ����ļ���ĳ��λ��֮�������ȫ��ɾ��
+#define ZNFAT_DUMP_DATA //文件数据截断，从文件的某个位置之后的数据全部删除
 
-#define ZNFAT_LARGE_MODE //����znFAT�Ĵ�ģʽ���ܣ�������������ݴ洢������  ����"���ʽ���ļ�д��"
+#define ZNFAT_LARGE_MODE //开启znFAT的大模式功能，以满足高速数据存储的需求  或是"框架式的文件写入"
 
-#define ZNFAT_SEEK       //�ļ����ݶ�λ��ʹ����һ���ò�����znFAT�Ѿ�������װ�����ܺ�����
+#define ZNFAT_SEEK       //文件数据定位，使用者一般用不到，znFAT已经把它封装到功能函数里
 
-//#define USE_LFN //����znFAT�ĳ��ļ������ܣ��ڳ��ļ�������Ҫʹ�õ��϶��RAM��Դ����֧�ֵ���ļ������ȿ���MAX_LFN_LEN������
-#define USE_OEM_CHAR //�Ƿ��ʹ��OEM�ַ������Ƿ���ڳ����г��������ַ�
-#define MAX_LFN_LEN (200) //���һ���ļ��г����������Ӧ���ļ���Ϣ�����е�have_lfn=1��longname�м�¼����
-                        //������unicode�루�����ֽڱ�ʾһ���ַ��������ﶨ��������������unicode�볤
-                        //MAX_LFN_LEN��ֵ�����ʵ��Ŀ��ϵͳ��RAM��Դ�����壬��ֹRAM��� 
+//#define USE_LFN //开启znFAT的长文件名功能，在长文件名下需要使用到较多的RAM资源，可支持的最长文件名长度可由MAX_LFN_LEN来定义
+#define USE_OEM_CHAR //是否会使用OEM字符，即是否会在长名中出现中文字符
+#define MAX_LFN_LEN (200) //如果一个文件有长名，则其对应的文件信息集合中的have_lfn=1，longname中记录的是
+                        //长名的unicode码（两个字节表示一个字符），这里定义的最大长名长度是unicode码长
+                        //MAX_LFN_LEN的值请根据实际目标系统的RAM资源来定义，防止RAM溢出 
 
 //===================================================================================================================================
 
-//#define IS_PIC //���Ŀ��ƽ̨��CPUΪPIC����znFAT����������ר�Ŵ�������ΪPIC�в���ֱ��ʹ�ô�����
+//#define IS_PIC //如果目标平台的CPU为PIC，则znFAT针对其进行了专门处理，因为PIC中不能直接使用大数组
 
-#define USE_MULTISEC_R //ʹ�����Ƿ��ṩ����������������
-                        //�����������������ȵ����ĵ��������ٶ�Ҫ�죬������ṩ
-                        //��������������������znFAT�����ݲ������ܽ��Ƚϵ�
-                        //����˺걻ע�ͣ��������Ĭ��ʹ�õ���������ʽ��ִ��Ч��
-                        //���ܴ���ۿ�
+#define USE_MULTISEC_R //使用者是否提供多扇区连续读驱动
+                        //多扇区连续读驱动比单纯的单扇区读速度要快，如果不提供
+                        //多扇区连续读驱动，则znFAT的数据操作性能将比较低
+                        //如果此宏被注释，则程序中默认使用单扇区读方式，执行效率
+                        //可能大打折扣
 
-#define USE_MULTISEC_W  //ʹ�����Ƿ��ṩ����������д����
-                        //����������д�����ȵ����ĵ�����д�ٶ�Ҫ�죬������ṩ
-                        //����������д��������znFAT�����ݲ������ܽ��Ƚϵ�
-                        //����˺걻ע�ͣ�������е�����д��ʽ��ִ��Ч�ʿ��ܴ���ۿ�\
+#define USE_MULTISEC_W  //使用者是否提供多扇区连续写驱动
+                        //多扇区连续写驱动比单纯的单扇区写速度要快，如果不提供
+                        //多扇区连续写驱动，则znFAT的数据操作性能将比较低
+                        //如果此宏被注释，则程序中单扇区写方式，执行效率可能大打折扣\
 
-//#define USE_MULTISEC_CLEAR //ʹ����Ҫ�ṩ������������0����
-                           //������������0����Ӧ���ڸ�ʽ���У���ʹ��ʽ���ٶ�����
-                           //����˺걻ע�ͣ��������Ĭ��ʹ�õ������������0�ķ�ʽ
-                           //ִ��Ч�ʿ��ܻ����ۿ�
+//#define USE_MULTISEC_CLEAR //使用者要提供多扇区连续清0函数
+                           //多扇区连续清0，将应用于格式化中，会使格式化速度提升
+                           //如果此宏被注释，则程序中默认使用单个扇区逐个清0的方式
+                           //执行效率可能会大打折扣
 
-//#define RT_UPDATE_FSINFO  //ʵʱ����FSINFO��������Ҫ�Ǹ���ʣ���������һ�մزο�ֵ����û�����壬��Ϊ�������Ͳ���֤һ����ȷ
-                             //�ܶ����ϵͳ�л�ȡ���õĿմأ�����������Ϊ���ݣ�����ֱ��ɨ������FAT����ʣ������ǿ���ʹ�õģ�
-                             //���ڼ������ʣ���������������ֵΪ0����˵��������������znFAT�ж��������ά��
-//#define RT_UPDATE_FILESIZE  //ʵʱ�����ļ���Ϣ
-                              //�����������ڡ�ʵ�ø��¡��ĺ������ע�͵��������ļ�����������һ��Ҫ����znFAT_Close_File������
-							  //���������Ϣ�����ᱻ���£�������Ȼ���ļ�д�������ݣ���������Ȼ�����������⡣
+//#define RT_UPDATE_FSINFO  //实时更新FSINFO扇区，主要是更新剩余簇数，下一空簇参考值更新没有意义，因为它本身就不保证一定正确
+                             //很多操作系统中获取可用的空簇，并不以它作为依据，而是直接扫描整个FAT表。剩余簇数是可以使用的，
+                             //用于计算磁盘剩余容量，如果它的值为0，则说明磁盘已满，在znFAT中对其进行了维护
+//#define RT_UPDATE_FILESIZE  //实时更新文件信息
+                              //以下两个用于“实用更新”的宏如果被注释掉，则在文件操作结束后，一定要调用znFAT_Close_File，否则
+							  //磁盘相关信息将不会被更新，导致虽然向文件写入了数据，但我们仍然看不到等问题。
 
 //=================================================================================================================================
 
-//CCCB��ѹ���������壬��znFAT����ʹ�ô��������㷨�������Լ�����ṩ����д����ٶ�
-//#define RT_UPDATE_CLUSTER_CHAIN //�Ƿ�ʵʱ����FAT��������ʵʱ���£���ʹ��CCCB�������壬���Լӿ�����д���ٶ�
+//CCCB，压缩簇链缓冲，是znFAT中所使用簇链缓冲算法，它可以极大的提供数据写入的速度
+//#define RT_UPDATE_CLUSTER_CHAIN //是否实时更新FAT簇链，不实时更新，则使用CCCB簇链缓冲，可以加快数据写入速度
 
-//#define USE_ALONE_CCCB //ѡ���Ƿ�ʹ�ö����������壬��RAM��Դ�Ƚϳ�ԣ������£����ֹ�����ʽ�½���ÿ���ļ����ٳ�һ�������Ĵ�������
-                       //��֮��Ե��ǹ����������壨shared CCCB��������ļ�ͬʱ����һ���������壬���漰�����������������Ч�ʽ�alone CCCB�͡�
-                       //��Ƶ������Զ���ļ�����С������д��ʱ�������������彫�𲻵�ʲô����
-#define CCCB_LEN (8)   //��������ĳ��ȣ�����Ϊż�����Ҳ�С��4
+//#define USE_ALONE_CCCB //选择是否使用独立簇链缓冲，在RAM资源比较充裕的情况下，这种工作方式下将给每个文件开辟出一个独立的簇链缓冲
+                       //与之相对的是共享簇链缓冲（shared CCCB），多个文件同时共享一个簇链缓冲，会涉及到簇链缓冲的争抢，效率较alone CCCB低。
+                       //在频繁交替对多个文件进行小数据量写入时，共享簇链缓冲将起不到什么作用
+#define CCCB_LEN (8)   //簇链缓冲的长度，必须为偶数，且不小于4
 
 //===============================================
-//EXB����������������znFAT������ڲ������������ݵ�ƴ�Ӵ�����ר�û����������Խϴ�̶��ϸĽ�������ƴ�ӵ��µ�Ч�ʵ���
+//EXB，交换缓冲区，是znFAT中针对于不足整扇区数据的拼接处理的专用缓冲区，可以较大程度上改进因数据拼接导致的效率低下
 //#define USE_EXCHANGE_BUFFER
-//#define USE_ALONE_EXB //ÿ���ļ������������Ľ���������������ʹ�ù�������������
+//#define USE_ALONE_EXB //每个文件都有它单独的交换缓冲区，否则使用共享交换缓冲区
 //===============================================
 
-//#define Data_Redirect UART_Send_Byte //�����ض����������� 
+//#define Data_Redirect UART_Send_Byte //数据重定向函数名定义 
 
 #endif

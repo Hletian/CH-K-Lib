@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    enet.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â ÒÔÌ«Íø Çı¶¯ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ä»¥å¤ªç½‘ é©±åŠ¨æ–‡ä»¶
   ******************************************************************************
   */
 #include "enet.h"
@@ -13,34 +13,34 @@
 #include "uart.h"
 #endif
 
-//¶¨ÒåÒÔÌ«ÍøDMA»º³åÇø
+//å®šä¹‰ä»¥å¤ªç½‘DMAç¼“å†²åŒº
 static  uint8_t xENETTxDescriptors_unaligned[ ( 1 * sizeof( NBUF ) ) + 16 ];
 static  uint8_t pxENETRxDescriptors_unaligned[ ( CFG_NUM_ENET_RX_BUFFERS * sizeof( NBUF ) ) + 16 ];
 static NBUF *pxENETTxDescriptor;
 static NBUF *pxENETRxDescriptors;
 
-//ÒÔÌ«Íø½ÓÊÕ»º³åÇø
+//ä»¥å¤ªç½‘æ¥æ”¶ç¼“å†²åŒº
 static uint8_t ucENETRxBuffers[ ( CFG_NUM_ENET_RX_BUFFERS * CFG_ENET_BUFFER_SIZE ) + 16 ];
 static uint32_t uxNextRxBuffer = 0;
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºÒÔÌ«Íø»º³åÇø³õÊ¼»¯
- ĞÎ²Î£º0
- ·µ»Ø£º0
- Ïê½â£ºÒÔÌ«ÍøÄ£¿éÍ¨¹ı »º³åÇø ÃèÊö·û(ÀàËÆUSB) À´¹ÜÀíÒÔÌ«Íø
+ åŠŸèƒ½ï¼šä»¥å¤ªç½‘ç¼“å†²åŒºåˆå§‹åŒ–
+ å½¢å‚ï¼š0
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼šä»¥å¤ªç½‘æ¨¡å—é€šè¿‡ ç¼“å†²åŒº æè¿°ç¬¦(ç±»ä¼¼USB) æ¥ç®¡ç†ä»¥å¤ªç½‘
 ************************************************************************************************/
 static void ENET_BDInit(void)
 {
   unsigned long ux;
 	unsigned char *pcBufPointer;
-	//Ñ°ÕÒ16×Ö½Ú¶ÔÆë¿Õ¼ä
+	//å¯»æ‰¾16å­—èŠ‚å¯¹é½ç©ºé—´
 	pcBufPointer = &( xENETTxDescriptors_unaligned[ 0 ] );
 	while( ( ( uint32_t ) pcBufPointer & 0x0fUL ) != 0 )
 	{
 		pcBufPointer++;
 	}
 	pxENETTxDescriptor = ( NBUF * ) pcBufPointer;	
-	//Ñ°ÕÒ16×Ö½Ú¶ÔÆë¿Õ¼ä
+	//å¯»æ‰¾16å­—èŠ‚å¯¹é½ç©ºé—´
 	pcBufPointer = &( pxENETRxDescriptors_unaligned[ 0 ] );
 	while( ( ( uint32_t ) pcBufPointer & 0x0fUL ) != 0 )
 	{
@@ -51,13 +51,13 @@ static void ENET_BDInit(void)
 	pxENETTxDescriptor->length = 0;
 	pxENETTxDescriptor->status = 0;
 	pxENETTxDescriptor->ebd_status = TX_BD_IINS | TX_BD_PINS;
-	//Ñ°ÕÒ16×Ö½Ú¶ÔÆë¿Õ¼ä
+	//å¯»æ‰¾16å­—èŠ‚å¯¹é½ç©ºé—´
 	pcBufPointer = &( ucENETRxBuffers[ 0 ] );
 	while((( uint32_t ) pcBufPointer & 0x0fUL ) != 0 )
 	{
 		pcBufPointer++;
 	}
-	//³õÊ¼»¯½ÓÊÕÃèÊö·û
+	//åˆå§‹åŒ–æ¥æ”¶æè¿°ç¬¦
 	for( ux = 0; ux < CFG_NUM_ENET_RX_BUFFERS; ux++ )
 	{
 	    pxENETRxDescriptors[ ux ].status = RX_BD_E;
@@ -67,17 +67,17 @@ static void ENET_BDInit(void)
 	    pxENETRxDescriptors[ ux ].bdu = 0x00000000;
 	    pxENETRxDescriptors[ ux ].ebd_status = RX_BD_INT;
 	}
-	//×îºóÒ»¸öÃèÊö·ûÉèÖÃÎªWarp
+	//æœ€åä¸€ä¸ªæè¿°ç¬¦è®¾ç½®ä¸ºWarp
 	pxENETRxDescriptors[ CFG_NUM_ENET_RX_BUFFERS - 1 ].status |= RX_BD_W;
-	//´Ó0ÃèÊö·û¿ªÊ¼
+	//ä»0æè¿°ç¬¦å¼€å§‹
 	uxNextRxBuffer = 0;
 	
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º¼ÆËãMACµØÖ·
- ĞÎ²Î£º0
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šè®¡ç®—MACåœ°å€
+ å½¢å‚ï¼š0
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint8_t ENET_HashAddress(const uint8_t* addr)
 {
@@ -103,19 +103,19 @@ uint8_t ENET_HashAddress(const uint8_t* addr)
   return (uint8_t)(crc >> 26);
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºÉèÖÃMACµØÖ·
- ĞÎ²Î£º0
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šè®¾ç½®MACåœ°å€
+ å½¢å‚ï¼š0
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void ENET_SetAddress(const uint8_t *pa)
 {
   uint8_t crc;
-  //ÉèÖÃÎïÀíµØÖ·
+  //è®¾ç½®ç‰©ç†åœ°å€
   ENET->PALR = (uint32_t)((pa[0]<<24) | (pa[1]<<16) | (pa[2]<<8) | pa[3]);
   ENET->PAUR = (uint32_t)((pa[4]<<24) | (pa[5]<<16));
   
-  //¸ù¾İÎïÀíµØÖ·¼ÆËã²¢ÉèÖÃ¶ÀÁ¢µØÖ·¹şÏ£¼Ä´æÆ÷µÄÖµ
+  //æ ¹æ®ç‰©ç†åœ°å€è®¡ç®—å¹¶è®¾ç½®ç‹¬ç«‹åœ°å€å“ˆå¸Œå¯„å­˜å™¨çš„å€¼
   crc = ENET_HashAddress(pa);
   if(crc >= 32)
     ENET->IAUR |= (uint32_t)(1 << (crc - 32));
@@ -123,46 +123,46 @@ void ENET_SetAddress(const uint8_t *pa)
     ENET->IALR |= (uint32_t)(1 << crc);
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º³õÊ¼»¯ÒÔÌ«ÍøÄ£¿é
- ĞÎ²Î£º0
- ·µ»Ø£º0³É¹¦ 1Ê§°Ü
- Ïê½â£º0
+ åŠŸèƒ½ï¼šåˆå§‹åŒ–ä»¥å¤ªç½‘æ¨¡å—
+ å½¢å‚ï¼š0
+ è¿”å›ï¼š0æˆåŠŸ 1å¤±è´¥
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
 {
 	uint16_t usData;
 	uint16_t timeout = 0;
-	//³õÊ¼»¯½á¹¹Ìå
+	//åˆå§‹åŒ–ç»“æ„ä½“
 	//enetdev.recflag = 0;
 	//enetdev.linkstate = LINK_STATE_OFF; 
-  //Ê¹ÄÜENETÊ±ÖÓ
+  //ä½¿èƒ½ENETæ—¶é’Ÿ
   SIM->SCGC2 |= SIM_SCGC2_ENET_MASK;
-  //ÔÊĞí²¢·¢·ÃÎÊMPU¿ØÖÆÆ÷
+  //å…è®¸å¹¶å‘è®¿é—®MPUæ§åˆ¶å™¨
   MPU->CESR = 0;         
-  //»º³åÇøÃèÊö·û³õÊ¼»¯
+  //ç¼“å†²åŒºæè¿°ç¬¦åˆå§‹åŒ–
   ENET_BDInit();
-	//¿ªPORTÊ±ÖÓ
+	//å¼€PORTæ—¶é’Ÿ
 	SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;
-	//ºÜÖØÒª¡£¡£
+	//å¾ˆé‡è¦ã€‚ã€‚
 	MCG->C2 &= ~MCG_C2_EREFS_MASK;
-	//¸´Î»ÒÔÌ«Íø
+	//å¤ä½ä»¥å¤ªç½‘
 	ENET->ECR = ENET_ECR_RESET_MASK;
 	for( usData = 0; usData < 100; usData++ )
 	{
 		//__NOP;
 	}
-  //³õÊ¼»¯MII½Ó¿Ú
+  //åˆå§‹åŒ–MIIæ¥å£
   ENET_MiiInit();  
 
-	//¿ªÆôÖĞ¶Ï
+	//å¼€å¯ä¸­æ–­
 	NVIC_EnableIRQ(ENET_Transmit_IRQn);
 	NVIC_EnableIRQ(ENET_Receive_IRQn);
 	NVIC_EnableIRQ(ENET_Error_IRQn);
-  //Ê¹ÄÜGPIOÒı½Å¸´ÓÃ¹¦ÄÜ
+  //ä½¿èƒ½GPIOå¼•è„šå¤ç”¨åŠŸèƒ½
   PORTB->PCR[0]  = PORT_PCR_MUX(4); 
   PORTB->PCR[1]  = PORT_PCR_MUX(4); 
 	PORTA->PCR[12] =  PORT_PCR_MUX(4);  
@@ -171,7 +171,7 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
 	PORTA->PCR[15] =  PORT_PCR_MUX(4);  
 	PORTA->PCR[16] =  PORT_PCR_MUX(4);  
 	PORTA->PCR[17] =  PORT_PCR_MUX(4);  
-  //µÈ´ıPHYÊÕ·¢Æ÷¸´Î»Íê³É
+  //ç­‰å¾…PHYæ”¶å‘å™¨å¤ä½å®Œæˆ
   do
   {
     DelayMs(10);
@@ -197,14 +197,14 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
   ENET_MiiRead(CFG_PHY_ADDRESS, PHY_MISR, &usData );
   UART_printf("PHY_MISR=0x%X\r\n",usData);
 #endif 
-  //¿ªÊ¼×Ô¶¯Ğ­ÉÌ
+  //å¼€å§‹è‡ªåŠ¨åå•†
   ENET_MiiWrite(CFG_PHY_ADDRESS, PHY_BMCR, ( PHY_BMCR_AN_RESTART | PHY_BMCR_AN_ENABLE ) );
 
 #ifdef DEBUG_PRINT
   ENET_MiiRead(CFG_PHY_ADDRESS, PHY_BMCR, &usData );
   UART_printf("PHY_BMCR=0x%X\r\n",usData);
 #endif 
-  //µÈ´ı×Ô¶¯Ğ­ÉÌÍê³É
+  //ç­‰å¾…è‡ªåŠ¨åå•†å®Œæˆ
   do
   {
     DelayMs(10);
@@ -213,79 +213,79 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
     ENET_MiiRead(CFG_PHY_ADDRESS, PHY_BMSR, &usData );
 
   } while( !( usData & PHY_BMSR_AN_COMPLETE ) );
-  //¸ù¾İĞ­ÉÌ½á¹ûÉèÖÃENETÄ£¿é
+  //æ ¹æ®åå•†ç»“æœè®¾ç½®ENETæ¨¡å—
 	usData = 0;
 	ENET_MiiRead(CFG_PHY_ADDRESS, PHY_STATUS, &usData );	
   
-  //Çå³ıµ¥¶ÀºÍ×éµØÖ·¹şÏ£¼Ä´æÆ÷
+  //æ¸…é™¤å•ç‹¬å’Œç»„åœ°å€å“ˆå¸Œå¯„å­˜å™¨
   ENET->IALR = 0;
   ENET->IAUR = 0;
   ENET->GALR = 0;
   ENET->GAUR = 0;
-  //ÉèÖÃENETÄ£¿éMACµØÖ·
+  //è®¾ç½®ENETæ¨¡å—MACåœ°å€
   ENET_SetAddress(ENET_InitStrut->pMacAddress);
-  //ÉèÖÃ½ÓÊÕ¿ØÖÆ¼Ä´æÆ÷£¬×î´ó³¤¶È¡¢RMIIÄ£Ê½¡¢½ÓÊÕCRCĞ£ÑéµÈ
+  //è®¾ç½®æ¥æ”¶æ§åˆ¶å¯„å­˜å™¨ï¼Œæœ€å¤§é•¿åº¦ã€RMIIæ¨¡å¼ã€æ¥æ”¶CRCæ ¡éªŒç­‰
   ENET->RCR = ENET_RCR_MAX_FL(CFG_ENET_MAX_PACKET_SIZE) | ENET_RCR_MII_MODE_MASK | ENET_RCR_CRCFWD_MASK | ENET_RCR_RMII_MODE_MASK;
 
-  //Çå³ı·¢ËÍ½ÓÊÕ¿ØÖÆ
+  //æ¸…é™¤å‘é€æ¥æ”¶æ§åˆ¶
   ENET->TCR = 0;
-  //Í¨Ñ¶·½Ê½ÉèÖÃ
+  //é€šè®¯æ–¹å¼è®¾ç½®
   if( usData & PHY_DUPLEX_STATUS )
   {
-    //È«Ë«¹¤
+    //å…¨åŒå·¥
     ENET->RCR &= (unsigned long)~ENET_RCR_DRT_MASK;
     ENET->TCR |= ENET_TCR_FDEN_MASK;
 		#ifdef DEBUG_PRINT
-			UART_printf("È«Ë«¹¤\r\n");
+			UART_printf("å…¨åŒå·¥\r\n");
 		#endif 
   }
   else
   {
-    //°ëË«¹¤
+    //åŠåŒå·¥
     ENET->RCR |= ENET_RCR_DRT_MASK;
     ENET->TCR &= (unsigned long)~ENET_TCR_FDEN_MASK;
 		#ifdef DEBUG_PRINT
-		UART_printf("°ëË«¹¤\r\n");
+		UART_printf("åŠåŒå·¥\r\n");
 		#endif 
   }
-  //Í¨ĞÅËÙÂÊÉèÖÃ
+  //é€šä¿¡é€Ÿç‡è®¾ç½®
   if( usData & PHY_SPEED_STATUS )
   {
     //10Mbps
     ENET->RCR |= ENET_RCR_RMII_10T_MASK;
   }
 
-  //Ê¹ÓÃÔöÇ¿ĞÍ»º³åÇøÃèÊö·û
+  //ä½¿ç”¨å¢å¼ºå‹ç¼“å†²åŒºæè¿°ç¬¦
   ENET->ECR = ENET_ECR_EN1588_MASK;
 
-	//ÉèÖÃ½ÓÊÕ»º³åÇø´óĞ¡
+	//è®¾ç½®æ¥æ”¶ç¼“å†²åŒºå¤§å°
 	ENET->MRBR = ENET_MRBR_R_BUF_SIZE(CFG_ENET_MAX_PACKET_SIZE);
 
-	//Ö¸Ïò»·ĞÎ»º³åÇøÃèÊö·ûµÄÊ×µØÖ·(RX)
+	//æŒ‡å‘ç¯å½¢ç¼“å†²åŒºæè¿°ç¬¦çš„é¦–åœ°å€(RX)
 	ENET->RDSR = (uint32_t)  pxENETRxDescriptors;
 
-	//Ö¸Ïò»·ĞÎ»º³åÇøÃèÊö·ûµÄÊ×µØÖ·(TX)
+	//æŒ‡å‘ç¯å½¢ç¼“å†²åŒºæè¿°ç¬¦çš„é¦–åœ°å€(TX)
 	ENET->TDSR = (uint32_t) pxENETTxDescriptor;
 
-	//Çå³şËùÓĞÖĞ¶Ï±êÖ¾
+	//æ¸…æ¥šæ‰€æœ‰ä¸­æ–­æ ‡å¿—
 	ENET->EIR = ( uint32_t ) 0xFFFFFFFF;
 
-	//Ê¹ÄÜÖĞ¶Ï
+	//ä½¿èƒ½ä¸­æ–­
 	ENET->EIMR = ENET_EIR_TXF_MASK | ENET_EIMR_RXF_MASK | ENET_EIMR_RXB_MASK | ENET_EIMR_UN_MASK | ENET_EIMR_RL_MASK | ENET_EIMR_LC_MASK | ENET_EIMR_BABT_MASK | ENET_EIMR_BABR_MASK | ENET_EIMR_EBERR_MASK;
 
-	//Ê¹ÄÜMACÄ£¿é
+	//ä½¿èƒ½MACæ¨¡å—
 	ENET->ECR |= ENET_ECR_ETHEREN_MASK;
-  //±íÃ÷½ÓÊÕ»º³åÇøÎª¿Õ
+  //è¡¨æ˜æ¥æ”¶ç¼“å†²åŒºä¸ºç©º
 	ENET->RDAR = ENET_RDAR_RDAR_MASK;
-	//¼ì²éÁ¬½Ó×´Ì¬
+	//æ£€æŸ¥è¿æ¥çŠ¶æ€
 //	enetdev.linkstate =  ENET_MiiLinkState();
 	return 0;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºÅäÖÃÎïÀí²ã
- ĞÎ²Î£º0
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šé…ç½®ç‰©ç†å±‚
+ å½¢å‚ï¼š0
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void ENET_MiiInit(void)
 {
@@ -295,13 +295,13 @@ void ENET_MiiInit(void)
   ENET->MSCR = 0 | ENET_MSCR_MII_SPEED((2*i/5)+1);
 }
 
-//ÎïÀí²ãĞ´ÈëÊı¾İ
+//ç‰©ç†å±‚å†™å…¥æ•°æ®
 uint8_t ENET_MiiWrite(uint16_t phy_addr, uint16_t reg_addr, uint16_t data)
 {
 	uint32_t timeout;
-  //Çå³ıMIIÖĞ¶ÏÊÂ¼ş
+  //æ¸…é™¤MIIä¸­æ–­äº‹ä»¶
 	ENET->EIR = ENET_EIR_MII_MASK;
-  //³õÊ¼»¯MII¹ÜÀíÖ¡¼Ä´æÆ÷
+  //åˆå§‹åŒ–MIIç®¡ç†å¸§å¯„å­˜å™¨
 	ENET->MMFR = 0
             | ENET_MMFR_ST(0x01)
             | ENET_MMFR_OP(0x01)
@@ -309,7 +309,7 @@ uint8_t ENET_MiiWrite(uint16_t phy_addr, uint16_t reg_addr, uint16_t data)
             | ENET_MMFR_RA(reg_addr)
             | ENET_MMFR_TA(0x02)
             | ENET_MMFR_DATA(data);
-  //µÈ´ıMII´«ÊäÍê³ÉÖĞ¶ÏÊÂ¼ş
+  //ç­‰å¾…MIIä¼ è¾“å®Œæˆä¸­æ–­äº‹ä»¶
   for (timeout = 0; timeout < MII_TIMEOUT; timeout++)
   {
     if (ENET->EIR & ENET_EIR_MII_MASK)
@@ -317,22 +317,22 @@ uint8_t ENET_MiiWrite(uint16_t phy_addr, uint16_t reg_addr, uint16_t data)
   }
   if(timeout == MII_TIMEOUT) 
     return 1;
-  //Çå³ıMIIÖĞ¶ÏÊÂ¼ş
+  //æ¸…é™¤MIIä¸­æ–­äº‹ä»¶
   ENET->EIR = ENET_EIR_MII_MASK;
   return 0;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºRMII²ã ¶ÁÈ¡Êı¾İ
- ĞÎ²Î£ºphy_addr: ½Ó¿ÚµØÖ·  reg_addr:Òª¶ÁÈ¡µÄ¼Ä´æÆ÷  *data:Êı¾İ
- ·µ»Ø£º0 ³É¹¦  1Ê§°Ü
- Ïê½â£º0
+ åŠŸèƒ½ï¼šRMIIå±‚ è¯»å–æ•°æ®
+ å½¢å‚ï¼šphy_addr: æ¥å£åœ°å€  reg_addr:è¦è¯»å–çš„å¯„å­˜å™¨  *data:æ•°æ®
+ è¿”å›ï¼š0 æˆåŠŸ  1å¤±è´¥
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint8_t ENET_MiiRead(uint16_t phy_addr, uint16_t reg_addr, uint16_t *data)
 {
 	uint32_t timeout;
-	//Çå³ıMIIÖĞ¶ÏÊÂ¼ş
+	//æ¸…é™¤MIIä¸­æ–­äº‹ä»¶
 	ENET->EIR = ENET_EIR_MII_MASK;
-	//³õÊ¼»¯MII¹ÜÀíÖ¡¼Ä´æÆ÷
+	//åˆå§‹åŒ–MIIç®¡ç†å¸§å¯„å­˜å™¨
   ENET->MMFR = 0
             | ENET_MMFR_ST(0x01)
             | ENET_MMFR_OP(0x2)
@@ -340,7 +340,7 @@ uint8_t ENET_MiiRead(uint16_t phy_addr, uint16_t reg_addr, uint16_t *data)
             | ENET_MMFR_RA(reg_addr)
             | ENET_MMFR_TA(0x02);
   
-	//µÈ´ıMII´«ÊäÍê³ÉÖĞ¶ÏÊÂ¼ş
+	//ç­‰å¾…MIIä¼ è¾“å®Œæˆä¸­æ–­äº‹ä»¶
 	for (timeout = 0; timeout < MII_TIMEOUT; timeout++)
   {
     if (ENET->EIR & ENET_EIR_MII_MASK)
@@ -348,18 +348,18 @@ uint8_t ENET_MiiRead(uint16_t phy_addr, uint16_t reg_addr, uint16_t *data)
   }
   if(timeout == MII_TIMEOUT) 
     return 1;
-  //Çå³ıMIIÖĞ¶ÏÊÂ¼ş
+  //æ¸…é™¤MIIä¸­æ–­äº‹ä»¶
   ENET->EIR = ENET_EIR_MII_MASK;
   *data = ENET->MMFR & 0x0000FFFF;
   return 0;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º²é¿´ÍøÏßÁ¬½Ó×´Ì¬
- ĞÎ²Î£º0
- ·µ»Ø£ºENET_PHY_LINK_STATE
+ åŠŸèƒ½ï¼šæŸ¥çœ‹ç½‘çº¿è¿æ¥çŠ¶æ€
+ å½¢å‚ï¼š0
+ è¿”å›ï¼šENET_PHY_LINK_STATE
 					LINK_STATE_ON,
 					LINK_STATE_OFF,
- Ïê½â£º0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint8_t ENET_MiiLinkState(void)
 {
@@ -375,45 +375,45 @@ uint8_t ENET_MiiLinkState(void)
 	}
 }
 /***********************************************************************************************
- ¹¦ÄÜ£º·¢ËÍÒ»¸öÒÔÌ«Ö¡ 
- ĞÎ²Î£º*ch:Êı¾İÖ¸Õë   len:³¤¶È
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šå‘é€ä¸€ä¸ªä»¥å¤ªå¸§ 
+ å½¢å‚ï¼š*ch:æ•°æ®æŒ‡é’ˆ   len:é•¿åº¦
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void ENET_MacSendData(uint8_t *ch, uint16_t len)
 {
-  //¼ì²éµ±Ç°·¢ËÍ»º³åÇøÃèÊö·ûÊÇ·ñ¿ÉÓÃ
+  //æ£€æŸ¥å½“å‰å‘é€ç¼“å†²åŒºæè¿°ç¬¦æ˜¯å¦å¯ç”¨
 	while( pxENETTxDescriptor->status & TX_BD_R )
 	{
 		
 	}
-  //ÉèÖÃ·¢ËÍ»º³åÇøÃèÊö·û
+  //è®¾ç½®å‘é€ç¼“å†²åŒºæè¿°ç¬¦
   pxENETTxDescriptor->data = (uint8_t *)__REV((uint32_t)ch);		
   pxENETTxDescriptor->length = __REVSH(len);
 	pxENETTxDescriptor->bdu = 0x00000000;
 	pxENETTxDescriptor->ebd_status = TX_BD_INT | TX_BD_TS;// | TX_BD_IINS | TX_BD_PINS;
 	pxENETTxDescriptor->status = ( TX_BD_R | TX_BD_L | TX_BD_TC | TX_BD_W );
-  //Ê¹ÄÜ·¢ËÍ
+  //ä½¿èƒ½å‘é€
   ENET->TDAR = ENET_TDAR_TDAR_MASK;
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£º½ÓÊÕÒ»¸öÒÔÌ«Ö¡
- ĞÎ²Î£º*ch:Êı¾İÖ¸Õë 
- ·µ»Ø£ºÖ¡³¤¶È
- Ïê½â£º0
+ åŠŸèƒ½ï¼šæ¥æ”¶ä¸€ä¸ªä»¥å¤ªå¸§
+ å½¢å‚ï¼š*ch:æ•°æ®æŒ‡é’ˆ 
+ è¿”å›ï¼šå¸§é•¿åº¦
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint16_t ENET_MacRecData(uint8_t *ch)
 {
 	uint16_t len = 0;
 	ch = ch;
-	//Ñ°ÕÒ·Ç¿ÕµÄ»º³åÇøÃèÊö·û
+	//å¯»æ‰¾éç©ºçš„ç¼“å†²åŒºæè¿°ç¬¦
 	if((pxENETRxDescriptors[uxNextRxBuffer].status & RX_BD_E ) == 0)
 	{
-		//¶ÁÈ¡Êı¾İ
+		//è¯»å–æ•°æ®
 		len =  __REVSH(pxENETRxDescriptors[ uxNextRxBuffer ].length);
 		memcpy(ch,(uint8_t *)__REV((uint32_t)pxENETRxDescriptors[ uxNextRxBuffer ].data),len);
-		//±íÊ¾ÒÑ¾­¶ÁÈ¡¸Ä»º³åÇøÊı¾İ
+		//è¡¨ç¤ºå·²ç»è¯»å–æ”¹ç¼“å†²åŒºæ•°æ®
 		pxENETRxDescriptors[uxNextRxBuffer].status |= RX_BD_E;
 		uxNextRxBuffer++;
 		if( uxNextRxBuffer >= CFG_NUM_ENET_RX_BUFFERS )
@@ -426,20 +426,20 @@ uint16_t ENET_MacRecData(uint8_t *ch)
 	
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºÒÔÌ«Íø·¢ËÍÍê³ÉÖĞ¶Ï
- ĞÎ²Î£º
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šä»¥å¤ªç½‘å‘é€å®Œæˆä¸­æ–­
+ å½¢å‚ï¼š
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void ENET_Transmit_IRQHandler(void)
 {
 	ENET->EIR |= ENET_EIMR_TXF_MASK; 
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºÒÔÌ«Íø½ÓÊÕÖĞ¶Ï
- ĞÎ²Î£º
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šä»¥å¤ªç½‘æ¥æ”¶ä¸­æ–­
+ å½¢å‚ï¼š
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint8_t gEnetFlag = 0;
 void ENET_Receive_IRQHandler(void)
@@ -450,7 +450,7 @@ void ENET_Receive_IRQHandler(void)
 
 void ENET_Error_IRQHandler(void)
 {
-	//UART_printf("ÒÔÌ«Íø´íÎó\r\n");
+	//UART_printf("ä»¥å¤ªç½‘é”™è¯¯\r\n");
 }
 
 

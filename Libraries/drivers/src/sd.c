@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    sd.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â Æ¬ÄÚsd Çı¶¯ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ç‰‡å†…sd é©±åŠ¨æ–‡ä»¶
   ******************************************************************************
   */
 #include "sd.h"
@@ -13,17 +13,17 @@
 
 uint8_t SD_CardType = SD_CARD_TYPE_NONE;
 uint32_t SD_RCA = 0;
-//º¯ÊıÃû³Æ£ºSD_SetBaudRate                                                        
-//¹¦ÄÜ¸ÅÒª£ºÉèÖÃSDHCÄ£¿éµÄÊ±ÖÓ¡£                                                                                       
-//         baudrate£º²¨ÌØÂÊ   ²Î¿¼¹Ù·½³ÌĞò                    
-//º¯Êı·µ»Ø£ºÎŞ                                                               
+//å‡½æ•°åç§°ï¼šSD_SetBaudRate                                                        
+//åŠŸèƒ½æ¦‚è¦ï¼šè®¾ç½®SDHCæ¨¡å—çš„æ—¶é’Ÿã€‚                                                                                       
+//         baudrateï¼šæ³¢ç‰¹ç‡   å‚è€ƒå®˜æ–¹ç¨‹åº                    
+//å‡½æ•°è¿”å›ï¼šæ—                                                                
 void SD_SetBaudRate(uint32_t baudrate)
 {
 	uint32_t pres, div, min, minpres = 0x80, mindiv = 0x0F;
 	uint32_t  val,clock;
-	GetCPUInfo();  //¼ÆËãÏµÍ³Ê±ÖÓ
-	clock=CPUInfo.CoreClock;//Ê¹ÓÃCoreClock
-	//ÕÒµ½Ïà½üµÄ·ÖÆµÒò×Ó
+	GetCPUInfo();  //è®¡ç®—ç³»ç»Ÿæ—¶é’Ÿ
+	clock=CPUInfo.CoreClock;//ä½¿ç”¨CoreClock
+	//æ‰¾åˆ°ç›¸è¿‘çš„åˆ†é¢‘å› å­
 	min = (uint32_t)-1;
 	for (pres = 2; pres <= 256; pres <<= 1) 
 	{
@@ -41,16 +41,16 @@ void SD_SetBaudRate(uint32_t baudrate)
 			}
 		}
    }
-	//½ûÖ¹SDHCÄ£¿éÊ±ÖÓ
+	//ç¦æ­¢SDHCæ¨¡å—æ—¶é’Ÿ
 	SDHC->SYSCTL &= (~ SDHC_SYSCTL_SDCLKEN_MASK);
-	//ĞŞ¸Ä·ÖÆµÒò×Ó
+	//ä¿®æ”¹åˆ†é¢‘å› å­
 	div = SDHC->SYSCTL & (~ (SDHC_SYSCTL_DTOCV_MASK | SDHC_SYSCTL_SDCLKFS_MASK | SDHC_SYSCTL_DVS_MASK));
 	SDHC->SYSCTL = div | (SDHC_SYSCTL_DTOCV(0x0E) | SDHC_SYSCTL_SDCLKFS(minpres >> 1) | SDHC_SYSCTL_DVS(mindiv - 1));
-	//µÈ´ıÊ±ÖÓÎÈ¶¨
+	//ç­‰å¾…æ—¶é’Ÿç¨³å®š
 	while (0 == (SDHC->PRSSTAT & SDHC_PRSSTAT_SDSTB_MASK));
-	//Ê¹ÄÜSDHCÄ£¿éÊ±ÖÓ
-	SDHC->SYSCTL |= SDHC_SYSCTL_SDCLKEN_MASK; //Ê±ÄÜSDÊ±ÖÓ
-	SDHC->IRQSTAT |= SDHC_IRQSTAT_DTOE_MASK;  //È¡ÏûTimeOut Error Status
+	//ä½¿èƒ½SDHCæ¨¡å—æ—¶é’Ÿ
+	SDHC->SYSCTL |= SDHC_SYSCTL_SDCLKEN_MASK; //æ—¶èƒ½SDæ—¶é’Ÿ
+	SDHC->IRQSTAT |= SDHC_IRQSTAT_DTOE_MASK;  //å–æ¶ˆTimeOut Error Status
 } 
 
 uint8_t SDHC_is_running(void)
@@ -58,44 +58,44 @@ uint8_t SDHC_is_running(void)
     return (0 != (SDHC->PRSSTAT & (SDHC_PRSSTAT_RTA_MASK | SDHC_PRSSTAT_WTA_MASK | SDHC_PRSSTAT_DLA_MASK | SDHC_PRSSTAT_CDIHB_MASK | SDHC_PRSSTAT_CIHB_MASK)));
 }   
 
-//SD¿¨³õÊ¼»¯
-//¹Ì¶¨Îª 25M²¨ÌØÂÊ 4Ïß´«ÊäÄ£Ê½
-//³É¹¦:ESDHC_OK Ê§°Ü£ºESDHC_ERROR_INIT_FAILED
-//Ö»Ö§³ÖSD¼°SDHC¿¨ ²»Ö§³ÖMMC£¡
+//SDå¡åˆå§‹åŒ–
+//å›ºå®šä¸º 25Mæ³¢ç‰¹ç‡ 4çº¿ä¼ è¾“æ¨¡å¼
+//æˆåŠŸ:ESDHC_OK å¤±è´¥ï¼šESDHC_ERROR_INIT_FAILED
+//åªæ”¯æŒSDåŠSDHCå¡ ä¸æ”¯æŒMMCï¼
 uint8_t SD_Init(SD_InitTypeDef* SD_InitStruct)
 {
 	uint32_t delay_cnt = 0;
-	uint8_t result;  //´æ´¢º¯Êı·µ»Ø½á¹û
+	uint8_t result;  //å­˜å‚¨å‡½æ•°è¿”å›ç»“æœ
 	uint8_t i=0;
-	uint8_t hc;     //ÊÇ·ñÎªSDHC±êÖ¾
-	//SD¿¨ÃüÁî½á¹¹Ìå¶¨Òå
+	uint8_t hc;     //æ˜¯å¦ä¸ºSDHCæ ‡å¿—
+	//SDå¡å‘½ä»¤ç»“æ„ä½“å®šä¹‰
 	SD_CommandTypeDef SD_CommandStruct1;
-	//¿ªÆôGPIOÊ±ÖÓ
+	//å¼€å¯GPIOæ—¶é’Ÿ
 	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
-	//¿ªÆôSDHCÊ±ÖÓ
+	//å¼€å¯SDHCæ—¶é’Ÿ
 	SIM->SCGC3 |= SIM_SCGC3_SDHC_MASK;
-	//¸´Î»SDHC ÉèÖÃ³¬Ê±Ê±¼ä
+	//å¤ä½SDHC è®¾ç½®è¶…æ—¶æ—¶é—´
 	SDHC->SYSCTL = SDHC_SYSCTL_RSTA_MASK | SDHC_SYSCTL_SDCLKFS(0x80); 
-	//µÈ´ı¸´Î»Íê³É
+	//ç­‰å¾…å¤ä½å®Œæˆ
 	while(SDHC->SYSCTL & SDHC_SYSCTL_RSTA_MASK){};
-	//³õÊ¼»¯SDHCÏà¹Ø¼Ä´æÆ÷	
+	//åˆå§‹åŒ–SDHCç›¸å…³å¯„å­˜å™¨	
 	SDHC->VENDOR = 0;
-	SDHC->BLKATTR = SDHC_BLKATTR_BLKCNT(1) | SDHC_BLKATTR_BLKSIZE(512); //Ä¬ÈÏ´«Êä1¸öBlock Ã¿¸öBlock 512×Ö½Ú
-	SDHC->PROCTL = SDHC_PROCTL_EMODE(2)| SDHC_PROCTL_D3CD_MASK;        //LSB¸ñÊ½   Ê¹ÓÃDATA3 ¼ì²â¿¨²åÈëÒÆ³ı
-	SDHC->WML = SDHC_WML_RDWML(1) | SDHC_WML_WRWML(1);                 //Õâ¸ö²»¶®¡£¡£
-	//ÉèÖÃSDHCÄ£¿éµÄÍ¨ĞÅËÙÂÊ
-	SD_SetBaudRate(SD_InitStruct->SD_BaudRate); //ÉèÖÃSD¿¨Í¨ĞÅËÙÂÊÎª25MHZ
+	SDHC->BLKATTR = SDHC_BLKATTR_BLKCNT(1) | SDHC_BLKATTR_BLKSIZE(512); //é»˜è®¤ä¼ è¾“1ä¸ªBlock æ¯ä¸ªBlock 512å­—èŠ‚
+	SDHC->PROCTL = SDHC_PROCTL_EMODE(2)| SDHC_PROCTL_D3CD_MASK;        //LSBæ ¼å¼   ä½¿ç”¨DATA3 æ£€æµ‹å¡æ’å…¥ç§»é™¤
+	SDHC->WML = SDHC_WML_RDWML(1) | SDHC_WML_WRWML(1);                 //è¿™ä¸ªä¸æ‡‚ã€‚ã€‚
+	//è®¾ç½®SDHCæ¨¡å—çš„é€šä¿¡é€Ÿç‡
+	SD_SetBaudRate(SD_InitStruct->SD_BaudRate); //è®¾ç½®SDå¡é€šä¿¡é€Ÿç‡ä¸º25MHZ
 	while (SDHC->PRSSTAT & (SDHC_PRSSTAT_CIHB_MASK | SDHC_PRSSTAT_CDIHB_MASK)) ;
-	//³õÊ¼»¯GPIO
+	//åˆå§‹åŒ–GPIO
 	PORTE->PCR[0] =  (PORT_PCR_MUX(4) | PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_DSE_MASK);    /* ESDHC.D1  */
 	PORTE->PCR[1] =  (PORT_PCR_MUX(4) | PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_DSE_MASK);    /* ESDHC.D0  */
 	PORTE->PCR[2] =  (PORT_PCR_MUX(4) | PORT_PCR_DSE_MASK);                                          /* ESDHC.CLK */
 	PORTE->PCR[3] =  (PORT_PCR_MUX(4) | PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_DSE_MASK);    /* ESDHC.CMD */
 	PORTE->PCR[4] =  (PORT_PCR_MUX(4) | PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_DSE_MASK);    /* ESDHC.D3  */
 	PORTE->PCR[5] =  (PORT_PCR_MUX(4) | PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_DSE_MASK);    /* ESDHC.D2  */									
- //Çå³ıSDHCÄ£¿éµÄÖĞ¶Ï±êÖ¾
+ //æ¸…é™¤SDHCæ¨¡å—çš„ä¸­æ–­æ ‡å¿—
 	SDHC->IRQSTAT = 0xFFFF;
-	//Ê¹ÄÜÖĞ¶ÏÎ»
+	//ä½¿èƒ½ä¸­æ–­ä½
 	SDHC->IRQSTATEN = SDHC_IRQSTATEN_DEBESEN_MASK 
                    | SDHC_IRQSTATEN_DCESEN_MASK 
                    | SDHC_IRQSTATEN_DTOESEN_MASK 
@@ -108,40 +108,40 @@ uint8_t SD_Init(SD_InitTypeDef* SD_InitStruct)
                    | SDHC_IRQSTATEN_CRMSEN_MASK
                    | SDHC_IRQSTATEN_TCSEN_MASK 
                    | SDHC_IRQSTATEN_CCSEN_MASK; 	
- //ÑÓÊ±									 
+ //å»¶æ—¶									 
 	for(delay_cnt=0;delay_cnt<10000;delay_cnt++);
-	//80¸öÊ±ÖÓÖÜÆÚµÄ³õÊ¼»¯
+	//80ä¸ªæ—¶é’Ÿå‘¨æœŸçš„åˆå§‹åŒ–
 	SDHC->SYSCTL |= SDHC_SYSCTL_INITA_MASK;
-	while (SDHC->SYSCTL & SDHC_SYSCTL_INITA_MASK){}; //µÈ´ı³õÊ¼»¯Íê³É
-	//--------------ÒÔÏÂ¿ªÊ¼SD¿¨³õÊ¼»¯ ÎïÀí²ãĞ­Òé---------------------------
-	//¿ªÊ¼SD¿¨³õÊ¼»¯½ø³Ì --------------------------------
-	//ËµÃ÷ ¢CCMD0 -> CMD8 -> while(CMD55+ACMD41) ->CMD2 -> CMD3 ->CMD9
-	//            -> CMD7(Ñ¡ÖĞ¿¨)-> CMD16(ÉèÖÃ¿é´óĞ¡)->(CMD55+ACMD6)ÉèÖÃÎ»4ÏßÎ»¿í
-	//---------------------------ÕıÊ½¿ªÊ¼------------------------------  now Let's begin !
-	//CMD0  Ê¹ËùÓĞ¿¨½øÈëIDLE
+	while (SDHC->SYSCTL & SDHC_SYSCTL_INITA_MASK){}; //ç­‰å¾…åˆå§‹åŒ–å®Œæˆ
+	//--------------ä»¥ä¸‹å¼€å§‹SDå¡åˆå§‹åŒ– ç‰©ç†å±‚åè®®---------------------------
+	//å¼€å§‹SDå¡åˆå§‹åŒ–è¿›ç¨‹ --------------------------------
+	//è¯´æ˜ î”©CMD0 -> CMD8 -> while(CMD55+ACMD41) ->CMD2 -> CMD3 ->CMD9
+	//            -> CMD7(é€‰ä¸­å¡)-> CMD16(è®¾ç½®å—å¤§å°)->(CMD55+ACMD6)è®¾ç½®ä½4çº¿ä½å®½
+	//---------------------------æ­£å¼å¼€å§‹------------------------------  now Let's begin !
+	//CMD0  ä½¿æ‰€æœ‰å¡è¿›å…¥IDLE
 	SD_CommandStruct1.COMMAND = ESDHC_CMD0;
 	SD_CommandStruct1.ARGUMENT = 0;
 	SD_CommandStruct1.BLOCKS = 0;
 	result = SD_SendCommand(&SD_CommandStruct1);
-	if(result != ESDHC_OK) return ESDHC_ERROR_INIT_FAILED;      //´íÎóÔò·µ»Ø
+	if(result != ESDHC_OK) return ESDHC_ERROR_INIT_FAILED;      //é”™è¯¯åˆ™è¿”å›
 		
-	//CMD8  ÅĞ¶ÏÊÇV1.0»¹ÊÇV2.0µÄ¿¨
+	//CMD8  åˆ¤æ–­æ˜¯V1.0è¿˜æ˜¯V2.0çš„å¡
 	SD_CommandStruct1.COMMAND = ESDHC_CMD8;
 	SD_CommandStruct1.ARGUMENT =0x000001AA;
 	SD_CommandStruct1.BLOCKS = 0;
 	result = SD_SendCommand(&SD_CommandStruct1);
-	if (result > 0)  //CMD8ÎŞÏìÓ¦  ´íÎó»òÕßÆÕÍ¨¿¨
+	if (result > 0)  //CMD8æ— å“åº”  é”™è¯¯æˆ–è€…æ™®é€šå¡
 	{
 		result = ESDHC_ERROR_INIT_FAILED;
 	}
-	if (result == 0) //SDHC ¿¨
+	if (result == 0) //SDHC å¡
 	{
 		hc = TRUE;  					
 	}
-	//·´¸´·¢ËÍ55+ACDM41 Ö±µ½¿¨×¼±¸ºÃ
+	//åå¤å‘é€55+ACDM41 ç›´åˆ°å¡å‡†å¤‡å¥½
 	do 
 	{
-		//ÑÓÊ±									 
+		//å»¶æ—¶									 
 		for(delay_cnt=0;delay_cnt<10000;delay_cnt++);
 		i++;   
 		SD_CommandStruct1.COMMAND = ESDHC_CMD55;
@@ -160,7 +160,7 @@ uint8_t SD_Init(SD_InitTypeDef* SD_InitStruct)
 		}
 		result = SD_SendCommand(&SD_CommandStruct1);
 	}while ((0 == (SD_CommandStruct1.RESPONSE[0] & 0x80000000)) && (i < 30));	
-	//CMD2 È¡CID
+	//CMD2 å–CID
 	SD_CommandStruct1.COMMAND = ESDHC_CMD2;
 	SD_CommandStruct1.ARGUMENT = 0;
 	SD_CommandStruct1.BLOCKS = 0;
@@ -171,7 +171,7 @@ uint8_t SD_Init(SD_InitTypeDef* SD_InitStruct)
 	SD_InitStruct->CID[2] = SD_CommandStruct1.RESPONSE[2];
 	SD_InitStruct->CID[3] = SD_CommandStruct1.RESPONSE[3];
 	
-	//CMD3 È¡RCA
+	//CMD3 å–RCA
 	SD_CommandStruct1.COMMAND = ESDHC_CMD3;
 	SD_CommandStruct1.ARGUMENT = 0;
 	SD_CommandStruct1.BLOCKS = 0;
@@ -179,7 +179,7 @@ uint8_t SD_Init(SD_InitTypeDef* SD_InitStruct)
 	if(result != ESDHC_OK) return ESDHC_ERROR_INIT_FAILED;    
 	SD_InitStruct->RCA = SD_CommandStruct1.RESPONSE[0]>>16;
 	SD_RCA = SD_CommandStruct1.RESPONSE[0];
-	//CMD9 È¡CSD
+	//CMD9 å–CSD
 	SD_CommandStruct1.COMMAND = ESDHC_CMD9;
 	SD_CommandStruct1.ARGUMENT = SD_InitStruct->RCA<<16;
 	SD_CommandStruct1.BLOCKS = 0;
@@ -190,35 +190,35 @@ uint8_t SD_Init(SD_InitTypeDef* SD_InitStruct)
 	SD_InitStruct->CSD[2] = SD_CommandStruct1.RESPONSE[2];
 	SD_InitStruct->CSD[3] = SD_CommandStruct1.RESPONSE[3];
 	
-	//CMD7 Ñ¡ÖĞ¿¨
+	//CMD7 é€‰ä¸­å¡
 	SD_CommandStruct1.COMMAND = ESDHC_CMD7;
 	SD_CommandStruct1.ARGUMENT = SD_InitStruct->RCA<<16;
 	SD_CommandStruct1.BLOCKS = 0;
 	result = SD_SendCommand(&SD_CommandStruct1);
 	if(result != ESDHC_OK) return ESDHC_ERROR_INIT_FAILED;  
-	//CMD16 ÉèÖÃ¿é´óĞ¡
+	//CMD16 è®¾ç½®å—å¤§å°
 	SD_CommandStruct1.COMMAND = ESDHC_CMD16;
 	SD_CommandStruct1.ARGUMENT = 512;
 	SD_CommandStruct1.BLOCKS = 0;
 	result = SD_SendCommand(&SD_CommandStruct1);
 	if(result != ESDHC_OK) return ESDHC_ERROR_INIT_FAILED;  
 	
-	//CMD55 Ê¹ÓÃACMDÃüÁî
+	//CMD55 ä½¿ç”¨ACMDå‘½ä»¤
 	SD_CommandStruct1.COMMAND = ESDHC_CMD55;
 	SD_CommandStruct1.ARGUMENT = SD_InitStruct->RCA<<16;
 	SD_CommandStruct1.BLOCKS = 0;
 	result = SD_SendCommand(&SD_CommandStruct1);
 	if(result != ESDHC_OK) return ESDHC_ERROR_INIT_FAILED;  
-	//ACMD6 ĞŞ¸ÄSD¿¨Í¨Ñ¶Î»¿í
+	//ACMD6 ä¿®æ”¹SDå¡é€šè®¯ä½å®½
 	SD_CommandStruct1.COMMAND = ESDHC_ACMD6;
 	SD_CommandStruct1.ARGUMENT = 2;
 	SD_CommandStruct1.BLOCKS = 0;
-	result = SD_SendCommand(&SD_CommandStruct1);//ĞŞ¸ÄSD¿¨Î»4Î»Í¨Ñ¶Î»¿í	
+	result = SD_SendCommand(&SD_CommandStruct1);//ä¿®æ”¹SDå¡ä½4ä½é€šè®¯ä½å®½	
 	if(result != ESDHC_OK) return ESDHC_ERROR_INIT_FAILED;  
-	 //ÉèÖÃ KinetisµÄ SDIOÄ£¿éÎ»4ÏßÄ£Ê½
+	 //è®¾ç½® Kinetisçš„ SDIOæ¨¡å—ä½4çº¿æ¨¡å¼
 	SDHC->PROCTL &= (~SDHC_PROCTL_DTW_MASK);
 	SDHC->PROCTL |=  SDHC_PROCTL_DTW(ESDHC_PROCTL_DTW_4BIT);
-	//ÅĞ¶Ï¿¨ÀàĞÍ
+	//åˆ¤æ–­å¡ç±»å‹
 	if((SD_InitStruct->CSD[3]>>22)&0x03)
 	{
 		SD_CardType = SD_CARD_TYPE_SDHC;
@@ -227,34 +227,34 @@ uint8_t SD_Init(SD_InitTypeDef* SD_InitStruct)
 	{
 		SD_CardType = SD_CARD_TYPE_SD;
 	}
-	//¿ªÆô¿¨²åÈë¼ì²â£¬¿¨ÒÆ³ıÖĞ¶Ï----Î´³É¹¦
+	//å¼€å¯å¡æ’å…¥æ£€æµ‹ï¼Œå¡ç§»é™¤ä¸­æ–­----æœªæˆåŠŸ
 	/*
-	NVIC_EnableIRQ(SDHC_IRQn);  //¿ªÆôCM4ºËÉÏµÄÖĞ¶ÏÏß
-	SDHC->IRQSTATEN |= SDHC_IRQSTATEN_CINTSEN_MASK | SDHC_IRQSTATEN_CRMSEN_MASK | SDHC_IRQSTATEN_CINSEN_MASK; //¿ªÆôSDHCÖĞ¶Ï¿¨²åÈë ¿¨ÒÆ³ı
+	NVIC_EnableIRQ(SDHC_IRQn);  //å¼€å¯CM4æ ¸ä¸Šçš„ä¸­æ–­çº¿
+	SDHC->IRQSTATEN |= SDHC_IRQSTATEN_CINTSEN_MASK | SDHC_IRQSTATEN_CRMSEN_MASK | SDHC_IRQSTATEN_CINSEN_MASK; //å¼€å¯SDHCä¸­æ–­å¡æ’å…¥ å¡ç§»é™¤
 	SDHC->IRQSIGEN |=SDHC_IRQSIGEN_CINTIEN_MASK | SDHC_IRQSIGEN_CINSIEN_MASK | SDHC_IRQSIGEN_CRMIEN_MASK;
 	*/
-		//Ë³Àû³õÊ¼»¯²Ù×÷
+		//é¡ºåˆ©åˆå§‹åŒ–æ“ä½œ
 	SD_InitStruct->SD_Size = SD_GetCapacity(SD_InitStruct);
 	return ESDHC_OK;	
 }
 
-//¶ÁSD¿¨µÄÒ»¸öblock
-//ÊäÈë:uint32_t sector È¡µØÖ·£¨sectorÖµ£¬·ÇÎïÀíµØÖ·£© 
-//     uint8_t *buffer Êı¾İ´æ´¢µØÖ·£¨´óĞ¡ÖÁÉÙ512byte£© 		   
-//·µ»ØÖµ:0£º ³É¹¦
-//       other£ºÊ§°Ü															  
+//è¯»SDå¡çš„ä¸€ä¸ªblock
+//è¾“å…¥:uint32_t sector å–åœ°å€ï¼ˆsectorå€¼ï¼Œéç‰©ç†åœ°å€ï¼‰ 
+//     uint8_t *buffer æ•°æ®å­˜å‚¨åœ°å€ï¼ˆå¤§å°è‡³å°‘512byteï¼‰ 		   
+//è¿”å›å€¼:0ï¼š æˆåŠŸ
+//       otherï¼šå¤±è´¥															  
 uint8_t SD_ReadSingleBlock(uint32_t sector, uint8_t *buffer)
 {
 	uint16_t results;
 	uint32_t	j;
   uint32_t	*ptr = (uint32_t*)buffer;
 	SD_CommandTypeDef SD_CommandStruct1;
-	if(SD_CardType == SD_CARD_TYPE_SD) //Èç¹ûÊÇÆÕÍ¨SD¿¨ °Ñ¿éµØÖ·×ª»»³É×Ö½ÚµØÖ·
+	if(SD_CardType == SD_CARD_TYPE_SD) //å¦‚æœæ˜¯æ™®é€šSDå¡ æŠŠå—åœ°å€è½¬æ¢æˆå­—èŠ‚åœ°å€
 	{
 		sector = sector<<9;
 	}
-	 while (SDHC->PRSSTAT & SDHC_PRSSTAT_DLA_MASK){};//µÈ´ıDATAÏß¿ÕÏĞ
-	 //SDHC->BLKATTR &= (~ SDHC_BLKATTR_BLKCNT_MASK); //Çå³ı¿ìÊı
+	 while (SDHC->PRSSTAT & SDHC_PRSSTAT_DLA_MASK){};//ç­‰å¾…DATAçº¿ç©ºé—²
+	 //SDHC->BLKATTR &= (~ SDHC_BLKATTR_BLKCNT_MASK); //æ¸…é™¤å¿«æ•°
 	 //SDHC->BLKATTR |= SDHC_BLKATTR_BLKCNT(1);
 	 SD_CommandStruct1.COMMAND = ESDHC_CMD17;
 	 SD_CommandStruct1.ARGUMENT = sector;
@@ -262,12 +262,12 @@ uint8_t SD_ReadSingleBlock(uint32_t sector, uint8_t *buffer)
 	 SD_CommandStruct1.BLOCKSIZE = 512;
 	 results = SD_SendCommand(&SD_CommandStruct1);
 	if(results != ESDHC_OK) return ESDHC_ERROR_DATA_TRANSFER;  
-	//¿ªÊ¼¶ÁÈ¡Ò»¸öÉÈÇø------------------------------
-    //¶ÁÈ¡Êı¾İÊ±£¬Ã¿´Î¶ÁÈ¡4¸ö×Ö½Ú
-		 //printf("¿ªÊ¼ReadSingleBlock2¶ÁÈ¡\r\n");
+	//å¼€å§‹è¯»å–ä¸€ä¸ªæ‰‡åŒº------------------------------
+    //è¯»å–æ•°æ®æ—¶ï¼Œæ¯æ¬¡è¯»å–4ä¸ªå­—èŠ‚
+		 //printf("å¼€å§‹ReadSingleBlock2è¯»å–\r\n");
         for (j = (512+3)>>2;j!= 0;j--)
         {
-					  //¼ì²â´íÎó ÓĞ´íÎóÔòÍË³ö
+					  //æ£€æµ‹é”™è¯¯ æœ‰é”™è¯¯åˆ™é€€å‡º
             if (SDHC->IRQSTAT & (   SDHC_IRQSTAT_DEBE_MASK //Data End Bit Error
                                   | SDHC_IRQSTAT_DCE_MASK  //Data CRC Error
                                   | SDHC_IRQSTAT_DTOE_MASK)) //DataTimeout Error
@@ -278,32 +278,32 @@ uint8_t SD_ReadSingleBlock(uint32_t sector, uint8_t *buffer)
                               | SDHC_IRQSTAT_BRR_MASK; //Buffer Read Ready
                 return ESDHC_ERROR_DATA_TRANSFER;
             }
-						//µÈ´ıÊı¾İ×¼±¸ºÃ	
+						//ç­‰å¾…æ•°æ®å‡†å¤‡å¥½	
             while (0 == (SDHC->PRSSTAT & SDHC_PRSSTAT_BREN_MASK)) {};
 						*ptr = SDHC->DATPORT;	  
-						ptr++;	//ÕâÀïÈ¡´ú *ptr++=SDHC->DATPORT;	 ÒòÎªÕâ¾äÓĞBUG
+						ptr++;	//è¿™é‡Œå–ä»£ *ptr++=SDHC->DATPORT;	 å› ä¸ºè¿™å¥æœ‰BUG
 						
         }
 	return ESDHC_OK;
 }
 
-//Ğ´ÈëSD¿¨µÄÒ»¸öblock				    
-//ÊäÈë:uint32_t sector ÉÈÇøµØÖ·£¨sectorÖµ£¬·ÇÎïÀíµØÖ·£© 
-//     uint8_t *buffer Êı¾İ´æ´¢µØÖ·   
-//·µ»ØÖµ:0£º ³É¹¦
-//       other£ºÊ§°Ü															  
+//å†™å…¥SDå¡çš„ä¸€ä¸ªblock				    
+//è¾“å…¥:uint32_t sector æ‰‡åŒºåœ°å€ï¼ˆsectorå€¼ï¼Œéç‰©ç†åœ°å€ï¼‰ 
+//     uint8_t *buffer æ•°æ®å­˜å‚¨åœ°å€   
+//è¿”å›å€¼:0ï¼š æˆåŠŸ
+//       otherï¼šå¤±è´¥															  
 uint8_t SD_WriteSingleBlock(uint32_t sector, const uint8_t *buffer)
 {
 	uint16_t results;
 	uint32_t	j;
   uint32_t	*ptr = (uint32_t*)buffer;
 	SD_CommandTypeDef SD_CommandStruct1;
-	if(SD_CardType == SD_CARD_TYPE_SD) //Èç¹ûÊÇÆÕÍ¨SD¿¨ °Ñ¿éµØÖ·×ª»»³É×Ö½ÚµØÖ·
+	if(SD_CardType == SD_CARD_TYPE_SD) //å¦‚æœæ˜¯æ™®é€šSDå¡ æŠŠå—åœ°å€è½¬æ¢æˆå­—èŠ‚åœ°å€
 	{
 		sector = sector<<9;
 	}
-	while (SDHC->PRSSTAT & SDHC_PRSSTAT_DLA_MASK){};//µÈ´ıDATAÏß¿ÕÏĞ
-	//SDHC->BLKATTR &= (~ SDHC_BLKATTR_BLKCNT_MASK); //Çå³ı¿ìÊı
+	while (SDHC->PRSSTAT & SDHC_PRSSTAT_DLA_MASK){};//ç­‰å¾…DATAçº¿ç©ºé—²
+	//SDHC->BLKATTR &= (~ SDHC_BLKATTR_BLKCNT_MASK); //æ¸…é™¤å¿«æ•°
 	//SDHC->BLKATTR |= SDHC_BLKATTR_BLKCNT(1);
  SD_CommandStruct1.COMMAND = ESDHC_CMD24;
  SD_CommandStruct1.ARGUMENT = sector;
@@ -313,9 +313,9 @@ uint8_t SD_WriteSingleBlock(uint32_t sector, const uint8_t *buffer)
 
 	if(results != ESDHC_OK) return ESDHC_ERROR_DATA_TRANSFER;  
 
-	//¿ªÊ¼Ğ´ÈëÒ»¸öÉÈÇø------------------------------
+	//å¼€å§‹å†™å…¥ä¸€ä¸ªæ‰‡åŒº------------------------------
 		
-    //¶ÁÈ¡Êı¾İÊ±£¬Ã¿´Î¶ÁÈ¡4¸ö×Ö½Ú
+    //è¯»å–æ•°æ®æ—¶ï¼Œæ¯æ¬¡è¯»å–4ä¸ªå­—èŠ‚
         for (j = (512)>>2;j!= 0;j--)
         {
             if (SDHC->IRQSTAT & (  SDHC_IRQSTAT_DEBE_MASK //Data End Bit Error
@@ -329,9 +329,9 @@ uint8_t SD_WriteSingleBlock(uint32_t sector, const uint8_t *buffer)
                               | SDHC_IRQSTAT_BWR_MASK; //Buffer Write Ready
                 return ESDHC_ERROR_DATA_TRANSFER;
             }
-            while (0 == (SDHC->PRSSTAT & SDHC_PRSSTAT_BWEN_MASK)){}; //µÈ´ıÊı¾İ×¼±¸ºÃ
+            while (0 == (SDHC->PRSSTAT & SDHC_PRSSTAT_BWEN_MASK)){}; //ç­‰å¾…æ•°æ®å‡†å¤‡å¥½
 						SDHC->DATPORT = *ptr;	
-						ptr++;	//ÕâÀïÈ¡´ú *ptr++=SDHC->DATPORT;	 ÒòÎªÕâ¾äÓĞBUG
+						ptr++;	//è¿™é‡Œå–ä»£ *ptr++=SDHC->DATPORT;	 å› ä¸ºè¿™å¥æœ‰BUG
         }
 				
 	if (SDHC->IRQSTAT & (SDHC_IRQSTAT_DEBE_MASK | SDHC_IRQSTAT_DCE_MASK | SDHC_IRQSTAT_DTOE_MASK))
@@ -340,7 +340,7 @@ uint8_t SD_WriteSingleBlock(uint32_t sector, const uint8_t *buffer)
 		results = ESDHC_ERROR_DATA_TRANSFER;
 	}
 	SDHC->IRQSTAT |= SDHC_IRQSTAT_TC_MASK | SDHC_IRQSTAT_BRR_MASK | SDHC_IRQSTAT_BWR_MASK;
-	//µÈ´ı¿¨×¼±¸ºÃ£¬´«Êä×´Ì¬
+	//ç­‰å¾…å¡å‡†å¤‡å¥½ï¼Œä¼ è¾“çŠ¶æ€
 	do
 	{
 			SD_CommandStruct1.COMMAND = ESDHC_CMD13;
@@ -360,20 +360,20 @@ uint8_t SD_WriteSingleBlock(uint32_t sector, const uint8_t *buffer)
 	return ESDHC_OK;
 }
 
-//»ñµÃ¿¨ÈİÁ¿
-//µ¥Î»MB
+//è·å¾—å¡å®¹é‡
+//å•ä½MB
 uint32_t SD_GetCapacity(SD_InitTypeDef* SD_InitStruct)
 {
-	uint32_t BlockBumber;  //¿ì¸öÊı
-	uint32_t Muti;         //³ËÊı
-	uint32_t BlockLen;     //Ã¿¿é³¤¶È
-	uint32_t Capacity;     //ÈİÁ¿
-	//¼ÆËã³ËÊı
+	uint32_t BlockBumber;  //å¿«ä¸ªæ•°
+	uint32_t Muti;         //ä¹˜æ•°
+	uint32_t BlockLen;     //æ¯å—é•¿åº¦
+	uint32_t Capacity;     //å®¹é‡
+	//è®¡ç®—ä¹˜æ•°
 	if((SD_InitStruct->CSD[3]>>22)&0x03)
 	{
 		//------------------------------------------------------------
-		//CSD V2.00°æ±¾(SDHC¿¨)
-		//¿¨ÈİÁ¿¼ÆËã¹«Ê½
+		//CSD V2.00ç‰ˆæœ¬(SDHCå¡)
+		//å¡å®¹é‡è®¡ç®—å…¬å¼
 		//memory capacity = (C_SIZE+1) * 512K byte 
 		//------------------------------------------------------------
 		BlockLen = (SD_InitStruct->CSD[2]>>24)&0xFF;
@@ -384,27 +384,27 @@ uint32_t SD_GetCapacity(SD_InitTypeDef* SD_InitStruct)
 	else
 	{
 		//------------------------------------------------------------
-		//CSD V1.00°æ±¾(ÆÕÍ¨SD¿¨)
-		//¿¨ÈİÁ¿¼ÆËã¹«Ê½  BLOCKNR = (C_SIZE+1) * MULT 
+		//CSD V1.00ç‰ˆæœ¬(æ™®é€šSDå¡)
+		//å¡å®¹é‡è®¡ç®—å…¬å¼  BLOCKNR = (C_SIZE+1) * MULT 
 		//MULT = 2^(C_SIZE_MULT+2)
 		//BLOCK_LEN = 2^((C_SIZE_MULT < 8) )
-		// ÈİÁ¿=BLOCKNR*BLOCK_LEN
+		// å®¹é‡=BLOCKNR*BLOCK_LEN
 		//------------------------------------------------------------
 	Muti=(SD_InitStruct->CSD[1]>>7)&0x7;
 	Muti=2<<(Muti+1);
-	//¼ÆËã¿éÊı
+	//è®¡ç®—å—æ•°
 	BlockBumber =((SD_InitStruct->CSD[2]>>0)&0x03);
 	BlockBumber=(BlockBumber<<10)+((SD_InitStruct->CSD[1]>>22)&0x0FFF);
 	BlockBumber++;
-	BlockBumber=BlockBumber*Muti;   //µÃµ½¿ìÊı
-	BlockLen = (SD_InitStruct->CSD[2]>>8)&0x0F;//µÃµ½Ã¿¿é´óĞ¡
+	BlockBumber=BlockBumber*Muti;   //å¾—åˆ°å¿«æ•°
+	BlockLen = (SD_InitStruct->CSD[2]>>8)&0x0F;//å¾—åˆ°æ¯å—å¤§å°
 	BlockLen = 2<<(BlockLen-1);
-	Capacity=BlockBumber*BlockLen;  //¼ÆËãÈİÁ¿ µ¥Î»Byte
-	Capacity=Capacity/1024/1024;    //µ¥Î»MB	
+	Capacity=BlockBumber*BlockLen;  //è®¡ç®—å®¹é‡ å•ä½Byte
+	Capacity=Capacity/1024/1024;    //å•ä½MB	
 	return Capacity;
 	}
 }	    			
-//¼ì²âIRQSTAT¼Ä´æÆ÷×´Ì¬
+//æ£€æµ‹IRQSTATå¯„å­˜å™¨çŠ¶æ€
 uint32_t SD_StatusWait (uint32_t  mask)
 {
     uint32_t   result;
@@ -421,71 +421,71 @@ uint32_t SD_SendCommand(SD_CommandTypeDef* Command)
   uint32_t xfertyp;
   uint32_t blkattr;
   
-  //¼ì²éÃüÁî
+  //æ£€æŸ¥å‘½ä»¤
   xfertyp = Command->COMMAND;
   if (ESDHC_XFERTYP_CMDTYP_RESUME == ((xfertyp & SDHC_XFERTYP_CMDTYP_MASK) >> SDHC_XFERTYP_CMDTYP_SHIFT))
   {
-    //»Ö¸´ÃüÁî±ØĞëÉèÖÃDPSELÎ»
+    //æ¢å¤å‘½ä»¤å¿…é¡»è®¾ç½®DPSELä½
     xfertyp |= SDHC_XFERTYP_DPSEL_MASK;
   }
   if ((Command->BLOCKS > 1) && (0 != Command->BLOCKSIZE))
   {
-		//printf("¶à¿é´«Êä\r\n");
+		//printf("å¤šå—ä¼ è¾“\r\n");
     xfertyp |= SDHC_XFERTYP_DPSEL_MASK;
     blkattr = SDHC_BLKATTR_BLKSIZE(Command->BLOCKSIZE) | SDHC_BLKATTR_BLKCNT(Command->BLOCKS);
-		//×¼Ğí¶ÁÈ¡BlockCnt
+		//å‡†è®¸è¯»å–BlockCnt
     xfertyp |= SDHC_XFERTYP_BCEN_MASK;
     if (Command->BLOCKS > 1)
     {
-      //¶à¿é´«Êä
+      //å¤šå—ä¼ è¾“
       xfertyp |= SDHC_XFERTYP_MSBSEL_MASK;
     }
 
   }
   else if(Command->BLOCKS == 1)
   {
-		//UART_printf("µ¥¿é´«Êä\r\n");
+		//UART_printf("å•å—ä¼ è¾“\r\n");
     blkattr = SDHC_BLKATTR_BLKSIZE(512) | SDHC_BLKATTR_BLKCNT(1);
   }
 	else
 	{
 		blkattr = SDHC_BLKATTR_BLKSIZE(512) | SDHC_BLKATTR_BLKCNT(0);
 	}
-  //Çå³ı¿¨ÒÆ³ı×´Ì¬
+  //æ¸…é™¤å¡ç§»é™¤çŠ¶æ€
   SDHC->IRQSTAT |= SDHC_IRQSTAT_CRM_MASK;
-  //µÈ´ıCMD¿ÕÏĞ
+  //ç­‰å¾…CMDç©ºé—²
   while (SDHC->PRSSTAT & SDHC_PRSSTAT_CIHB_MASK)
   { }; 
-  //³õÊ¼»¯ÃüÁî
+  //åˆå§‹åŒ–å‘½ä»¤
   SDHC->CMDARG = Command->ARGUMENT;
   SDHC->BLKATTR = blkattr;
   SDHC->DSADDR = 0;
-  //·¢ËÍÃüÁî
+  //å‘é€å‘½ä»¤
   SDHC->XFERTYP = xfertyp;
-  //µÈ´ıÏàÓ¦
+  //ç­‰å¾…ç›¸åº”
   if (SD_StatusWait (SDHC_IRQSTAT_CIE_MASK | SDHC_IRQSTAT_CEBE_MASK | SDHC_IRQSTAT_CCE_MASK | SDHC_IRQSTAT_CC_MASK) != SDHC_IRQSTAT_CC_MASK)
   {
     SDHC->IRQSTAT |= SDHC_IRQSTAT_CTOE_MASK | SDHC_IRQSTAT_CIE_MASK | SDHC_IRQSTAT_CEBE_MASK | SDHC_IRQSTAT_CCE_MASK | SDHC_IRQSTAT_CC_MASK;
     return ESDHC_ERROR_COMMAND_FAILED;
   }
   
-  //¼ì²é¿¨ÊÇ·ñÒÆ³ı
+  //æ£€æŸ¥å¡æ˜¯å¦ç§»é™¤
   if (SDHC->IRQSTAT & SDHC_IRQSTAT_CRM_MASK)
   {
     SDHC->IRQSTAT |= SDHC_IRQSTAT_CTOE_MASK | SDHC_IRQSTAT_CC_MASK;
     return ESDHC_ERROR_COMMAND_FAILED;
   }
-  //»ñÈ¡ÏàÓ¦
+  //è·å–ç›¸åº”
   if (SDHC->IRQSTAT & SDHC_IRQSTAT_CTOE_MASK)
   {
     SDHC->IRQSTAT |= SDHC_IRQSTAT_CTOE_MASK | SDHC_IRQSTAT_CC_MASK;
     return ESDHC_ERROR_COMMAND_TIMEOUT;
   }
-	//Èç¹û·¢ËÍµÄÊÇÓĞ»ØÓ¦µÄÃüÁî
+	//å¦‚æœå‘é€çš„æ˜¯æœ‰å›åº”çš„å‘½ä»¤
   if ((xfertyp & SDHC_XFERTYP_RSPTYP_MASK) != SDHC_XFERTYP_RSPTYP(ESDHC_XFERTYP_RSPTYP_NO))
   {
     Command->RESPONSE[0] = SDHC->CMDRSP[0];
-		//Èç¹û½ÓÊÜµ½µÄÊÇ136×Ö½ÚµÄ³¤ÏìÓ¦
+		//å¦‚æœæ¥å—åˆ°çš„æ˜¯136å­—èŠ‚çš„é•¿å“åº”
     if ((xfertyp & SDHC_XFERTYP_RSPTYP_MASK) == SDHC_XFERTYP_RSPTYP(ESDHC_XFERTYP_RSPTYP_136))
     {
       Command->RESPONSE[1] = SDHC->CMDRSP[1];
@@ -493,26 +493,26 @@ uint32_t SD_SendCommand(SD_CommandTypeDef* Command)
       Command->RESPONSE[3] = SDHC->CMDRSP[3];
     }
   }
-	//ÃüÁîÍê³É
+	//å‘½ä»¤å®Œæˆ
   SDHC->IRQSTAT |= SDHC_IRQSTAT_CC_MASK;
 	return ESDHC_OK;
 }
 
 
 
-//¶ÁSD¿¨µÄ¶à¸öblock(Î´³É¹¦£¡)										    
-//ÊäÈë:uint32_t sector ÉÈÇøµØÖ·£¨sectorÖµ£¬·ÇÎïÀíµØÖ·£© 
-//     uint8_t *buffer Êı¾İ´æ´¢µØÖ·£¨´óĞ¡ÖÁÉÙ512byte£©
-//     uint16_t count Á¬Ğø¶Ácount¸öblock 		   
-//·µ»ØÖµ:0£º ³É¹¦
-//       other£ºÊ§°Ü															  
+//è¯»SDå¡çš„å¤šä¸ªblock(æœªæˆåŠŸï¼)										    
+//è¾“å…¥:uint32_t sector æ‰‡åŒºåœ°å€ï¼ˆsectorå€¼ï¼Œéç‰©ç†åœ°å€ï¼‰ 
+//     uint8_t *buffer æ•°æ®å­˜å‚¨åœ°å€ï¼ˆå¤§å°è‡³å°‘512byteï¼‰
+//     uint16_t count è¿ç»­è¯»countä¸ªblock 		   
+//è¿”å›å€¼:0ï¼š æˆåŠŸ
+//       otherï¼šå¤±è´¥															  
 uint8_t SD_ReadMultiBlock(uint32_t sector, uint8_t *pbuffer, uint16_t count)
 {
 	uint32_t i,j;
 	uint16_t results;
   uint32_t	*ptr = (uint32_t*)pbuffer;
 	SD_CommandTypeDef SD_CommandStruct1;
-	if(SD_CardType == SD_CARD_TYPE_SD) //Èç¹ûÊÇÆÕÍ¨SD¿¨ °Ñ¿éµØÖ·×ª»»³É×Ö½ÚµØÖ·
+	if(SD_CardType == SD_CARD_TYPE_SD) //å¦‚æœæ˜¯æ™®é€šSDå¡ æŠŠå—åœ°å€è½¬æ¢æˆå­—èŠ‚åœ°å€
 	{
 		sector = sector<<9;
 	}
@@ -522,7 +522,7 @@ uint8_t SD_ReadMultiBlock(uint32_t sector, uint8_t *pbuffer, uint16_t count)
 	SD_CommandStruct1.ARGUMENT = sector;
 	results = SD_SendCommand(&SD_CommandStruct1);
 	if(results != ESDHC_OK) return ESDHC_ERROR_DATA_TRANSFER;  
-	//¿ªÊ¼´«ËÍÊı¾İ
+	//å¼€å§‹ä¼ é€æ•°æ®
 
 	for(i=0;i<count;i++)
 	{
@@ -530,7 +530,7 @@ uint8_t SD_ReadMultiBlock(uint32_t sector, uint8_t *pbuffer, uint16_t count)
 		{    
 			for (j = (512+3)>>2;j!= 0;j--)
 			{
-				//¼ì²â´íÎó ÓĞ´íÎóÔòÍË³ö
+				//æ£€æµ‹é”™è¯¯ æœ‰é”™è¯¯åˆ™é€€å‡º
 				if (SDHC->IRQSTAT & (   SDHC_IRQSTAT_DEBE_MASK //Data End Bit Error
 															| SDHC_IRQSTAT_DCE_MASK  //Data CRC Error
 															| SDHC_IRQSTAT_DTOE_MASK)) //DataTimeout Error
@@ -541,15 +541,15 @@ uint8_t SD_ReadMultiBlock(uint32_t sector, uint8_t *pbuffer, uint16_t count)
 													| SDHC_IRQSTAT_BRR_MASK; //Buffer Read Ready
 						return ESDHC_ERROR_DATA_TRANSFER;
 				}
-				//µÈ´ıÖ±µ½´«ÊäÍê³É
+				//ç­‰å¾…ç›´åˆ°ä¼ è¾“å®Œæˆ
 				while ((0 == (SDHC->PRSSTAT & SDHC_PRSSTAT_BREN_MASK)) && (SDHC->PRSSTAT & SDHC_PRSSTAT_DLA_MASK)) {};
 				*ptr = SDHC->DATPORT;
-				 ptr++;	//ÕâÀïÈ¡´ú *ptr++=SDHC->DATPORT;	 ÒòÎªÕâ¾äÓĞBUG
+				 ptr++;	//è¿™é‡Œå–ä»£ *ptr++=SDHC->DATPORT;	 å› ä¸ºè¿™å¥æœ‰BUG
 			}
 		}
 	}
 	
-	//µÈ´ı´«Êä½áÊø
+	//ç­‰å¾…ä¼ è¾“ç»“æŸ
 	SD_StatusWait (SDHC_IRQSTAT_TC_MASK);
 	if (SDHC->IRQSTAT & (SDHC_IRQSTAT_DEBE_MASK | SDHC_IRQSTAT_DCE_MASK | SDHC_IRQSTAT_DTOE_MASK))
 	{
@@ -557,7 +557,7 @@ uint8_t SD_ReadMultiBlock(uint32_t sector, uint8_t *pbuffer, uint16_t count)
 		results = ESDHC_ERROR_DATA_TRANSFER;
 	}
 	SDHC->IRQSTAT |= SDHC_IRQSTAT_TC_MASK | SDHC_IRQSTAT_BRR_MASK | SDHC_IRQSTAT_BWR_MASK;
-	//µÈ´ı¿¨×¼±¸ºÃ£¬´«Êä×´Ì¬
+	//ç­‰å¾…å¡å‡†å¤‡å¥½ï¼Œä¼ è¾“çŠ¶æ€
 	do
 	{
 			SD_CommandStruct1.COMMAND = ESDHC_CMD13;
@@ -576,14 +576,14 @@ uint8_t SD_ReadMultiBlock(uint32_t sector, uint8_t *pbuffer, uint16_t count)
 	return ESDHC_OK;
 }
 
-//¶à¿éĞ´Ö¸Áî
+//å¤šå—å†™æŒ‡ä»¤
 uint8_t SD_WriteMultiBlock(uint32_t sector,const uint8_t *pbuffer, uint16_t count)
 {
 	uint32_t i,j;
 	uint16_t results;
   uint32_t	*ptr = (uint32_t*)pbuffer;
 	SD_CommandTypeDef SD_CommandStruct1;
-	if(SD_CardType == SD_CARD_TYPE_SD) //Èç¹ûÊÇÆÕÍ¨SD¿¨ °Ñ¿éµØÖ·×ª»»³É×Ö½ÚµØÖ·
+	if(SD_CardType == SD_CARD_TYPE_SD) //å¦‚æœæ˜¯æ™®é€šSDå¡ æŠŠå—åœ°å€è½¬æ¢æˆå­—èŠ‚åœ°å€
 	{
 		sector = sector<<9;
 	}
@@ -598,7 +598,7 @@ uint8_t SD_WriteMultiBlock(uint32_t sector,const uint8_t *pbuffer, uint16_t coun
 		return ESDHC_ERROR_DATA_TRANSFER;  
 	}
 
-	//¿ªÊ¼´«ËÍÊı¾İ
+	//å¼€å§‹ä¼ é€æ•°æ®
 	for(i=0;i<count;i++)
 	{
 	        for (j = (512)>>2;j!= 0;j--)
@@ -614,14 +614,14 @@ uint8_t SD_WriteMultiBlock(uint32_t sector,const uint8_t *pbuffer, uint16_t coun
                               | SDHC_IRQSTAT_BWR_MASK; //Buffer Write Ready
                 return ESDHC_ERROR_DATA_TRANSFER;
             }
-            while (0 == (SDHC->PRSSTAT & SDHC_PRSSTAT_BWEN_MASK)){}; //µÈ´ıÊı¾İ×¼±¸ºÃ
+            while (0 == (SDHC->PRSSTAT & SDHC_PRSSTAT_BWEN_MASK)){}; //ç­‰å¾…æ•°æ®å‡†å¤‡å¥½
 						SDHC->DATPORT = *ptr;	
-						ptr++;	//ÕâÀïÈ¡´ú *ptr++=SDHC->DATPORT;	 ÒòÎªÕâ¾äÓĞBUG
+						ptr++;	//è¿™é‡Œå–ä»£ *ptr++=SDHC->DATPORT;	 å› ä¸ºè¿™å¥æœ‰BUG
         }
 	}
 	
 
-	//µÈ´ı´«Êä½áÊø
+	//ç­‰å¾…ä¼ è¾“ç»“æŸ
 	SD_StatusWait (SDHC_IRQSTAT_TC_MASK);
 	//UART_printf("Begin Send CMD12\r\n");
 //			SD_CommandStruct1.COMMAND = ESDHC_CMD12;
@@ -635,7 +635,7 @@ uint8_t SD_WriteMultiBlock(uint32_t sector,const uint8_t *pbuffer, uint16_t coun
 		results = ESDHC_ERROR_DATA_TRANSFER;
 	}
 	SDHC->IRQSTAT |= SDHC_IRQSTAT_TC_MASK | SDHC_IRQSTAT_BRR_MASK | SDHC_IRQSTAT_BWR_MASK;
-	//µÈ´ı¿¨×¼±¸ºÃ£¬´«Êä×´Ì¬
+	//ç­‰å¾…å¡å‡†å¤‡å¥½ï¼Œä¼ è¾“çŠ¶æ€
 	do
 	{
 			SD_CommandStruct1.COMMAND = ESDHC_CMD13;

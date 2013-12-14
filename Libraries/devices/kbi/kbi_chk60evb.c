@@ -1,7 +1,7 @@
-#include "kbi_chk60evb.h"
+ï»¿#include "kbi_chk60evb.h"
 
 
-//!< CHK60EB°å ³¬ºËK60¿ª·¢°åÉÏ KEY×ÊÔ´
+//!< CHK60EBæ¿ è¶…æ ¸K60å¼€å‘æ¿ä¸Š KEYèµ„æº
 const KBI_PinLookup_TypeDef KBI_PinLookup_CHK60EVB[kNumOfKEY] = 
 {
     {(uint32_t)PTC_BASE, (uint32_t)GPIO_Pin_17},

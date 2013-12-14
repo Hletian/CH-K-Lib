@@ -1,48 +1,48 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    lptm.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËK60¹Ì¼þ¿â LPTM µÍ¹¦ºÄ¶¨Ê±Æ÷ Çý¶¯
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ LPTM ä½ŽåŠŸè€—å®šæ—¶å™¨ é©±åŠ¨
   ******************************************************************************
   */
 #include "lptm.h"
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTMR µÍ¹¦ºÄ¶¨Ê±Æ÷ ³õÊ¼»¯
- ÐÎ²Î£ºLPTM_InitStruct: LPTMR³õÊ¼»¯½á¹¹ 
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTMR ä½ŽåŠŸè€—å®šæ—¶å™¨ åˆå§‹åŒ–
+ å½¢å‚ï¼šLPTM_InitStruct: LPTMRåˆå§‹åŒ–ç»“æž„ 
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void LPTM_Init(LPTM_InitTypeDef* LPTM_InitStruct)
 {
 	LPTMR_Type* LPTMx = LPTMR0;
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_PC_MODE(LPTM_InitStruct->LPTM_Mode));
 	assert_param(IS_LPTM_MAP(LPTM_InitStruct->LPTMxMap));
 	
-	//¿ªÆôLPTM¶¨Ê±Æ÷Ä£¿é
+	//å¼€å¯LPTMå®šæ—¶å™¨æ¨¡å—
 	SIM->SCGC5 |= SIM_SCGC5_LPTIMER_MASK; 
-	//Çå¿Õ¼Ä´æÆ÷
+	//æ¸…ç©ºå¯„å­˜å™¨
 	LPTMx->CSR = 0x00; 
   LPTMx->PSR = 0x00;
   LPTMx->CMR = 0x00;
-	//¶¨Ê±¼ÆÊýÄ£Ê½
+	//å®šæ—¶è®¡æ•°æ¨¡å¼
 	if(LPTM_InitStruct->LPTM_Mode == LPTM_Mode_TC)
 	{
 		LPTMx->CSR &= ~LPTMR_CSR_TMS_MASK; 
-		//²»·ÖÆµ ²ÉÓÃ1KHZÊ±ÖÓÔ´	
+		//ä¸åˆ†é¢‘ é‡‡ç”¨1KHZæ—¶é’Ÿæº	
 		LPTMx->PSR = LPTMR_PSR_PCS(0x1)|LPTMR_PSR_PBYP_MASK; 
-		//Éè¶¨³õÊ¼Öµ
+		//è®¾å®šåˆå§‹å€¼
 		LPTMx->CMR = LPTMR_CMR_COMPARE(LPTM_InitStruct->LPTM_InitCompareValue); 
-		//¿ªÆôÄ£¿é	
+		//å¼€å¯æ¨¡å—	
 		LPTMx->CSR |= LPTMR_CSR_TEN_MASK;  
 	}
-	else //Íâ²¿Âö³å¼ÆÊýÄ£Ê½
+	else //å¤–éƒ¨è„‰å†²è®¡æ•°æ¨¡å¼
 	{
 		LPTMx->CSR |= LPTMR_CSR_TMS_MASK; 
-		//ÉèÖÃÉÏÉý»òÕßÏÂ½µÑØ¼ÆÊý
+		//è®¾ç½®ä¸Šå‡æˆ–è€…ä¸‹é™æ²¿è®¡æ•°
 		switch(LPTM_InitStruct->LPTM_Mode)
 		{
 			case LPTM_Mode_PC_RISING:
@@ -57,89 +57,89 @@ void LPTM_Init(LPTM_InitTypeDef* LPTM_InitStruct)
 		{
 			case LPTM_CH1_PA19:
 				SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;
-				//ÅäÖÃIO¿ÚÎªLPTMÍ¨µÀ
+				//é…ç½®IOå£ä¸ºLPTMé€šé“
 				PORTA->PCR[19] &= ~(PORT_PCR_MUX_MASK);
 				PORTA->PCR[19] |= PORT_PCR_MUX(6); 
-				PORTA->PCR[19] |= PORT_PCR_PE_MASK; //Ê¹ÄÜÉÏÏÂÀ­¹¦ÄÜ
-				//Ñ¡ÔñÊäÈëÍ¨µÀ	 
+				PORTA->PCR[19] |= PORT_PCR_PE_MASK; //ä½¿èƒ½ä¸Šä¸‹æ‹‰åŠŸèƒ½
+				//é€‰æ‹©è¾“å…¥é€šé“	 
 				LPTMx->CSR |= LPTMR_CSR_TPS(1);
 				break;
 			case LPTM_CH2_PC5:
 				SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;
-				//ÅäÖÃIO¿ÚÎªLPTMÍ¨µÀ
+				//é…ç½®IOå£ä¸ºLPTMé€šé“
 				PORTC->PCR[5] &= ~(PORT_PCR_MUX_MASK);
 				PORTC->PCR[5] |= PORT_PCR_MUX(4);
-				PORTC->PCR[5] |= PORT_PCR_PE_MASK;    //Ê¹ÄÜÉÏÏÂÀ­¹¦ÄÜ
-				//Ñ¡ÔñÊäÈëÍ¨µÀ	 
+				PORTC->PCR[5] |= PORT_PCR_PE_MASK;    //ä½¿èƒ½ä¸Šä¸‹æ‹‰åŠŸèƒ½
+				//é€‰æ‹©è¾“å…¥é€šé“	 
 				LPTMx->CSR |= LPTMR_CSR_TPS(2);
 				break;
 		}
-		//×ÔÓÉÔËÐÐÄ£Ê½
+		//è‡ªç”±è¿è¡Œæ¨¡å¼
 		LPTMx->CSR |= LPTMR_CSR_TFC_MASK;   
 		LPTMx->PSR |= LPTMR_PSR_PBYP_MASK;  
-		//¿ªÆôÄ£¿é	
+		//å¼€å¯æ¨¡å—	
 		LPTMx->CSR |= LPTMR_CSR_TEN_MASK;  
 	}
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTMR ÉèÖÃ¶¨Ê±Æ÷±È½ÏÖµ
- ÐÎ²Î£ºLPTMx: LPTMRÄ£¿éºÅ
-       @arg LPTMR0 : LPTMR0Ä£¿é
-			 Value : Öµ 0-0xFFFF
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTMR è®¾ç½®å®šæ—¶å™¨æ¯”è¾ƒå€¼
+ å½¢å‚ï¼šLPTMx: LPTMRæ¨¡å—å·
+       @arg LPTMR0 : LPTMR0æ¨¡å—
+			 Value : å€¼ 0-0xFFFF
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void LPTM_SetCompareValue(LPTMR_Type* LPTMx, uint32_t Value)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_ALL_PERIPH(LPTMx));
 	
 	LPTMx->CMR = LPTMR_CMR_COMPARE(Value); 
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTMR »ñµÃ¶¨Ê±Æ÷±È½ÏÖµ
- ÐÎ²Î£ºLPTMx: LPTMRÄ£¿éºÅ
-       @arg LPTMR0 : LPTMR0Ä£¿é
- ·µ»Ø£ºCMRÖµ  0-0xFFFF
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTMR èŽ·å¾—å®šæ—¶å™¨æ¯”è¾ƒå€¼
+ å½¢å‚ï¼šLPTMx: LPTMRæ¨¡å—å·
+       @arg LPTMR0 : LPTMR0æ¨¡å—
+ è¿”å›žï¼šCMRå€¼  0-0xFFFF
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint32_t LPTM_GetCompareValue(LPTMR_Type* LPTMx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_ALL_PERIPH(LPTMx));
 	
 	return (uint32_t)(LPTMx->CMR & LPTMR_CMR_COMPARE_MASK);
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTMR »ñµÃ¼ÆÊ±Æ÷Öµ
- ÐÎ²Î£ºLPTMx: LPTMRÄ£¿éºÅ
-       @arg LPTMR0 : LPTMR0Ä£¿é
- ·µ»Ø£ºCNRÖµ  0-0xFFFF
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTMR èŽ·å¾—è®¡æ—¶å™¨å€¼
+ å½¢å‚ï¼šLPTMx: LPTMRæ¨¡å—å·
+       @arg LPTMR0 : LPTMR0æ¨¡å—
+ è¿”å›žï¼šCNRå€¼  0-0xFFFF
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint32_t LPTM_GetTimerCounterValue(LPTMR_Type* LPTMx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_ALL_PERIPH(LPTMx));
 	
 	return (uint32_t)(LPTMx->CNR & LPTMR_CNR_COUNTER_MASK); 
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTMR ÖÐ¶ÏÅäÖÃ
- ÐÎ²Î£ºLPTMx: LPTMRÄ£¿éºÅ
-       @arg LPTMR0 : LPTMR0Ä£¿é
-			 LPTM_IT: ÖÐ¶ÏÔ´
-			 @arg LPTM_IT_TCF : LPTM¶¨Ê±Æ÷Òç³öÖÐ¶Ï
-       NewState : Ê¹ÄÜ
-       @arg ENABLE:  Ê¹ÄÜ
-       @arg DISABLE: ½ûÖ¹
- ·µ»Ø£ºCNRÖµ  0-0xFFFF
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTMR ä¸­æ–­é…ç½®
+ å½¢å‚ï¼šLPTMx: LPTMRæ¨¡å—å·
+       @arg LPTMR0 : LPTMR0æ¨¡å—
+			 LPTM_IT: ä¸­æ–­æº
+			 @arg LPTM_IT_TCF : LPTMå®šæ—¶å™¨æº¢å‡ºä¸­æ–­
+       NewState : ä½¿èƒ½
+       @arg ENABLE:  ä½¿èƒ½
+       @arg DISABLE: ç¦æ­¢
+ è¿”å›žï¼šCNRå€¼  0-0xFFFF
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void LPTM_ITConfig(LPTMR_Type* LPTMx, uint16_t LPTM_IT, FunctionalState NewState)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_ALL_PERIPH(LPTMx));
 	
 	if(LPTM_IT == LPTM_IT_TCF)
@@ -148,20 +148,20 @@ void LPTM_ITConfig(LPTMR_Type* LPTMx, uint16_t LPTM_IT, FunctionalState NewState
 	}
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTMR »ñµÃLPTMÖÐ¶Ï±êÖ¾
- ÐÎ²Î£ºLPTMx: LPTMRÄ£¿éºÅ
-       @arg LPTMR0 : LPTMR0Ä£¿é
-			 LPTM_IT: ÖÐ¶ÏÔ´
-			 @arg LPTM_IT_TCF : LPTM¶¨Ê±Æ÷Òç³öÖÐ¶Ï
- ·µ»Ø£ºITStatus : ±êÖ¾
-       @arg SET :  ÖÃÎ»
-       @arg RESET: ¸´Î»
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTMR èŽ·å¾—LPTMä¸­æ–­æ ‡å¿—
+ å½¢å‚ï¼šLPTMx: LPTMRæ¨¡å—å·
+       @arg LPTMR0 : LPTMR0æ¨¡å—
+			 LPTM_IT: ä¸­æ–­æº
+			 @arg LPTM_IT_TCF : LPTMå®šæ—¶å™¨æº¢å‡ºä¸­æ–­
+ è¿”å›žï¼šITStatus : æ ‡å¿—
+       @arg SET :  ç½®ä½
+       @arg RESET: å¤ä½
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 ITStatus LPTM_GetITStatus(LPTMR_Type* LPTMx, uint16_t LPTM_IT)
 {
 	ITStatus retval;
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_ALL_PERIPH(LPTMx));
 	
 	if(LPTM_IT == LPTM_IT_TCF)
@@ -171,17 +171,17 @@ ITStatus LPTM_GetITStatus(LPTMR_Type* LPTMx, uint16_t LPTM_IT)
 	return retval;
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTMR Çå³ýIT±êÖ¾Î»
- ÐÎ²Î£ºLPTMx: LPTMRÄ£¿éºÅ
-       @arg LPTMR0 : LPTMR0Ä£¿é
-			 LPTM_IT: ÖÐ¶ÏÔ´
-			 @arg LPTM_IT_TCF : LPTM¶¨Ê±Æ÷Òç³öÖÐ¶Ï
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTMR æ¸…é™¤ITæ ‡å¿—ä½
+ å½¢å‚ï¼šLPTMx: LPTMRæ¨¡å—å·
+       @arg LPTMR0 : LPTMR0æ¨¡å—
+			 LPTM_IT: ä¸­æ–­æº
+			 @arg LPTM_IT_TCF : LPTMå®šæ—¶å™¨æº¢å‡ºä¸­æ–­
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void LPTM_ClearITPendingBit(LPTMR_Type *LPTMx, uint16_t LPTM_IT)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_ALL_PERIPH(LPTMx));
 	
 	if(LPTM_IT == LPTM_IT_TCF)
@@ -190,37 +190,37 @@ void LPTM_ClearITPendingBit(LPTMR_Type *LPTMx, uint16_t LPTM_IT)
 	}
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTM ¶¨Ê±¼ÆÊýÄ£Ê½ÏÂ ÑÓÊ±
- ÐÎ²Î£ºms: 0- 65535 ÉèÖÃ¶¨Ê±Æ÷Ê±¼ä
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTM å®šæ—¶è®¡æ•°æ¨¡å¼ä¸‹ å»¶æ—¶
+ å½¢å‚ï¼šms: 0- 65535 è®¾ç½®å®šæ—¶å™¨æ—¶é—´
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void LPTM_DelayMs(LPTMR_Type* LPTMx, uint32_t ms)
 {
-  //²ÎÊý¼ì²é
+  //å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_DELAY_TIME(ms));
 	assert_param(IS_LPTM_ALL_PERIPH(LPTMx));
-	//ÉèÖÃ¼ÆÊ±Ä£Ê½
+	//è®¾ç½®è®¡æ—¶æ¨¡å¼
   LPTMx->CMR = LPTMR_CMR_COMPARE(ms); 
-	//¿ªÆô¶¨Ê±Æ÷
+	//å¼€å¯å®šæ—¶å™¨
 	LPTMx->CSR |= LPTMR_CSR_TEN_MASK;		
 	while(LPTM_GetITStatus(LPTMx,LPTM_IT_TCF) == RESET) {};
-	//¹Ø±Õ¶¨Ê±Æ÷
+	//å…³é—­å®šæ—¶å™¨
 	LPTMx->CSR &= ~LPTMR_CSR_TEN_MASK;		
 }
 /***********************************************************************************************
- ¹¦ÄÜ£ºLPTMR ÖØÖÃ¼ÆÊýÆ÷
- ÐÎ²Î£ºLPTMx: LPTMRÄ£¿éºÅ
-       @arg LPTMR0 : LPTMR0Ä£¿é
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šLPTMR é‡ç½®è®¡æ•°å™¨
+ å½¢å‚ï¼šLPTMx: LPTMRæ¨¡å—å·
+       @arg LPTMR0 : LPTMR0æ¨¡å—
+ è¿”å›žï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void LPTM_ResetTimeCounter(LPTMR_Type* LPTMx)
 {
-	//²ÎÊý¼ì²é
+	//å‚æ•°æ£€æŸ¥
 	assert_param(IS_LPTM_ALL_PERIPH(LPTMx));
 	
-	//ÖØÆôÄ£¿é
+	//é‡å¯æ¨¡å—
 	LPTMx->CSR &= ~(LPTMR_CSR_TEN_MASK);
 	LPTMx->CSR |= LPTMR_CSR_TEN_MASK;
 }

@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    enet.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â ÒÔÌ«Íø Çı¶¯ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ä»¥å¤ªç½‘ é©±åŠ¨æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __ENET_H__
@@ -19,7 +19,7 @@
 #include "string.h"
 #include "stdio.h"
 
-/* MII¼Ä´æÆ÷µØÖ· */
+/* MIIå¯„å­˜å™¨åœ°å€ */
 #define PHY_BMCR                    (0x00)
 #define PHY_BMSR                    (0x01)
 #define PHY_PHYIDR1                 (0x02)
@@ -35,7 +35,7 @@
 #define PHY_PAGESEL                 (0x13)
 
 
-/* PHY_BMCR¼Ä´æÆ÷Î»¶¨Òå */
+/* PHY_BMCRå¯„å­˜å™¨ä½å®šä¹‰ */
 #define PHY_BMCR_RESET              (0x8000)
 #define PHY_BMCR_LOOP               (0x4000)
 #define PHY_BMCR_SPEED              (0x2000)
@@ -46,7 +46,7 @@
 #define PHY_BMCR_FDX                (0x0100)
 #define PHY_BMCR_COL_TEST           (0x0080)
 
-/* PHY_BMSR¼Ä´æÆ÷Î»¶¨Òå */
+/* PHY_BMSRå¯„å­˜å™¨ä½å®šä¹‰ */
 #define PHY_BMSR_100BT4             (0x8000)
 #define PHY_BMSR_100BTX_FDX         (0x4000)
 #define PHY_BMSR_100BTX             (0x2000)
@@ -60,7 +60,7 @@
 #define PHY_BMSR_JABBER             (0x0002)
 #define PHY_BMSR_EXTENDED           (0x0001)
 
-/* PHY_ANAR¼Ä´æÆ÷Î»¶¨Òå */
+/* PHY_ANARå¯„å­˜å™¨ä½å®šä¹‰ */
 #define PHY_ANAR_NEXT_PAGE          (0x8001)
 #define PHY_ANAR_REM_FAULT          (0x2001)
 #define PHY_ANAR_PAUSE              (0x0401)
@@ -71,7 +71,7 @@
 #define PHY_ANAR_10BT               (0x0021)
 #define PHY_ANAR_802_3              (0x0001)
 
-/* PHY_ANLPAR¼Ä´æÆ÷Î»¶¨Òå */
+/* PHY_ANLPARå¯„å­˜å™¨ä½å®šä¹‰ */
 #define PHY_ANLPAR_NEXT_PAGE        (0x8000)
 #define PHY_ANLPAR_ACK              (0x4000)
 #define PHY_ANLPAR_REM_FAULT        (0x2000)
@@ -83,7 +83,7 @@
 #define PHY_ANLPAR_10BT             (0x0020)
 
 
-/* PHY_PHYSTS¼Ä´æÆ÷Î»¶¨Òå */
+/* PHY_PHYSTSå¯„å­˜å™¨ä½å®šä¹‰ */
 #define PHY_PHYSTS_MDIXMODE         (0x4000)
 #define PHY_PHYSTS_RX_ERR_LATCH     (0x2000)
 #define PHY_PHYSTS_POL_STATUS       (0x1000)
@@ -100,17 +100,17 @@
 #define PHY_PHYSTS_LINKSTATUS       (0x0001)
 
 
-/* PHYÓ²¼şÌØĞÔ */
+/* PHYç¡¬ä»¶ç‰¹æ€§ */
 #define PHY_STATUS								( 0x1F )
 #define PHY_DUPLEX_STATUS							( 4<<2 )
 #define PHY_SPEED_STATUS							( 1<<2 )
-/* PHYÊÕ·¢Æ÷Ó²¼şµØÖ· */
+/* PHYæ”¶å‘å™¨ç¡¬ä»¶åœ°å€ */
 #define CFG_PHY_ADDRESS	            0x01
 
 
-//Freescale´¦ÀíÆ÷Ïà¹Ø¶¨Òå
+//Freescaleå¤„ç†å™¨ç›¸å…³å®šä¹‰
 
-/* TX»º³åÇøÃèÊö·ûÎ»¶¨Òå */
+/* TXç¼“å†²åŒºæè¿°ç¬¦ä½å®šä¹‰ */
 #define TX_BD_R			0x0080
 #define TX_BD_TO1		0x0040
 #define TX_BD_W			0x0020
@@ -119,7 +119,7 @@
 #define TX_BD_TC		0x0004
 #define TX_BD_ABC		0x0002
 
-/* TXÔöÇ¿ĞÍ»º³åÇøÃèÊö·ûÎ»¶¨Òå */
+/* TXå¢å¼ºå‹ç¼“å†²åŒºæè¿°ç¬¦ä½å®šä¹‰ */
 #define TX_BD_INT       0x00000040 
 #define TX_BD_TS        0x00000020 
 #define TX_BD_PINS      0x00000010 
@@ -134,8 +134,8 @@
 
 #define TX_BD_BDU       0x00000080    
 
-/* RX»º³åÇøÃèÊö·ûÎ»¶¨Òå */
-// 0Æ«ÒÆ±êÖ¾ - ×´Ì¬:´ó¶Ë¸ñÊ½
+/* RXç¼“å†²åŒºæè¿°ç¬¦ä½å®šä¹‰ */
+// 0åç§»æ ‡å¿— - çŠ¶æ€:å¤§ç«¯æ ¼å¼
 #define RX_BD_E			0x0080
 #define RX_BD_R01		0x0040
 #define RX_BD_W			0x0020
@@ -150,7 +150,7 @@
 #define RX_BD_OV		0x0200
 #define RX_BD_TR		0x0100
 
-/* RXÔöÇ¿ĞÍ»º³åÇøÃèÊö·ûÎ»¶¨Òå */
+/* RXå¢å¼ºå‹ç¼“å†²åŒºæè¿°ç¬¦ä½å®šä¹‰ */
 #define RX_BD_ME               0x00000080    
 #define RX_BD_PE               0x00000004    
 #define RX_BD_CE               0x00000002    
@@ -166,19 +166,19 @@
 
 #define RX_BD_BDU              0x00000080   
 
-/* MII½Ó¿Ú³¬Ê± */
+/* MIIæ¥å£è¶…æ—¶ */
 #define MII_TIMEOUT		0x1FFFF
 
 
 typedef void (*ENET_ISR_CALLBACK)(void);
 
-/* ÒÔÌ«Ö¡Ïà¹Ø¶¨Òå */
-#define CFG_NUM_ENET_TX_BUFFERS       1     //·¢ËÍ»º³åÇø¸öÊı
-#define CFG_NUM_ENET_RX_BUFFERS	      8     //½ÓÊÕ»º³åÇø¸öÊı
-#define CFG_ENET_BUFFER_SIZE	      1520    //ÒÔÌ«·¢ËÍÖ¡»º³åÇø³¤¶È
-#define CFG_ENET_MAX_PACKET_SIZE    1520    //ÒÔÌ«·¢×î´óÊı¾İ°ü³¤¶È
+/* ä»¥å¤ªå¸§ç›¸å…³å®šä¹‰ */
+#define CFG_NUM_ENET_TX_BUFFERS       1     //å‘é€ç¼“å†²åŒºä¸ªæ•°
+#define CFG_NUM_ENET_RX_BUFFERS	      8     //æ¥æ”¶ç¼“å†²åŒºä¸ªæ•°
+#define CFG_ENET_BUFFER_SIZE	      1520    //ä»¥å¤ªå‘é€å¸§ç¼“å†²åŒºé•¿åº¦
+#define CFG_ENET_MAX_PACKET_SIZE    1520    //ä»¥å¤ªå‘æœ€å¤§æ•°æ®åŒ…é•¿åº¦
 
-/* »º³åÇøÃèÊö·û½á¹¹Ìå */
+/* ç¼“å†²åŒºæè¿°ç¬¦ç»“æ„ä½“ */
   typedef struct
   {
   	uint16_t status;	            /* control and status */
@@ -200,7 +200,7 @@ typedef struct
 }ENET_InitTypeDef;
 
 
-//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
+//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
 uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut);
 void ENET_MacSendData(uint8_t *ch, uint16_t len);
 uint16_t ENET_MacRecData(uint8_t *ch);

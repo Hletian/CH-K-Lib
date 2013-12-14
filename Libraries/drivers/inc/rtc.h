@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    rtc.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â ÊµÊ±Ê±ÖÓÇı¶¯ Í·ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ å®æ—¶æ—¶é’Ÿé©±åŠ¨ å¤´æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __RTC_H_
@@ -15,7 +15,7 @@
 #endif
 
 #include "sys.h"
-//Ê±¼ä½á¹¹Ìå
+//æ—¶é—´ç»“æ„ä½“
 typedef struct 
 {
 	uint8_t Hour;
@@ -28,7 +28,7 @@ typedef struct
 	uint32_t TSRValue;
 }RTC_CalanderTypeDef;		
 
-//RTC ÖĞ¶ÏÔ´
+//RTC ä¸­æ–­æº
 #define RTC_IT_TAF    (uint16_t)(0)
 #define RTC_IT_TOF    (uint16_t)(1)
 #define RTC_IT_TIF    (uint16_t)(2)
@@ -36,7 +36,7 @@ typedef struct
                         ((IT) == RTC_IT_TOF) || \
                         ((IT) == RTC_IT_TIF))
 
-//±¾¹¹¼şÊµÏÖµÄº¯Êı½Ó¿ÚÁĞ±í
+//æœ¬æ„ä»¶å®ç°çš„å‡½æ•°æ¥å£åˆ—è¡¨
 void RTC_Init(void);
 void RTC_SecondIntProcess(void);
 void RTC_GetCalander(RTC_CalanderTypeDef * RTC_CalanderStruct);

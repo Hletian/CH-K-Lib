@@ -1,9 +1,9 @@
-#ifndef __KBI_CHKATOM_H__
+ï»¿#ifndef __KBI_CHKATOM_H__
 #define __KBI_CHKATOM_H__
 
 #include "kbi.h"
 
-// !< CHK60Atom Ô­×ÓºËºËÐÄ°åÉÏ KEY×ÊÔ´
+// !< CHK60Atom åŽŸå­æ ¸æ ¸å¿ƒæ¿ä¸Š KEYèµ„æº
 typedef enum
 { 
     kKEY1,

@@ -1,65 +1,65 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    spilcd.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËÔ­×ÓºËºËĞÄ°å BSP¹¹¼ş SPILCDÇı¶¯
+  * @brief   è¶…æ ¸åŸå­æ ¸æ ¸å¿ƒæ¿ BSPæ„ä»¶ SPILCDé©±åŠ¨
   ******************************************************************************
   */
 #include "spilcd.h"
 #include "spi.h"
 
 
-//º¯ÊıÃû£ºSPILCD_WR_REG
-//²Î  Êı£ºÎŞ
-//        ÊµÏÖĞ´ÈëÒ»×Ö½ÚÃüÁî
+//å‡½æ•°åï¼šSPILCD_WR_REG
+//å‚  æ•°ï¼šæ— 
+//        å®ç°å†™å…¥ä¸€å­—èŠ‚å‘½ä»¤
 void SPILCD_WR_REG(uint8_t com)
 {
 	SPILCD_RS=0;
 	SPI_ReadWriteByte(SPILCD_PORT_CS,com,SPI_PCS_Inactive);
 }
-//º¯ÊıÃû£ºLCD_WR_REG
-//²Î  Êı£ºÎŞ
-//        ÊµÏÖĞ´ÈëÒ»×Ö½ÚÊı¾İ
+//å‡½æ•°åï¼šLCD_WR_REG
+//å‚  æ•°ï¼šæ— 
+//        å®ç°å†™å…¥ä¸€å­—èŠ‚æ•°æ®
 void SPILCD_WR_DATA(uint8_t dat)
 {
 	SPILCD_RS=1;
 	SPI_ReadWriteByte(SPILCD_PORT_CS,dat,SPI_PCS_Inactive);
 }
-//º¯ÊıÃû£ºLCD_WR_REG
-//²Î  Êı£ºÎŞ
-//        ×¼±¸¿ªÊ¼Ğ´ÈëGRAM
+//å‡½æ•°åï¼šLCD_WR_REG
+//å‚  æ•°ï¼šæ— 
+//        å‡†å¤‡å¼€å§‹å†™å…¥GRAM
  void SPILCD_WriteRAM_Prepare(void)
 {
-	SPILCD_WR_REG(0x2c);   //Ğ´RAM
+	SPILCD_WR_REG(0x2c);   //å†™RAM
 }	 
 
-//º¯ÊıÃû£ºLCD_WR_REG
-//²Î  Êı£ºÎŞ
-//        Ğ´GRAMÊı¾İ
+//å‡½æ•°åï¼šLCD_WR_REG
+//å‚  æ•°ï¼šæ— 
+//        å†™GRAMæ•°æ®
 void SPILCD_WriteRAM(uint16_t RGB_Code)
 {							    
     SPILCD_WR_DATA(RGB_Code>>8);
     SPILCD_WR_DATA(RGB_Code); 
 }
-//º¯ÊıÃû£ºLCD_DisplayOn
-//²Î  Êı£ºÎŞ
-//        ¿ªÆôÏÔÊ¾
+//å‡½æ•°åï¼šLCD_DisplayOn
+//å‚  æ•°ï¼šæ— 
+//        å¼€å¯æ˜¾ç¤º
 void LCD_DisplayOn(void)
 {					   
     SPILCD_WR_REG(0x29);   //
 }	 
-//º¯ÊıÃû£ºLCD_DisplayOff
-//²Î  Êı£ºÎŞ
-//        ¹Ø±ÕÏÔÊ¾
+//å‡½æ•°åï¼šLCD_DisplayOff
+//å‚  æ•°ï¼šæ— 
+//        å…³é—­æ˜¾ç¤º
 void LCD_DisplayOff(void)
 {	   
     SPILCD_WR_REG(0x28);   //
 }   
-//º¯ÊıÃû£ºLCD_SetWindow
-//²Î  Êı£ºXpos:ºá×ø±ê
-//				Ypos:×İ×ø±ê
+//å‡½æ•°åï¼šLCD_SetWindow
+//å‚  æ•°ï¼šXpos:æ¨ªåæ ‡
+//				Ypos:çºµåæ ‡
  void SPILCD_SetWindow(uint16_t xstat,uint16_t xend,uint16_t ystat,uint16_t yend)
 {
 	 SPILCD_WR_REG(0x2A);
@@ -74,40 +74,40 @@ void LCD_DisplayOff(void)
    SPILCD_WR_DATA(yend>>8);
 	SPILCD_WR_DATA(yend);
 }
-//¿ªÆô·´É«ÏÔÊ¾
+//å¼€å¯åè‰²æ˜¾ç¤º
 void LCD_InvDisplayOn()
 {
   SPILCD_WR_REG(0x21);  
 }
-//¹Ø±Õ·´É«ÏÔÊ¾
+//å…³é—­åè‰²æ˜¾ç¤º
 void LCD_InvDisplayOff()
 {
   SPILCD_WR_REG(0x20); 
 }   
 
-//º¯ÊıÃû£ºSPILCD_Init
-//²Î  Êı£ºÎŞ
-//        LCD Ó²¼ş³õÊ¼»¯
+//å‡½æ•°åï¼šSPILCD_Init
+//å‚  æ•°ï¼šæ— 
+//        LCD ç¡¬ä»¶åˆå§‹åŒ–
 void SPILCD_Init()
 {
 	uint32_t delay_cnt = 0;
 	SPI_InitTypeDef SPI_InitStruct1;
 	GPIO_InitTypeDef GPIO_InitStruct1;
-  //³õÊ¼»¯RSTÒı½Å
+  //åˆå§‹åŒ–RSTå¼•è„š
 	GPIO_InitStruct1.GPIO_Pin = SPILCD_RST_PIN;
 	GPIO_InitStruct1.GPIO_InitState = Bit_RESET;
 	GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;
 	GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_OPP;
 	GPIO_InitStruct1.GPIOx = SPILCD_RST_PORT;
 	GPIO_Init(&GPIO_InitStruct1);
-	//³õÊ¼»¯RSÒı½Å
+	//åˆå§‹åŒ–RSå¼•è„š
 	GPIO_InitStruct1.GPIO_Pin = SPILCD_RS_PIN;
 	GPIO_InitStruct1.GPIO_InitState = Bit_RESET;
 	GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;
 	GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_OPP;
 	GPIO_InitStruct1.GPIOx = SPILCD_RS_PORT;
 	GPIO_Init(&GPIO_InitStruct1);
-	//³õÊ¼»¯SPI´®ĞĞ½Ó¿ÚÒıÇæ
+	//åˆå§‹åŒ–SPIä¸²è¡Œæ¥å£å¼•æ“
 	SPI_InitStruct1.SPIxDataMap = SPILCD_PORT_DATA;
 	SPI_InitStruct1.SPIxPCSMap = SPILCD_PORT_CS;
 	SPI_InitStruct1.SPI_DataSize = 8;
@@ -122,10 +122,10 @@ void SPILCD_Init()
 	for(delay_cnt=0;delay_cnt<60000;delay_cnt++);
 	SPILCD_RST=1;    
 	for(delay_cnt=0;delay_cnt<60000;delay_cnt++);	
-	SPILCD_WR_REG(0x11);       		  	//¹Ø±ÕË¯Ãß£¬Õñµ´Æ÷¹¤×÷
+	SPILCD_WR_REG(0x11);       		  	//å…³é—­ç¡çœ ï¼ŒæŒ¯è¡å™¨å·¥ä½œ
 	for(delay_cnt=0;delay_cnt<60000;delay_cnt++);	
 	
-	SPILCD_WR_REG(0x3a);       		  	//Ã¿´Î´«ËÍ16Î»Êı¾İ(VIPF3-0=0101)£¬Ã¿¸öÏñËØ16Î»(IFPF2-0=101)
+	SPILCD_WR_REG(0x3a);       		  	//æ¯æ¬¡ä¼ é€16ä½æ•°æ®(VIPF3-0=0101)ï¼Œæ¯ä¸ªåƒç´ 16ä½(IFPF2-0=101)
 	SPILCD_WR_DATA(0x55);						
  
 	SPILCD_WR_REG(0x26);       		  	
@@ -168,9 +168,9 @@ void SPILCD_Init()
 	SPILCD_WR_DATA(0x2b);  
 	SPILCD_WR_DATA(0x3a);  
 	
-	SPILCD_WR_REG(0xb1);              	//ÉèÖÃÆÁÄ»Ë¢ĞÂÆµÂÊ
+	SPILCD_WR_REG(0xb1);              	//è®¾ç½®å±å¹•åˆ·æ–°é¢‘ç‡
 	SPILCD_WR_DATA(0x08);				   	//DIVA=8
-	SPILCD_WR_DATA(0x08);				   	//VPA =8£¬Ô¼90Hz
+	SPILCD_WR_DATA(0x08);				   	//VPA =8ï¼Œçº¦90Hz
 						 
 	SPILCD_WR_REG(0xb4);              	//LCD Driveing control
 	SPILCD_WR_DATA(0x07);				  	//NLA=1,NLB=1,NLC=1
@@ -190,63 +190,63 @@ void SPILCD_Init()
 	SPILCD_WR_REG(0xc7);              //LCD Driveing control
 	SPILCD_WR_DATA(0x40);
 	
-	SPILCD_WR_REG(0x2a);              	//ÅäÖÃMCU¿É²Ù×÷µÄLCDÄÚ²¿RAMºá×ø±êÆğÊ¼¡¢½áÊø²ÎÊı
-	SPILCD_WR_DATA(0x00);				   	//ºá×ø±êÆğÊ¼µØÖ·0x0000
+	SPILCD_WR_REG(0x2a);              	//é…ç½®MCUå¯æ“ä½œçš„LCDå†…éƒ¨RAMæ¨ªåæ ‡èµ·å§‹ã€ç»“æŸå‚æ•°
+	SPILCD_WR_DATA(0x00);				   	//æ¨ªåæ ‡èµ·å§‹åœ°å€0x0000
 	SPILCD_WR_DATA(0x00);					
-	SPILCD_WR_DATA(0x00);				   	//ºá×ø±ê½áÊøµØÖ·0x007f(127)
+	SPILCD_WR_DATA(0x00);				   	//æ¨ªåæ ‡ç»“æŸåœ°å€0x007f(127)
 	SPILCD_WR_DATA(0x7f);
  
-	SPILCD_WR_REG(0x2b);              	//ÅäÖÃMCU¿É²Ù×÷µÄLCDÄÚ²¿RAM×İ×ø±êÆğÊ¼½áÊø²ÎÊı
-	SPILCD_WR_DATA(0x00);				   	//×İ×ø±êÆğÊ¼µØÖ·0x0000
+	SPILCD_WR_REG(0x2b);              	//é…ç½®MCUå¯æ“ä½œçš„LCDå†…éƒ¨RAMçºµåæ ‡èµ·å§‹ç»“æŸå‚æ•°
+	SPILCD_WR_DATA(0x00);				   	//çºµåæ ‡èµ·å§‹åœ°å€0x0000
 	SPILCD_WR_DATA(0x00);
-	SPILCD_WR_DATA(0x00);				  	//×İ×ø±ê½áÊøµØÖ·0x009f(159)
+	SPILCD_WR_DATA(0x00);				  	//çºµåæ ‡ç»“æŸåœ°å€0x009f(159)
 	SPILCD_WR_DATA(0x9f);
 
-	SPILCD_WR_REG(0x36);              	//ÅäÖÃMPUºÍDDRAM¶ÔÓ¦¹ØÏµ
+	SPILCD_WR_REG(0x36);              	//é…ç½®MPUå’ŒDDRAMå¯¹åº”å…³ç³»
 	SPILCD_WR_DATA(0xc0);					//MX=1,MY=1
 
 	SPILCD_WR_REG(0xb7);              	//LCD Driveing control
 	SPILCD_WR_DATA(0x00);				   	//CRL=0
 	 
-	SPILCD_WR_REG(0x29);   		  	//¿ªÆôÆÁÄ»ÏÔÊ¾
-	SPILCD_WR_REG(0x2c);   			//ÉèÖÃÎªLCD½ÓÊÕÊı¾İ/ÃüÁîÄ£Ê½
+	SPILCD_WR_REG(0x29);   		  	//å¼€å¯å±å¹•æ˜¾ç¤º
+	SPILCD_WR_REG(0x2c);   			//è®¾ç½®ä¸ºLCDæ¥æ”¶æ•°æ®/å‘½ä»¤æ¨¡å¼
 	SPILCD_Clear(0x0000);
 }
 
 
-//º¯ÊıÃû£ºSPILCD_Init
-//²Î  Êı£ºX Y ×ø±ê 
-//        ÔÚX YÉÏ´òµã
+//å‡½æ•°åï¼šSPILCD_Init
+//å‚  æ•°ï¼šX Y åæ ‡ 
+//        åœ¨X Yä¸Šæ‰“ç‚¹
 void SPILCD_DrawPoint(uint16_t x, uint16_t y, uint16_t color)
 {
-  SPILCD_SetWindow(x,x+1,y,y+1);//ÉèÖÃ¹â±êÎ»ÖÃ 
-	SPILCD_WriteRAM_Prepare();     //¿ªÊ¼Ğ´ÈëGRAM	 
+  SPILCD_SetWindow(x,x+1,y,y+1);//è®¾ç½®å…‰æ ‡ä½ç½® 
+	SPILCD_WriteRAM_Prepare();     //å¼€å§‹å†™å…¥GRAM	 
 	SPILCD_WriteRAM(color);
 } 	 
 
-//º¯ÊıÃû£ºSPILCD_Clear
-//²Î  Êı£ºColor ÑÕÉ«      
+//å‡½æ•°åï¼šSPILCD_Clear
+//å‚  æ•°ï¼šColor é¢œè‰²      
 void SPILCD_Clear(uint16_t Color)
 {
 	uint32_t index=0;      
 	SPILCD_SetWindow(0,SPILCD_W-1,0,SPILCD_H-1);	 
-	SPILCD_WriteRAM_Prepare();     //¿ªÊ¼Ğ´ÈëGRAM	 	  
+	SPILCD_WriteRAM_Prepare();     //å¼€å§‹å†™å…¥GRAM	 	  
 	for(index=0;index<SPILCD_W*SPILCD_H;index++)
 	{
-		SPILCD_WriteRAM(Color);//ÏÔÊ¾ËùÌî³äµÄÑÕÉ«. 
+		SPILCD_WriteRAM(Color);//æ˜¾ç¤ºæ‰€å¡«å……çš„é¢œè‰². 
 	}
 }  
-//º¯ÊıÃû£ºSPILCD_Fill
-//²Î  Êı£ºÆğÊ¼ÖÕµã×ø±ê
+//å‡½æ•°åï¼šSPILCD_Fill
+//å‚  æ•°ï¼šèµ·å§‹ç»ˆç‚¹åæ ‡
 void SPILCD_Fill(uint16_t xsta,uint16_t ysta,uint16_t xend,uint16_t yend,uint16_t color)
 {                    
 	uint32_t n;
-	//ÉèÖÃ´°¿Ú										
+	//è®¾ç½®çª—å£										
   SPILCD_SetWindow(xsta,xend,ysta,yend);
-	SPILCD_WriteRAM_Prepare();  //¿ªÊ¼Ğ´ÈëGRAM	 	   	   
+	SPILCD_WriteRAM_Prepare();  //å¼€å§‹å†™å…¥GRAM	 	   	   
 	n=(uint32_t)(yend-ysta+1)*(xend-xsta+1);    
-	while(n--){SPILCD_WriteRAM(color);}//ÏÔÊ¾ËùÌî³äµÄÑÕÉ«. 
-	//»Ö¸´ÉèÖÃ
+	while(n--){SPILCD_WriteRAM(color);}//æ˜¾ç¤ºæ‰€å¡«å……çš„é¢œè‰². 
+	//æ¢å¤è®¾ç½®
 	SPILCD_SetWindow(0,SPILCD_W-1,0,SPILCD_H-1);	    
 }
 

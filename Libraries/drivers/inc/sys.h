@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    sys.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â ÏµÍ³¼¶APIº¯ÊıÍ·ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ç³»ç»Ÿçº§APIå‡½æ•°å¤´æ–‡ä»¶
   ******************************************************************************
   */
 	 
@@ -16,10 +16,10 @@
 #endif
 
 #include "MK60DZ10.h"
-//ÅäÖÃºê
-//#define USE_FULL_ASSERT                          //ÊÇ·ñÆô¶¯²ÎÊı¼ì²â»úÖÆ£¬Èç¹ûÆôÓÃĞèÒªÓÃ»§ÊµÏÖ assert_failedº¯Êı
-//#define DEBUG_PRINT      1                           //ÊÇ·ñÓÃ´®¿Ú´òÓ¡µ÷ÊÔĞÅÏ¢
-//#define SYSTEM_SUPPORT_OS				               //Ö§³ÖuCOS²Ù×÷ÏµÍ³
+//é…ç½®å®
+//#define USE_FULL_ASSERT                          //æ˜¯å¦å¯åŠ¨å‚æ•°æ£€æµ‹æœºåˆ¶ï¼Œå¦‚æœå¯ç”¨éœ€è¦ç”¨æˆ·å®ç° assert_failedå‡½æ•°
+//#define DEBUG_PRINT      1                           //æ˜¯å¦ç”¨ä¸²å£æ‰“å°è°ƒè¯•ä¿¡æ¯
+//#define SYSTEM_SUPPORT_OS				               //æ”¯æŒuCOSæ“ä½œç³»ç»Ÿ
 
 typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus;
 typedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
@@ -38,7 +38,7 @@ typedef enum{FALSE = 0, TRUE = !FALSE} ErrorState;
 /* CH_Kinetis version */
 #define FW_VERSION                ((CHK_VERSION * 10000) + \
                                          (CHK_SUBVERSION * 100) + CHK_REVISION)
-//²ÎÊı¼ì²âÆ÷
+//å‚æ•°æ£€æµ‹å™¨
 #ifdef  USE_FULL_ASSERT
 
 /**
@@ -58,52 +58,52 @@ typedef enum{FALSE = 0, TRUE = !FALSE} ErrorState;
 
 
 
-//´¦ÀíÆ÷ĞÅÏ¢¼°Ö÷ÆµĞÅÏ¢½á¹¹
+//å¤„ç†å™¨ä¿¡æ¯åŠä¸»é¢‘ä¿¡æ¯ç»“æ„
 typedef struct
 {
-	uint8_t FamilyType;    //KinetisÏµÁĞ¼Ò×åÀàĞÍºÅ 
-	uint8_t ResetState;    //¸´Î»Ô­Òò
+	uint8_t FamilyType;    //Kinetisç³»åˆ—å®¶æ—ç±»å‹å· 
+	uint8_t ResetState;    //å¤ä½åŸå› 
 	uint8_t SiliconRev;    //SiliconRev
-	uint16_t PinCnt;       //Òı½ÅÊıÁ¿
-	uint32_t PFlashSize;   //PFlash´óĞ¡
-	uint32_t FlexNVMSize;  //FlexNVM´óĞ¡
-	uint32_t RAMSize;      //RAM´óĞ¡
-	uint32_t CoreClock;    //ÄÚºËÊ±ÖÓ
-	uint32_t BusClock;     //×ÜÏßÊ±ÖÓ
-	uint32_t FlexBusClock; //FlexBusÊ±ÖÓ
-	uint32_t FlashClock;   //FlashÊ±ÖÓ
+	uint16_t PinCnt;       //å¼•è„šæ•°é‡
+	uint32_t PFlashSize;   //PFlashå¤§å°
+	uint32_t FlexNVMSize;  //FlexNVMå¤§å°
+	uint32_t RAMSize;      //RAMå¤§å°
+	uint32_t CoreClock;    //å†…æ ¸æ—¶é’Ÿ
+	uint32_t BusClock;     //æ€»çº¿æ—¶é’Ÿ
+	uint32_t FlexBusClock; //FlexBusæ—¶é’Ÿ
+	uint32_t FlashClock;   //Flashæ—¶é’Ÿ
 } CPUInfoType_t;
 extern CPUInfoType_t CPUInfo;
 
-//MCGÊ±ÖÓÔ´Ñ¡Ôñ
+//MCGæ—¶é’Ÿæºé€‰æ‹©
 #define ClockSource_IRC        ((uint8_t)0x0)
 #define ClockSource_EX50M   ((uint8_t)0x5)
 #define ClockSource_EX8M     ((uint8_t)0x6)
-//²ÎÊı¼ì²âÆ÷ºê
+//å‚æ•°æ£€æµ‹å™¨å®
 #define IS_CLOCK_OPTION(SOURCE)			 (((SOURCE)  == ClockSource_IRC)  ||  \
                                        ((SOURCE) == ClockSource_EX50M) || \
                                        ((SOURCE) == ClockSource_EX8M))
-//MCGÊ±ÖÓÊä³öÑ¡Ôñ
-#define CoreClock_200M      ((uint8_t)0x13) //×î¸ß100MÆµÂÊ 200MÊôÓÚÎªĞ¡³µÉè¼ÆµÄ³¬Æµ
+//MCGæ—¶é’Ÿè¾“å‡ºé€‰æ‹©
+#define CoreClock_200M      ((uint8_t)0x13) //æœ€é«˜100Mé¢‘ç‡ 200Må±äºä¸ºå°è½¦è®¾è®¡çš„è¶…é¢‘
 #define CoreClock_100M			((uint8_t)0x12)
 #define CoreClock_96M				((uint8_t)0x11)
 #define CoreClock_72M				((uint8_t)0x10)
 #define CoreClock_64M				((uint8_t)0x9)
 #define CoreClock_48M				((uint8_t)0x8)
-//²ÎÊı¼ì²âºê
+//å‚æ•°æ£€æµ‹å®
 #define IS_CLOCK_SELECT(CLOCK_TYPE)   (((CLOCK_TYPE) ==    CoreClock_100M)||   \
 																			 ((CLOCK_TYPE) ==    CoreClock_200M)||   \
 																			 ((CLOCK_TYPE) ==    CoreClock_96M) ||   \
 																			 ((CLOCK_TYPE) ==    CoreClock_72M) ||   \
 																			 ((CLOCK_TYPE) ==    CoreClock_64M) ||   \
 																			 ((CLOCK_TYPE) ==    CoreClock_48M))
-//NVICÖĞ¶Ï·Ö×éÑ¡Ôñ
+//NVICä¸­æ–­åˆ†ç»„é€‰æ‹©
 #define NVIC_PriorityGroup_0         ((uint32_t)0x7) /*!< 0 bits for pre-emption priority   4 bits for subpriority */                                               
 #define NVIC_PriorityGroup_1         ((uint32_t)0x6) /*!< 1 bits for pre-emption priority   3 bits for subpriority */                                                  
 #define NVIC_PriorityGroup_2         ((uint32_t)0x5) /*!< 2 bits for pre-emption priority   2 bits for subpriority */                                                   
 #define NVIC_PriorityGroup_3         ((uint32_t)0x4) /*!< 3 bits for pre-emption priority   1 bits for subpriority */                                                   
 #define NVIC_PriorityGroup_4         ((uint32_t)0x3) /*!< 4 bits for pre-emption priority   0 bits for subpriority */
-//²ÎÊı¼ì²âÆ÷ºê
+//å‚æ•°æ£€æµ‹å™¨å®
 #define IS_NVIC_PRIORITY_GROUP(GROUP) (((GROUP) == NVIC_PriorityGroup_0) || \
                                        ((GROUP) == NVIC_PriorityGroup_1) || \
                                        ((GROUP) == NVIC_PriorityGroup_2) || \
@@ -112,19 +112,19 @@ extern CPUInfoType_t CPUInfo;
 #define IS_NVIC_PREEMPTION_PRIORITY(PRIORITY)  ((PRIORITY) < 0x10)
 #define IS_NVIC_SUB_PRIORITY(PRIORITY)  ((PRIORITY) < 0x10)
 
-//VETOR_OFFSET¼ì²âºê
+//VETOR_OFFSETæ£€æµ‹å®
 #define IS_VECTOR_OFFSET(OFFSET)  ((OFFSET) % 4 == 0)
 
-//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯ÊıÁĞ±í
-void SystemClockSetup(uint8_t ClockOption,uint16_t CoreClock);  //ÉèÖÃÏµÍ³Ê±ÖÓ
-void SystemSoftReset(void);                                     //Èí¸´Î»
-void GetCPUInfo(void);                                          //»ñµÃ´¦ÀíÆ÷ĞÅÏ¢
-void EnableInterrupts(void);                                    //Ê±ÄÜ×ÜÖĞ¶Ï
-void DisableInterrupts(void);                                   //¹Ø±Õ×ÜÖĞ¶Ï
-void SetVectorTable(uint32_t offset);                           //ÉèÖÃÖĞ¶ÏÏòÁ¿ÆğÊ¼Î»ÖÃ
-void NVIC_EnableIRQ(IRQn_Type IRQn);                            //¿ªÆôÖĞ¶Ï                  
-void NVIC_DisableIRQ(IRQn_Type IRQn);                           //¹Ø±ÕÖĞ¶Ï
-void NVIC_Init(IRQn_Type IRQn,uint32_t PriorityGroup,uint32_t PreemptPriority,uint32_t SubPriority); //ÉèÖÃÖĞ¶ÏÓÅÏÈ¼¶
+//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°åˆ—è¡¨
+void SystemClockSetup(uint8_t ClockOption,uint16_t CoreClock);  //è®¾ç½®ç³»ç»Ÿæ—¶é’Ÿ
+void SystemSoftReset(void);                                     //è½¯å¤ä½
+void GetCPUInfo(void);                                          //è·å¾—å¤„ç†å™¨ä¿¡æ¯
+void EnableInterrupts(void);                                    //æ—¶èƒ½æ€»ä¸­æ–­
+void DisableInterrupts(void);                                   //å…³é—­æ€»ä¸­æ–­
+void SetVectorTable(uint32_t offset);                           //è®¾ç½®ä¸­æ–­å‘é‡èµ·å§‹ä½ç½®
+void NVIC_EnableIRQ(IRQn_Type IRQn);                            //å¼€å¯ä¸­æ–­                  
+void NVIC_DisableIRQ(IRQn_Type IRQn);                           //å…³é—­ä¸­æ–­
+void NVIC_Init(IRQn_Type IRQn,uint32_t PriorityGroup,uint32_t PreemptPriority,uint32_t SubPriority); //è®¾ç½®ä¸­æ–­ä¼˜å…ˆçº§
 uint16_t GetFWVersion(void);
 
 #ifdef __cplusplus

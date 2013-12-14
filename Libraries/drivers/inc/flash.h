@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    falsh.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â Æ¬ÄÚflash Çı¶¯ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ç‰‡å†…flash é©±åŠ¨æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __FLASH_H__
@@ -17,24 +17,24 @@
 
 #include "sys.h"
 
-//FlashÃüÁîºê¶¨Òå£¬ÄÚ²¿Ê¹ÓÃ
-#define RD1BLK    0x00   // ¶ÁÕû¿éFlash
-#define RD1SEC    0x01   // ¶ÁÕû¸öÉÈÇø
-#define PGMCHK    0x02   // Ğ´Èë¼ì²é
-#define RDRSRC    0x03   // ¶ÁÄ¿±êÊı¾İ
-#define PGM4      0x06   // Ğ´Èë³¤×Ö
-#define ERSBLK    0x08   // ²Á³ıÕû¿éFlash
-#define ERSSCR    0x09   // ²Á³ıFlashÉÈÇø
-#define PGMSEC    0x0B   // Ğ´ÈëÉÈÇø
-#define RD1ALL    0x40   // ¶ÁËùÓĞµÄ¿é
-#define RDONCE    0x41   // Ö»¶ÁÒ»´Î
-#define PGMONCE   0x43   // Ö»Ğ´Ò»´Î
-#define ERSALL    0x44   // ²Á³ıËùÓĞ¿é
-#define VFYKEY    0x45   // ÑéÖ¤ºóÃÅ·ÃÎÊÔ¿³×
-#define PGMPART   0x80   // Ğ´Èë·ÖÇø
-#define SETRAM    0x81   // Éè¶¨FlexRAM¹¦ÄÜ
+//Flashå‘½ä»¤å®å®šä¹‰ï¼Œå†…éƒ¨ä½¿ç”¨
+#define RD1BLK    0x00   // è¯»æ•´å—Flash
+#define RD1SEC    0x01   // è¯»æ•´ä¸ªæ‰‡åŒº
+#define PGMCHK    0x02   // å†™å…¥æ£€æŸ¥
+#define RDRSRC    0x03   // è¯»ç›®æ ‡æ•°æ®
+#define PGM4      0x06   // å†™å…¥é•¿å­—
+#define ERSBLK    0x08   // æ“¦é™¤æ•´å—Flash
+#define ERSSCR    0x09   // æ“¦é™¤Flashæ‰‡åŒº
+#define PGMSEC    0x0B   // å†™å…¥æ‰‡åŒº
+#define RD1ALL    0x40   // è¯»æ‰€æœ‰çš„å—
+#define RDONCE    0x41   // åªè¯»ä¸€æ¬¡
+#define PGMONCE   0x43   // åªå†™ä¸€æ¬¡
+#define ERSALL    0x44   // æ“¦é™¤æ‰€æœ‰å—
+#define VFYKEY    0x45   // éªŒè¯åé—¨è®¿é—®é’¥åŒ™
+#define PGMPART   0x80   // å†™å…¥åˆ†åŒº
+#define SETRAM    0x81   // è®¾å®šFlexRAMåŠŸèƒ½
 
-//´íÎó´úÂë¶¨Òå
+//é”™è¯¯ä»£ç å®šä¹‰
 #define FLASH_OK                    0x00
 #define FLASH_OVERFLOW              0x01
 #define FLASH_BUSY                  0x02
@@ -43,7 +43,7 @@
 #define FLASH_NOT_ERASED            0x10
 #define FLASH_CONTENTERR            0x11
 
-//±¾¹¹¼şËùÊµÏÖµÄº¯Êı½Ó¿Ú
+//æœ¬æ„ä»¶æ‰€å®ç°çš„å‡½æ•°æ¥å£
 void FLASH_Init(void);
 void FLASH_ReadByte(uint32_t FlashStartAdd,uint32_t len,uint8_t *pbuffer);
 uint8_t FLASH_WriteSector(uint32_t sectorNo,uint16_t count,uint8_t const *buffer);

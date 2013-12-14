@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    pit.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â ÄÚ²¿¶¨Ê±Æ÷Çı¶¯ Í·ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ å†…éƒ¨å®šæ—¶å™¨é©±åŠ¨ å¤´æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __PIT_H__
@@ -20,25 +20,25 @@
 #define PIT1   (uint8_t)(1)
 #define PIT2   (uint8_t)(2)
 #define PIT3   (uint8_t)(3)
-//²ÎÊı¼ì²éÆ÷
+//å‚æ•°æ£€æŸ¥å™¨
 #define IS_PIT_CH(CH)     (((CH) == PIT0) || \
 													((CH) == PIT1)  || \
 													((CH) == PIT2)  || \
 													((CH) == PIT3))
 
-//PIT ÖĞ¶Ï¶¨Òå
+//PIT ä¸­æ–­å®šä¹‰
 #define PIT_IT_TIF     (uint16_t)(0)
 #define IS_PIT_IT(IT)  ((IT) == PIT_IT_TIF)
 
 	 
-//PIT ³õÊ¼»¯½á¹¹
+//PIT åˆå§‹åŒ–ç»“æ„
 typedef struct
 {
-	uint8_t PITx;             //PITÍ¨µÀ
-	uint32_t PIT_Interval;    //PIT¶¨Ê±Ê±¼ä µ¥Î»MS
+	uint8_t PITx;             //PITé€šé“
+	uint32_t PIT_Interval;    //PITå®šæ—¶æ—¶é—´ å•ä½MS
 }PIT_InitTypeDef;
 
-//±¾¹¹¼şËùÊµÏÖµÄ½Ó¿Úº¯Êı
+//æœ¬æ„ä»¶æ‰€å®ç°çš„æ¥å£å‡½æ•°
 void PIT_Init(PIT_InitTypeDef* PIT_InitStruct);
 uint32_t PIT_GetLoadValue(uint8_t PITx);
 uint32_t PIT_GetCurrentValue(uint8_t PITx);

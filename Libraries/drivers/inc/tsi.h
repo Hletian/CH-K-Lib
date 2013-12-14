@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    tsi.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â Æ¬ÄÚtsi Çı¶¯ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ç‰‡å†…tsi é©±åŠ¨æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __TSI_H_
@@ -16,7 +16,7 @@
 
 #include "sys.h"
 
-//TSIÍ¨µÀ¶¨Òå
+//TSIé€šé“å®šä¹‰
 #define TSI0_CH1_PA0              (0x00000005U)
 #define TSI0_CH2_PA1              (0x00004009U)
 #define TSI0_CH3_PA2              (0x0000800dU)
@@ -34,7 +34,7 @@
 #define TSI0_CH14_PC1             (0x00005039U)
 #define TSI0_CH15_PC2             (0x0000903dU)
 
-//TSI Í¨µÀ¶¨Òå
+//TSI é€šé“å®šä¹‰
 #define TSI0_CH0            (0)
 #define TSI0_CH1            (1)
 #define TSI0_CH2            (2)
@@ -54,11 +54,11 @@
 
 
 
-//TSIÖĞ¶ÏÉ¨ÃèÄ£Ê½¶¨Òå
+//TSIä¸­æ–­æ‰«ææ¨¡å¼å®šä¹‰
 #define TSI_IT_MODE_END_OF_SCAN           (0)
 #define TSI_IT_MODE_OUT_OF_RANGE          (1)
 #define IS_TSI_IT_MODE(MODE)   ((MODE) == TSI_IT_MODE_END_OF_SCAN  || (MODE) == TSI_IT_MODE_OUT_OF_RANGE)
-//TSI MAP½á¹¹¶¨Òå
+//TSI MAPç»“æ„å®šä¹‰
 typedef struct
 {
     uint32_t TSI_Index:2;
@@ -68,15 +68,15 @@ typedef struct
     uint32_t TSI_Pin_Index:6;
 }TSI_MapTypeDef;
 
-//TSI³õÊ¼»¯½á¹¹
+//TSIåˆå§‹åŒ–ç»“æ„
 typedef struct
 {
-	uint32_t TSIxMAP;        //³õÊ¼»¯½á¹¹
-	uint8_t  TSI_ITMode;    //É¨ÃèÄ£Ê½
+	uint32_t TSIxMAP;        //åˆå§‹åŒ–ç»“æ„
+	uint8_t  TSI_ITMode;    //æ‰«ææ¨¡å¼
 }TSI_InitTypeDef;
 
 
-//ÖĞ¶ÏÅäÖÃÑ¡Ïî
+//ä¸­æ–­é…ç½®é€‰é¡¹
 #define TSI_IT_EOSF           (uint16_t)(0)
 #define TSI_IT_OUTRGF         (uint16_t)(1)
 #define TSI_IT_EXTERF         (uint16_t)(2)
@@ -87,11 +87,11 @@ typedef struct
                            ((IT) == TSI_IT_OVRF))
 
 
-/*********************Ïû¶¶ÓÃºê¶¨Òå********************************/
-#define ELECTRODE_SHAKE  1000  //Ïà¶Ô·§ÖµÈİ´íÏµÊı   Ô½´ó´¥ÃşÔ½ÎÈ¶¨ÁéÃô¶ÈµÍ Ô½Ğ¡Ô½²»ÎÈ¶¨ ÁéÃô¶È¸ß
+/*********************æ¶ˆæŠ–ç”¨å®å®šä¹‰********************************/
+#define ELECTRODE_SHAKE  1000  //ç›¸å¯¹é˜€å€¼å®¹é”™ç³»æ•°   è¶Šå¤§è§¦æ‘¸è¶Šç¨³å®šçµæ•åº¦ä½ è¶Šå°è¶Šä¸ç¨³å®š çµæ•åº¦é«˜
 
-/*********************Íâ²¿µçÈİ¼ÆÊıÆ÷******************************/	   
-//ÎªÁË½â¾ö·ÉË¼¿¨¶û¼«2!µÄ¼Ä´æÆ÷ÉèÖÃ
+/*********************å¤–éƒ¨ç”µå®¹è®¡æ•°å™¨******************************/	   
+//ä¸ºäº†è§£å†³é£æ€å¡å°”æ2!çš„å¯„å­˜å™¨è®¾ç½®
 #define ELECTRODE0_COUNT  (uint16_t)((TSI0->CNTR1)&0x0000FFFF)
 #define ELECTRODE1_COUNT  (uint16_t)((TSI0->CNTR1>>16)&0x0000FFFF)
 #define ELECTRODE2_COUNT  (uint16_t)((TSI0->CNTR3)&0x0000FFFF)
@@ -108,7 +108,7 @@ typedef struct
 #define ELECTRODE13_COUNT  (uint16_t)((TSI0->CNTR13>>16)&0x0000FFFF)
 #define ELECTRODE14_COUNT  (uint16_t)((TSI0->CNTR15)&0x0000FFFF)
 #define ELECTRODE15_COUNT  (uint16_t)((TSI0->CNTR15>>16)&0x0000FFFF)
-//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
+//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
 void TSI_SelfCalibration(uint8_t TSI_Ch);
 uint32_t TSI_GetCounter(uint8_t TSI_Ch);
 void TSI_Init(TSI_InitTypeDef* TSI_InitStruct);

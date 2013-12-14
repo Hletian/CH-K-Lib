@@ -1,10 +1,10 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    sd.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â Æ¬ÄÚsd Çı¶¯ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ç‰‡å†…sd é©±åŠ¨æ–‡ä»¶
   ******************************************************************************
   */
 #ifndef __SD_H_
@@ -15,7 +15,7 @@
  extern "C" {
 #endif
 
-//SD¿¨ÀàĞÍ¶¨Òå
+//SDå¡ç±»å‹å®šä¹‰
 #define SD_CARD_TYPE_NONE      (0)
 #define SD_CARD_TYPE_UNKNOW    (1)
 #define SD_CARD_TYPE_SD        (2)
@@ -26,52 +26,52 @@
 #define SD_CARD_TYPE_MMC       (7)
 #define SD_CARD_CEATA          (8)   
 
-//SD³õÊ¼»¯½á¹¹Ìå
+//SDåˆå§‹åŒ–ç»“æ„ä½“
 typedef struct 
 {
-	uint32_t SD_BaudRate;   //²¨ÌØÂÊ
-	uint32_t SD_CardType;   //¿¨ÀàĞÍ
-	uint32_t SD_Size;       //¿¨´óĞ¡µ¥Î»MB
-	uint32_t OCR;            //Operation Condition Register ±£´æµçÑ¹ĞÅÏ¢¼° ³õÊ¼»¯Íê³ÉÎ» ²Ù×÷Ìõ¼ş¼Ä´æÆ÷ ¶ÔÓ¦ÕæÊµ¿¨OCR 39:8 Î»
-	uint32_t CID[4];         //Card IDentification (CID) register  CID[0-4] ¶ÔÓ¦ ÕæÊµ¿¨CIDµÄ 127:8
-	uint32_t CSD[4];         //Card-Specific Data register CSD ¼ÇÂ¼¿¨ÈİÁ¿µÈÖØÒªĞÅÏ¢ CSD[0-4] ¶ÔÓ¦ ÕæÊµ¿¨CSD 127:8
-	uint16_t RCA;            //¿¨Ïà¶ÔµØÖ·¼Ä´æÆ÷ ÊÇHOSTºÍ¿¨Í¨Ñ¶µÄ»ù´¡ 
-	uint32_t CSR[2];         //¿¨ÅäÖÃ¼Ä´æÆ÷
+	uint32_t SD_BaudRate;   //æ³¢ç‰¹ç‡
+	uint32_t SD_CardType;   //å¡ç±»å‹
+	uint32_t SD_Size;       //å¡å¤§å°å•ä½MB
+	uint32_t OCR;            //Operation Condition Register ä¿å­˜ç”µå‹ä¿¡æ¯åŠ åˆå§‹åŒ–å®Œæˆä½ æ“ä½œæ¡ä»¶å¯„å­˜å™¨ å¯¹åº”çœŸå®å¡OCR 39:8 ä½
+	uint32_t CID[4];         //Card IDentification (CID) register  CID[0-4] å¯¹åº” çœŸå®å¡CIDçš„ 127:8
+	uint32_t CSD[4];         //Card-Specific Data register CSD è®°å½•å¡å®¹é‡ç­‰é‡è¦ä¿¡æ¯ CSD[0-4] å¯¹åº” çœŸå®å¡CSD 127:8
+	uint16_t RCA;            //å¡ç›¸å¯¹åœ°å€å¯„å­˜å™¨ æ˜¯HOSTå’Œå¡é€šè®¯çš„åŸºç¡€ 
+	uint32_t CSR[2];         //å¡é…ç½®å¯„å­˜å™¨
 }SD_InitTypeDef;
-//×¢Òâ¸÷¸öÊı¾İµÄÖµºÍSD¿¨ÊÖ²áµÄ±ê×¼Î»²»Í¬£¬Çë×¢Òâ»»Ëã
+//æ³¨æ„å„ä¸ªæ•°æ®çš„å€¼å’ŒSDå¡æ‰‹å†Œçš„æ ‡å‡†ä½ä¸åŒï¼Œè¯·æ³¨æ„æ¢ç®—
 
-//SD¿¨ÃüÁî½á¹¹
+//SDå¡å‘½ä»¤ç»“æ„
 typedef struct 
 {
-  uint32_t COMMAND;           //ÃüÁî¶¨Òå
-  uint32_t ARGUMENT;          //²ÎÊı
-  uint32_t BLOCKS;            //¿éÊı
-  uint32_t BLOCKSIZE;         //¿é´óĞ¡
-  uint32_t RESPONSE[4];       //ÃüÁî»ØÓ¦ĞÅÏ¢
+  uint32_t COMMAND;           //å‘½ä»¤å®šä¹‰
+  uint32_t ARGUMENT;          //å‚æ•°
+  uint32_t BLOCKS;            //å—æ•°
+  uint32_t BLOCKSIZE;         //å—å¤§å°
+  uint32_t RESPONSE[4];       //å‘½ä»¤å›åº”ä¿¡æ¯
 }SD_CommandTypeDef;
 
-//SD¹¹¼şÍ¨Ñ¶´íÎó´úÂë
+//SDæ„ä»¶é€šè®¯é”™è¯¯ä»£ç 
 #define ESDHC_OK                             (0)
 #define ESDHC_ERROR_INIT_FAILED              (1)
 #define ESDHC_ERROR_COMMAND_FAILED           (2)
 #define ESDHC_ERROR_COMMAND_TIMEOUT          (3)
 #define ESDHC_ERROR_DATA_TRANSFER            (4)
 #define ESDHC_ERROR_INVALID_BUS_WIDTH        (5)
-//DATAÏßÎ»¿í¶¨Òå
+//DATAçº¿ä½å®½å®šä¹‰
 #define ESDHC_BUS_WIDTH_1BIT                 (0x00)
 #define ESDHC_BUS_WIDTH_4BIT                 (0x01)
 #define ESDHC_BUS_WIDTH_8BIT                 (0x02)
-//SD¿¨Ö¸Áî¼¯ÀàĞÍ
+//SDå¡æŒ‡ä»¤é›†ç±»å‹
 #define ESDHC_XFERTYP_CMDTYP_NORMAL          (0x00)
 #define ESDHC_XFERTYP_CMDTYP_SUSPEND         (0x01)
 #define ESDHC_XFERTYP_CMDTYP_RESUME          (0x02)
 #define ESDHC_XFERTYP_CMDTYP_ABORT           (0x03)
-//SD¿¨Ö¸Áî¼¯·µ»ØÀàĞÍ
+//SDå¡æŒ‡ä»¤é›†è¿”å›ç±»å‹
 #define ESDHC_XFERTYP_RSPTYP_NO              (0x00)
 #define ESDHC_XFERTYP_RSPTYP_136             (0x01)
 #define ESDHC_XFERTYP_RSPTYP_48              (0x02)
 #define ESDHC_XFERTYP_RSPTYP_48BUSY          (0x03)
-//SD¿¨Ö¸Áî¼¯
+//SDå¡æŒ‡ä»¤é›†
 #define ESDHC_CMD0   (SDHC_XFERTYP_CMDINX(0)  | SDHC_XFERTYP_RSPTYP(ESDHC_XFERTYP_RSPTYP_NO))
 #define ESDHC_CMD1   (SDHC_XFERTYP_CMDINX(1)  | SDHC_XFERTYP_RSPTYP(ESDHC_XFERTYP_RSPTYP_NO))
 #define ESDHC_CMD2   (SDHC_XFERTYP_CMDINX(2)  | SDHC_XFERTYP_CCCEN_MASK | SDHC_XFERTYP_RSPTYP(ESDHC_XFERTYP_RSPTYP_136))
@@ -122,7 +122,7 @@ typedef struct
 #define ESDHC_CMD60  (SDHC_XFERTYP_CMDINX(60) | SDHC_XFERTYP_CICEN_MASK | SDHC_XFERTYP_CCCEN_MASK | SDHC_XFERTYP_RSPTYP(ESDHC_XFERTYP_RSPTYP_48BUSY))
 #define ESDHC_CMD61  (SDHC_XFERTYP_CMDINX(61) | SDHC_XFERTYP_CICEN_MASK | SDHC_XFERTYP_CCCEN_MASK | SDHC_XFERTYP_RSPTYP(ESDHC_XFERTYP_RSPTYP_48BUSY))
 
-//Kinetis SDHC ¿ØÖÆÆ÷Î»¿í¶¨Òå
+//Kinetis SDHC æ§åˆ¶å™¨ä½å®½å®šä¹‰
 #define ESDHC_PROCTL_DTW_1BIT                (0x00)
 #define ESDHC_PROCTL_DTW_4BIT                (0x01)
 #define ESDHC_PROCTL_DTW_8BIT                (0x10)

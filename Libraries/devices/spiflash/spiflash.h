@@ -1,19 +1,19 @@
-#ifndef __SPI_FLASH_H__
+ï»¿#ifndef __SPI_FLASH_H__
 #define __SPI_FLASH_H__
 #include "sys.h"
 #include "spi.h"
 
-//Óë´¥ÃşÆÁĞ¾Æ¬Á¬½ÓÒı½Å	   
+//ä¸è§¦æ‘¸å±èŠ¯ç‰‡è¿æ¥å¼•è„š	   
 #define SPI_FLASH_CS_GPIO_PORT   PTB
 #define SPI_FLASH_CS_GPIO_PIN    GPIO_Pin_10
-//¶¨ÒåÓ²¼şSPI¶Ë¿Ú
+//å®šä¹‰ç¡¬ä»¶SPIç«¯å£
 #define SPI_FLASH_PORT      SPI1_SCK_PB11_SOUT_PB16_SIN_PB17
 #define SPI_FLASH_CS_PORT   SPI1_PCS0_PB10
 
 #define SPI_CS_HIGH        GPIO_WriteBit(SPI_FLASH_CS_GPIO_PORT, SPI_FLASH_CS_GPIO_PIN, Bit_SET)
 #define SPI_CS_LOW         GPIO_WriteBit(SPI_FLASH_CS_GPIO_PORT, SPI_FLASH_CS_GPIO_PIN, Bit_RESET)
 
-//W25XÏµÁĞ/QÏµÁĞĞ¾Æ¬ÁĞ±í	   
+//W25Xç³»åˆ—/Qç³»åˆ—èŠ¯ç‰‡åˆ—è¡¨	   
 //W25Q80 ID  0XEF13  //8Mbit  /1M   Byte
 //W25Q16 ID  0XEF14  //16Mbit /2M   Byte
 //W25Q32 ID  0XEF15  //32Mbit /4M   Byte
@@ -30,7 +30,7 @@
 #define W25X20  (0XEF11)
 #define W25X40  (0XEF12)
 #define W25X80  (0XEF13)
-//Ö¸Áî±í
+//æŒ‡ä»¤è¡¨
 #define W25X_WriteEnable		 	    (0x06) 
 #define W25X_WriteDisable		      (0x04)  
 #define W25X_ReadStatusReg	    	(0x05)  
@@ -47,7 +47,7 @@
 #define W25X_DeviceID		        	(0xAB)  
 #define W25X_ManufactDeviceID	    (0x90)  
 #define W25X_JedecDeviceID		    (0x9F)  
-//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
+//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
 uint8_t SPI_FLASH_Init(void);
 uint8_t SPI_FLASH_ReadWriteByte(uint8_t dat);
 uint16_t SPI_FLASH_ReadID(void);

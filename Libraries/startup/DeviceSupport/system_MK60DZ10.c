@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 ** ###################################################################
 **     Processors:          MK60DN512ZVLL10
 **                          MK60DX256ZVLL10
@@ -144,23 +144,23 @@ void SystemInit (void) {
 
   /* System clock initialization */
 #if (CLOCK_SETUP == 0)
-	//SIM->CLKDIV1 = (u32)0x00110000u; //ÅäÖÃÏµÍ³Ô¤·ÖÆµÆ÷
-	SIM->CLKDIV1 = (uint32_t)0xFFFFFFFFu; //ÅäÖÃÏµÍ³Ô¤·ÖÆµÆ÷ ÏÈÉèÖÃÎª¶¼Îª×îµÍ·ÖÆµ
-	// ×ªµ½ FEI Ä£Ê½ 
+	//SIM->CLKDIV1 = (u32)0x00110000u; //é…ç½®ç³»ç»Ÿé¢„åˆ†é¢‘å™¨
+	SIM->CLKDIV1 = (uint32_t)0xFFFFFFFFu; //é…ç½®ç³»ç»Ÿé¢„åˆ†é¢‘å™¨ å…ˆè®¾ç½®ä¸ºéƒ½ä¸ºæœ€ä½Žåˆ†é¢‘
+	// è½¬åˆ° FEI æ¨¡å¼ 
 	MCG->C1 = (uint8_t)0x06u;
 	MCG->C2 = (uint8_t)0x00u;
-	MCG->C4|= (1<<6)|(1<<7)|(1<<5);   //ÄÚ²¿²Î¿¼ÂýËÙÊ±ÖÓ32.768KHZ  ±¶ÆµÒò×Ó 2197 ±¶ÆµºóÎª96MHZ ²Î¼ûMCG->C4¼Ä´æÆ÷
-	//·ÖÆµ²ßÂÔ:  
-	//SIM_CLKDIV1_OUTDIV1(0) CORE     CLOCK  1·ÖÆµ   UP TO 100M  
-	//SIM_CLKDIV1_OUTDIV2(1) BUS      CLOCK  2·ÖÆµ   UP TO 50M 
-	//SIM_CLKDIV1_OUTDIV3(1) FlexBus  ClOCK  2·ÖÆµ   UP TO 50M 
-	//SIM_CLKDIV1_OUTDIV4(3) Flash    ClOCK  3·ÖÆµ   UP TO 25M 
+	MCG->C4|= (1<<6)|(1<<7)|(1<<5);   //å†…éƒ¨å‚è€ƒæ…¢é€Ÿæ—¶é’Ÿ32.768KHZ  å€é¢‘å› å­ 2197 å€é¢‘åŽä¸º96MHZ å‚è§MCG->C4å¯„å­˜å™¨
+	//åˆ†é¢‘ç­–ç•¥:  
+	//SIM_CLKDIV1_OUTDIV1(0) CORE     CLOCK  1åˆ†é¢‘   UP TO 100M  
+	//SIM_CLKDIV1_OUTDIV2(1) BUS      CLOCK  2åˆ†é¢‘   UP TO 50M 
+	//SIM_CLKDIV1_OUTDIV3(1) FlexBus  ClOCK  2åˆ†é¢‘   UP TO 50M 
+	//SIM_CLKDIV1_OUTDIV4(3) Flash    ClOCK  3åˆ†é¢‘   UP TO 25M 
 	SIM->CLKDIV1 =(SIM_CLKDIV1_OUTDIV1(0)|SIM_CLKDIV1_OUTDIV2(1)|SIM_CLKDIV1_OUTDIV3(1)|SIM_CLKDIV1_OUTDIV4(3));
   MCG->C5 = (uint8_t)0x00u;
   MCG->C6 = (uint8_t)0x00u;
-  while((MCG->S & MCG_S_IREFST_MASK) == 0u);  //¼ì²é FLL²Î¿¼Ê±ÖÓÊÇÄÚ²¿²Î¿¼Ê±ÖÓ
-  while((MCG->S & 0x0Cu) != 0x00u);           //µÈ´ýFLL±»Ñ¡Ôñ
-	//Íâ²¿¾§Õñ CLOCK_SETUP=1
+  while((MCG->S & MCG_S_IREFST_MASK) == 0u);  //æ£€æŸ¥ FLLå‚è€ƒæ—¶é’Ÿæ˜¯å†…éƒ¨å‚è€ƒæ—¶é’Ÿ
+  while((MCG->S & 0x0Cu) != 0x00u);           //ç­‰å¾…FLLè¢«é€‰æ‹©
+	//å¤–éƒ¨æ™¶æŒ¯ CLOCK_SETUP=1
 #elif (CLOCK_SETUP == 1)
   /* SIM->CLKDIV1: OUTDIV1=0,OUTDIV2=0,OUTDIV3=1,OUTDIV4=1,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0 */
   SIM->CLKDIV1 = (uint32_t)0x00110000u; /* Update system prescalers */

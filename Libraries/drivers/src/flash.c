@@ -1,92 +1,92 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    falsh.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   ³¬ºËK60¹Ì¼ş¿â Æ¬ÄÚflash Çı¶¯ÎÄ¼ş
+  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ç‰‡å†…flash é©±åŠ¨æ–‡ä»¶
   ******************************************************************************
   */
 #include "flash.h"
 /***********************************************************************************************
- ¹¦ÄÜ£ºÄÚ²¿º¯Êı ¼ì²éÃüÁîÊÇ·ñÍê³É
- ĞÎ²Î£º0
- ·µ»Ø£ºFLASH_OK ³É¹¦    FLASH_ERROR Ê§°Ü 
- Ïê½â£º
+ åŠŸèƒ½ï¼šå†…éƒ¨å‡½æ•° æ£€æŸ¥å‘½ä»¤æ˜¯å¦å®Œæˆ
+ å½¢å‚ï¼š0
+ è¿”å›ï¼šFLASH_OK æˆåŠŸ    FLASH_ERROR å¤±è´¥ 
+ è¯¦è§£ï¼š
 ************************************************************************************************/
 static uint8_t CommandLaunch(void)
 {
-    // Çå³ı·ÃÎÊ´íÎó±êÖ¾Î»ºÍ·Ç·¨·ÃÎÊ±êÖ¾Î» 
+    // æ¸…é™¤è®¿é—®é”™è¯¯æ ‡å¿—ä½å’Œéæ³•è®¿é—®æ ‡å¿—ä½ 
     FTFL->FSTAT |=(FTFL_FSTAT_ACCERR_MASK|FTFL_FSTAT_FPVIOL_MASK|FTFL_FSTAT_RDCOLERR_MASK);
-    // Æô¶¯ÃüÁî
+    // å¯åŠ¨å‘½ä»¤
     FTFL->FSTAT |= FTFL_FSTAT_CCIF_MASK;
-    // µÈ´ıÃüÁî½áÊø
+    // ç­‰å¾…å‘½ä»¤ç»“æŸ
     while((FTFL->FSTAT &FTFL_FSTAT_CCIF_MASK)==0);
-    // ¼ì²é´íÎó±êÖ¾
+    // æ£€æŸ¥é”™è¯¯æ ‡å¿—
     if(FTFL->FSTAT & (FTFL_FSTAT_ACCERR_MASK|FTFL_FSTAT_FPVIOL_MASK|FTFL_FSTAT_MGSTAT0_MASK|FTFL_FSTAT_RDCOLERR_MASK))
-    return(FLASH_ERROR); //³ö´í
-    return (FLASH_OK); //³É¹¦
+    return(FLASH_ERROR); //å‡ºé”™
+    return (FLASH_OK); //æˆåŠŸ
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£º³õÊ¼»¯Æ¬ÄÚFlashÄ£¿é
- ĞÎ²Î£º0
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šåˆå§‹åŒ–ç‰‡å†…Flashæ¨¡å—
+ å½¢å‚ï¼š0
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 void FLASH_Init(void)
 {
-	//Çå³ıFMC»º³åÇø
+	//æ¸…é™¤FMCç¼“å†²åŒº
 	FMC->PFB0CR |= FMC_PFB0CR_S_B_INV_MASK;
 	FMC->PFB1CR |= FMC_PFB0CR_S_B_INV_MASK;
-	// ½ûÖ¹¿´ÃÅ¹·
+	// ç¦æ­¢çœ‹é—¨ç‹—
 	WDOG->UNLOCK = 0xC520;
 	WDOG->UNLOCK = 0xD928;
-	WDOG->STCTRLH = 0;    // ½ûÖ¹¿´ÃÅ¹·
-	//¼ì²éFlash·ÃÎÊ´íÎó
+	WDOG->STCTRLH = 0;    // ç¦æ­¢çœ‹é—¨ç‹—
+	//æ£€æŸ¥Flashè®¿é—®é”™è¯¯
   if(FTFL->FSTAT & FTFL_FSTAT_ACCERR_MASK)
   {
-    FTFL->FSTAT |= FTFL_FSTAT_ACCERR_MASK;       //Çå³ı´íÎó±êÖ¾
+    FTFL->FSTAT |= FTFL_FSTAT_ACCERR_MASK;       //æ¸…é™¤é”™è¯¯æ ‡å¿—
   }
-  //¼ì²é±£»¤´íÎó
+  //æ£€æŸ¥ä¿æŠ¤é”™è¯¯
   else if (FTFL->FSTAT & FTFL_FSTAT_FPVIOL_MASK)
   {
     FTFL->FSTAT |= FTFL_FSTAT_FPVIOL_MASK;
   }
-  //¼ì²é¶Á³åÍ»´íÎó
+  //æ£€æŸ¥è¯»å†²çªé”™è¯¯
   else if (FTFL->FSTAT & FTFL_FSTAT_RDCOLERR_MASK)
   {
     FTFL->FSTAT |= FTFL_FSTAT_RDCOLERR_MASK;
   }
-  //½ûÓÃFlashÄ£¿éµÄÊı¾İ»º´æ
+  //ç¦ç”¨Flashæ¨¡å—çš„æ•°æ®ç¼“å­˜
   FMC->PFB0CR &= ~FMC_PFB0CR_B0DCE_MASK;
   FMC->PFB1CR &= ~FMC_PFB1CR_B1DCE_MASK;
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºÆ¬ÄÚFlash¶ÁÈ¡Êı¾İ
- ĞÎ²Î£ºFlashStartAdd : µØÖ·
-       len           : ¶ÁÈ¡µÄ³¤¶È
-       *pbuffer      : »º´æÇøÖ¸Õë
- ·µ»Ø£º0
- Ïê½â£º
+ åŠŸèƒ½ï¼šç‰‡å†…Flashè¯»å–æ•°æ®
+ å½¢å‚ï¼šFlashStartAdd : åœ°å€
+       len           : è¯»å–çš„é•¿åº¦
+       *pbuffer      : ç¼“å­˜åŒºæŒ‡é’ˆ
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š
 ************************************************************************************************/
 void FLASH_ReadByte(uint32_t FlashStartAdd,uint32_t len,uint8_t *pbuffer)
 {
 	uint32_t i = 0;
 	for(i=0;i<len;i++)
 	{
-	  pbuffer[i] = *(uint8_t *)(FlashStartAdd+i);		//¶ÁÈ¡Ö¸¶¨µØÖ·µÄÊı¾İ
+	  pbuffer[i] = *(uint8_t *)(FlashStartAdd+i);		//è¯»å–æŒ‡å®šåœ°å€çš„æ•°æ®
 	}
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºFALSHĞ´Ò»¸öÉÈÇø
- ĞÎ²Î£ºsectorNo      : ÉÈÇøºÅ(µØÖ·/2048)
-       len           : ¶ÁÈ¡µÄ³¤¶È
-       *pbuffer      : »º´æÇøÖ¸Õë
- ·µ»Ø£º0
- Ïê½â£ºÒ»¸öÉÈÇø2048×Ö½Ú ËùÒÔÖÁÉÙĞ´2048×Ö½Ú
+ åŠŸèƒ½ï¼šFALSHå†™ä¸€ä¸ªæ‰‡åŒº
+ å½¢å‚ï¼šsectorNo      : æ‰‡åŒºå·(åœ°å€/2048)
+       len           : è¯»å–çš„é•¿åº¦
+       *pbuffer      : ç¼“å­˜åŒºæŒ‡é’ˆ
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼šä¸€ä¸ªæ‰‡åŒº2048å­—èŠ‚ æ‰€ä»¥è‡³å°‘å†™2048å­—èŠ‚
 ************************************************************************************************/
 uint8_t FLASH_WriteSector(uint32_t sectorNo,uint16_t count,uint8_t const *buffer)
 {
@@ -98,22 +98,22 @@ uint8_t FLASH_WriteSector(uint32_t sectorNo,uint16_t count,uint8_t const *buffer
 	} dest;
 	dest.word = (uint32_t)(sectorNo*(1<<11));
 
-	// ÉèÖÃĞ´ÈëÃüÁî
+	// è®¾ç½®å†™å…¥å‘½ä»¤
 	FTFL->FCCOB0 = PGM4;
-	// ËÄ×Ö½Ú¶ÔÆë
+	// å››å­—èŠ‚å¯¹é½
 	for(i=0;i<count;i+=4)
 	{
-		// ÉèÖÃ´æ´¢µØÖ·
+		// è®¾ç½®å­˜å‚¨åœ°å€
 		FTFL->FCCOB1 = dest.byte[2];
 		FTFL->FCCOB2 = dest.byte[1];
 		FTFL->FCCOB3 = dest.byte[0];
-		// ¿½±´Êı¾İ	£¨´ËÊı¾İÅÅÁĞ°´ÕÕ´ÓµÍÎ»µ½¸ßÎ»´æ´¢£©
+		// æ‹·è´æ•°æ®	ï¼ˆæ­¤æ•°æ®æ’åˆ—æŒ‰ç…§ä»ä½ä½åˆ°é«˜ä½å­˜å‚¨ï¼‰
 		FTFL->FCCOB4 = buffer[3];
 		FTFL->FCCOB5 = buffer[2];
 		FTFL->FCCOB6 = buffer[1];
 		FTFL->FCCOB7 = buffer[0];
 		dest.word+=4; buffer+=4;
-		//¼ì²âÃüÁîÊÇ·ñÖ´ĞĞÕı³£ 
+		//æ£€æµ‹å‘½ä»¤æ˜¯å¦æ‰§è¡Œæ­£å¸¸ 
 		if(FLASH_OK != CommandLaunch()) 
 		return FLASH_ERROR;
     }
@@ -121,10 +121,10 @@ uint8_t FLASH_WriteSector(uint32_t sectorNo,uint16_t count,uint8_t const *buffer
 }
 
 /***********************************************************************************************
- ¹¦ÄÜ£ºFALSH ²Á³ıÒ»¸öÉÈÇø
- ĞÎ²Î£ºsectorNo      : ÉÈÇøºÅ(µØÖ·/2048)
- ·µ»Ø£º0
- Ïê½â£º0
+ åŠŸèƒ½ï¼šFALSH æ“¦é™¤ä¸€ä¸ªæ‰‡åŒº
+ å½¢å‚ï¼šsectorNo      : æ‰‡åŒºå·(åœ°å€/2048)
+ è¿”å›ï¼š0
+ è¯¦è§£ï¼š0
 ************************************************************************************************/
 uint8_t FLASH_EraseSector(uint32_t sectorNo)
 {
@@ -134,13 +134,13 @@ uint8_t FLASH_EraseSector(uint32_t sectorNo)
 		uint8_t   byte[4];
 	} dest;
 	dest.word = (uint32_t)(sectorNo*(1<<11));
-	// ÉèÖÃ²Á³ıÃüÁî
-	FTFL->FCCOB0 = ERSSCR; // ²Á³ıÉÈÇøÃüÁî
-	// ÉèÖÃÄ¿±êµØÖ·
+	// è®¾ç½®æ“¦é™¤å‘½ä»¤
+	FTFL->FCCOB0 = ERSSCR; // æ“¦é™¤æ‰‡åŒºå‘½ä»¤
+	// è®¾ç½®ç›®æ ‡åœ°å€
 	FTFL->FCCOB1 = dest.byte[2];
 	FTFL->FCCOB2 = dest.byte[1];
 	FTFL->FCCOB3 = dest.byte[0];
-	//¼ì²âÃüÁîÊÇ·ñÖ´ĞĞÕı³£
+	//æ£€æµ‹å‘½ä»¤æ˜¯å¦æ‰§è¡Œæ­£å¸¸
 		
 	if(FLASH_OK == CommandLaunch())
 	{
