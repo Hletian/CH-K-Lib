@@ -1,4 +1,4 @@
-﻿/**
+/**
   ******************************************************************************
   * @file    minishell.h
   * @author  YANDLD
@@ -10,7 +10,7 @@
 #ifndef __MINISHELL_H__
 #define __MINISHELL_H__
 
-
+#include <stdint.h>
 //! @brief Computes the number of elements in an array.
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
