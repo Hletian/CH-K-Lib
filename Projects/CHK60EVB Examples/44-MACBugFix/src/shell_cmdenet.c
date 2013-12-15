@@ -15,7 +15,7 @@ uint8_t  gCfgEnet_Type[] = ENET_TYPE_ARP;
 //以太帧发送缓冲区
 uint8_t  gTxBuffer[1520]; 
 
-
+OS_FRAME enet_frame;
 //用户函数 LED控制 这只是一个例子
 int DoEnet(int argc, char *argv[])
 {
@@ -42,7 +42,13 @@ int DoEnet(int argc, char *argv[])
 		{
 			gTxBuffer[i] = i;
 		}
-    ENET_MacSendData(gTxBuffer,100);	
+		//  sp = (U32 *)&frame->data[0];
+		memcpy(enet_frame.data, gTxBuffer,100);
+		enet_frame.index = 0;
+		enet_frame.length = 100;
+	 send_frame (&enet_frame);
+	 int_enable_eth();
+  //  ENET_MacSendData(gTxBuffer,100);	
 		return 0;
 }
 

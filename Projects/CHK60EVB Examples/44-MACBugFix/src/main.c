@@ -119,14 +119,15 @@ int main(void)
     uint32_t len;
     uint32_t i;
     ENET_InitTypeDef ENET_InitStruct1;
-    SystemClockSetup(ClockSource_EX50M,CoreClock_96M);
+    SystemClockSetup(ClockSource_EX50M,CoreClock_100M);
     DelayInit();
     LED_Init(LED_PinLookup_CHK60EVB, kNumOfLED);
     UART_DebugPortInit(UART4_RX_C14_TX_C15, 115200);
 	  DisplayCPUInfo();
 		
-	  ENET_InitStruct1.pMacAddress = gCfgLoca_MAC;
-	  ENET_Init(&ENET_InitStruct1);
+	  //ENET_InitStruct1.pMacAddress = gCfgLoca_MAC;
+	  //ENET_Init(&ENET_InitStruct1);
+    init_ethernet();
 	  if(ENET_MiiLinkState() == TRUE)
 		{
         UART_printf("ENET Phy Connected succ.\r\n");

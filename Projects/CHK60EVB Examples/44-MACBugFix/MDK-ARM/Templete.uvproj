@@ -30,6 +30,7 @@
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile>SFD\Freescale\Kinetis\MK60D10.sfr</SFDFile>
+          <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -97,6 +98,7 @@
           <StopOnExitCode>3</StopOnExitCode>
           <CustomArgument></CustomArgument>
           <IncludeLibraryModules></IncludeLibraryModules>
+          <ComprImg>1</ComprImg>
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
@@ -169,6 +171,10 @@
           <Flash2>Segger\JL2CM3.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
+          <pFcarmOut></pFcarmOut>
+          <pFcarmGrp></pFcarmGrp>
+          <pFcArmRoot></pFcArmRoot>
+          <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
           <ArmAdsMisc>
@@ -493,11 +499,6 @@
               <FilePath>..\..\..\..\Libraries\drivers\src\dma.c</FilePath>
             </File>
             <File>
-              <FileName>enet.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\Libraries\drivers\src\enet.c</FilePath>
-            </File>
-            <File>
               <FileName>flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\Libraries\drivers\src\flash.c</FilePath>
@@ -552,6 +553,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\Libraries\drivers\src\wdog.c</FilePath>
             </File>
+            <File>
+              <FileName>enet2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\Libraries\drivers\src\enet2.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -596,6 +602,11 @@
               <FileName>isr.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>shell_cmdenet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\shell_cmdenet.c</FilePath>
             </File>
           </Files>
         </Group>
