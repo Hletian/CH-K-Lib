@@ -57,6 +57,7 @@ int main(void)
     ADC_InitStruct1.ADCxMap = ADC0_SE13_PB3;              //PC0 引脚作为ADC0 14通道
     ADC_InitStruct1.ADC_Precision = ADC_PRECISION_10BIT;  //10位精度
     ADC_InitStruct1.ADC_TriggerSelect = ADC_TRIGGER_SW;   //软件触发(A 通道可使用软/硬件触发 B 通道只能使用硬件触发)
+    ADC_InitStruct1.ADC_ClkDiv = ADC_CLKDIV_8;            //ADC转换时钟为总线时钟/8 时钟越慢转换速度越慢 精度越高
     ADC_Init(&ADC_InitStruct1);
     while(1) 
     {
