@@ -1,10 +1,10 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    lptm.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ LPTM ä½åŠŸè€—å®šæ—¶å™¨ é©±åŠ¨ é©±åŠ¨å¤´æ–‡ä»¶
+  * @brief   ³¬ºËK60¹Ì¼ş¿â LPTM µÍ¹¦ºÄ¶¨Ê±Æ÷ Çı¶¯ Çı¶¯Í·ÎÄ¼ş
   ******************************************************************************
   */
 #ifndef __LPTM_H__
@@ -16,14 +16,14 @@
 	 
 #include "sys.h"
 
-//åˆå§‹åŒ–æ¨¡å¼
+//³õÊ¼»¯Ä£Ê½
 typedef enum
 {
-	LPTM_Mode_PC_RISING,   //è„‰å†²è®¡æ•°æ¨¡å¼ ä¸Šå‡æ²¿è®¡æ•°
-	LPTM_Mode_PC_FALLING,  //è„‰å†²è®¡æ•°æ¨¡å¼ ä¸‹é™æ²¿è®¡æ•°
-	LPTM_Mode_TC,          //TimerCounteræ¨¡å¼
+	LPTM_Mode_PC_RISING,   //Âö³å¼ÆÊıÄ£Ê½ ÉÏÉıÑØ¼ÆÊı
+	LPTM_Mode_PC_FALLING,  //Âö³å¼ÆÊıÄ£Ê½ ÏÂ½µÑØ¼ÆÊı
+	LPTM_Mode_TC,          //TimerCounterÄ£Ê½
 }LPTM_Mode_TpyeDef;
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊı¼ì²éÆ÷
 #define IS_LPTM_PC_MODE(MODE) (((MODE) == LPTM_Mode_PC_RISING)   || \
 															 ((MODE) == LPTM_Mode_PC_FALLING)  || \
 											         ((MODE) == LPTM_Mode_TC))
@@ -33,26 +33,26 @@ typedef enum
 
 typedef struct
 {
-	uint32_t LPTMxMap;                 //é€šé“å®šä¹‰
-	LPTM_Mode_TpyeDef LPTM_Mode;       //å·¥ä½œæ¨¡å¼
-	uint32_t LPTM_InitCompareValue;    //æ¯”è¾ƒå¯„å­˜å™¨åˆå§‹å€¼
+	uint32_t LPTMxMap;                 //Í¨µÀ¶¨Òå
+	LPTM_Mode_TpyeDef LPTM_Mode;       //¹¤×÷Ä£Ê½
+	uint32_t LPTM_InitCompareValue;    //±È½Ï¼Ä´æÆ÷³õÊ¼Öµ
 }LPTM_InitTypeDef;
 	 
 
-//ä¸­æ–­æºå®šä¹‰
+//ÖĞ¶ÏÔ´¶¨Òå
 #define LPTM_IT_TCF     (uint16_t)(0)
 #define IS_LPTM_IT(IT)  ((IT) == LPTM_IT_TCF)
 
-//LPLTM è„‰å†²è®¡æ•°æ¨¡å¼é€šé“å®šä¹‰
+//LPLTM Âö³å¼ÆÊıÄ£Ê½Í¨µÀ¶¨Òå
 #define LPTM_CH1_PA19  (0x12345670U)
 #define LPTM_CH2_PC5   (0x12345671U)
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊı¼ì²éÆ÷
 #define IS_LPTM_MAP(CHL) (((CHL) == LPTM_CH1_PA19) || \
 												  ((CHL) == LPTM_CH2_PC5))
 
 #define IS_LPTM_DELAY_TIME(TIME) ((TIME) <= 65535)
 
-//æœ¬æ„ä»¶æ‰€å®ç°çš„æ¥å£
+//±¾¹¹¼şËùÊµÏÖµÄ½Ó¿Ú
 void LPTM_Init(LPTM_InitTypeDef* LPTM_InitStruct);
 void LPTM_SetCompareValue(LPTMR_Type* LPTMx, uint32_t Value);
 uint32_t LPTM_GetCompareValue(LPTMR_Type* LPTMx);

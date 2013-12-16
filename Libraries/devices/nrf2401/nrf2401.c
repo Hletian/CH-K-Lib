@@ -1,10 +1,10 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    nrf2401.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸åŸå­æ ¸æ ¸å¿ƒæ¿ BSPæ„ä»¶ NRF2401é©±åŠ¨
+  * @brief   ³¬ºËÔ­×ÓºËºËĞÄ°å BSP¹¹¼ş NRF2401Çı¶¯
   ******************************************************************************
   */
 #include "nrf2401.h"
@@ -13,10 +13,10 @@ NRF2401_InitTypeDef* gpNRF2401;
 
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šNRF24L01 è¯»å†™ä¸€ä¸ªå­—èŠ‚
- å½¢å‚ï¼šå‘é€çš„æ•°æ®
- è¿”å›ï¼šè¯»åˆ°çš„æ•°æ®
- è¯¦è§£ï¼šè°ƒç”¨SPIæ¨¡å—
+ ¹¦ÄÜ£ºNRF24L01 ¶ÁĞ´Ò»¸ö×Ö½Ú
+ ĞÎ²Î£º·¢ËÍµÄÊı¾İ
+ ·µ»Ø£º¶Áµ½µÄÊı¾İ
+ Ïê½â£ºµ÷ÓÃSPIÄ£¿é
 ************************************************************************************************/
 static uint8_t NRF2401_ReadWriteByte(uint8_t dat)
 {
@@ -25,11 +25,11 @@ static uint8_t NRF2401_ReadWriteByte(uint8_t dat)
 	return(RecByte);           		  // return read byte
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šNRF24L01 å†™å¯„å­˜å™¨
- å½¢å‚ï¼šreg: å¯„å­˜å™¨
-       value:å†™å…¥çš„å€¼
- è¿”å›ï¼šè¯»åˆ°çš„æ•°æ®
- è¯¦è§£ï¼šæ— 
+ ¹¦ÄÜ£ºNRF24L01 Ğ´¼Ä´æÆ÷
+ ĞÎ²Î£ºreg: ¼Ä´æÆ÷
+       value:Ğ´ÈëµÄÖµ
+ ·µ»Ø£º¶Áµ½µÄÊı¾İ
+ Ïê½â£ºÎŞ
 ************************************************************************************************/
 static uint8_t NRF2401_ReadWriteReg(uint8_t reg,uint8_t value)
 {
@@ -41,11 +41,11 @@ static uint8_t NRF2401_ReadWriteReg(uint8_t reg,uint8_t value)
 	return(status);            // return nRF24L01 status byte
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šNRF24L01 å†™å¯„å­˜å™¨
- å½¢å‚ï¼šreg: å¯„å­˜å™¨
-       value:å†™å…¥çš„å€¼
- è¿”å›ï¼šè¯»åˆ°çš„æ•°æ®
- è¯¦è§£ï¼šæ— 
+ ¹¦ÄÜ£ºNRF24L01 Ğ´¼Ä´æÆ÷
+ ĞÎ²Î£ºreg: ¼Ä´æÆ÷
+       value:Ğ´ÈëµÄÖµ
+ ·µ»Ø£º¶Áµ½µÄÊı¾İ
+ Ïê½â£ºÎŞ
 ************************************************************************************************/
 static uint8_t NRF2401_WriteBuffer(uint8_t reg,uint8_t *pBuf,uint8_t bytes)
 {
@@ -60,12 +60,12 @@ static uint8_t NRF2401_WriteBuffer(uint8_t reg,uint8_t *pBuf,uint8_t bytes)
 	return(status);          // return nRF24L01 status byte
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šNRF24L01 è¯»Buffer
- å½¢å‚ï¼šreg: å¯„å­˜å™¨
-       pBuf:æ•°æ®æŒ‡é’ˆ
-		 	 bytes: å†™å…¥çš„å­—èŠ‚æ•°
- è¿”å›ï¼šè¯»çŠ¶æ€
- è¯¦è§£ï¼šæ— 
+ ¹¦ÄÜ£ºNRF24L01 ¶ÁBuffer
+ ĞÎ²Î£ºreg: ¼Ä´æÆ÷
+       pBuf:Êı¾İÖ¸Õë
+		 	 bytes: Ğ´ÈëµÄ×Ö½ÚÊı
+ ·µ»Ø£º¶Á×´Ì¬
+ Ïê½â£ºÎŞ
 ************************************************************************************************/
 static uint8_t NRF2401_ReadBuffer(uint8_t reg,uint8_t *pBuf,uint8_t bytes)
 {
@@ -81,17 +81,17 @@ static uint8_t NRF2401_ReadBuffer(uint8_t reg,uint8_t *pBuf,uint8_t bytes)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šæ£€æµ‹NRF24L01 æ˜¯å¦å­˜åœ¨
- å½¢å‚ï¼š
- è¿”å›ï¼šNRF_OK : æˆåŠŸ   NRF_ERR:å¤±è´¥
- è¯¦è§£ï¼šæ— 
+ ¹¦ÄÜ£º¼ì²âNRF24L01 ÊÇ·ñ´æÔÚ
+ ĞÎ²Î£º
+ ·µ»Ø£ºNRF_OK : ³É¹¦   NRF_ERR:Ê§°Ü
+ Ïê½â£ºÎŞ
 ************************************************************************************************/
  uint8_t NRF24L01_Check(void)
 {
 	uint8_t buf[5]={0XA5,0XA5,0XA5,0XA5,0XA5};
 	uint8_t i;
-	NRF2401_WriteBuffer(WRITE_REG+TX_ADDR,buf,5);//å†™å…¥5ä¸ªå­—èŠ‚çš„åœ°å€.	
-	NRF2401_ReadBuffer(TX_ADDR,buf,5); //è¯»å‡ºå†™å…¥çš„åœ°å€  
+	NRF2401_WriteBuffer(WRITE_REG+TX_ADDR,buf,5);//Ğ´Èë5¸ö×Ö½ÚµÄµØÖ·.	
+	NRF2401_ReadBuffer(TX_ADDR,buf,5); //¶Á³öĞ´ÈëµÄµØÖ·  
 	for(i=0;i<5;i++)
 	{
 		if(buf[i] != 0xA5) return NRF_ERR;
@@ -108,7 +108,7 @@ uint8_t NRF2401_Init(NRF2401_InitTypeDef *NRF2401_InitStruct)
 	{
 		return 1;
 	}
-	//CEå¼•è„šåˆå§‹åŒ–
+	//CEÒı½Å³õÊ¼»¯
 	GPIO_InitStruct1.GPIO_Pin = NRF2401_InitStruct->CE_GPIO_Pin;
 	GPIO_InitStruct1.GPIO_InitState = Bit_SET;
 	GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;
@@ -116,14 +116,14 @@ uint8_t NRF2401_Init(NRF2401_InitTypeDef *NRF2401_InitStruct)
 	GPIO_InitStruct1.GPIOx = (GPIO_Type*) NRF2401_InitStruct->CE_GPIO_Instance;
 	GPIO_Init(&GPIO_InitStruct1);
 
-	 //IRQå¼•è„šåˆå§‹åŒ–
+	 //IRQÒı½Å³õÊ¼»¯
 	GPIO_InitStruct1.GPIO_Pin = NRF2401_InitStruct->IRQ_GPIO_Pin;
 	GPIO_InitStruct1.GPIO_InitState = Bit_SET;
 	GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;
 	GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_IPU;
 	GPIO_InitStruct1.GPIOx = (GPIO_Type*) NRF2401_InitStruct->IRQ_GPIO_Instance;
 	GPIO_Init(&GPIO_InitStruct1);
-	//åˆå§‹åŒ–SPIä¸²è¡Œæ¥å£å¼•æ“
+	//³õÊ¼»¯SPI´®ĞĞ½Ó¿ÚÒıÇæ
 	SPI_InitStruct1.SPIxDataMap = NRF2401_InitStruct->DATA_SPI_DataMap;
 	SPI_InitStruct1.SPIxPCSMap =  NRF2401_InitStruct->DATA_SPI_CSMap;
 	SPI_InitStruct1.SPI_DataSize = 8;
@@ -133,98 +133,98 @@ uint8_t NRF2401_Init(NRF2401_InitTypeDef *NRF2401_InitStruct)
 	SPI_InitStruct1.SPI_CPOL = SPI_CPOL_Low;
 	SPI_InitStruct1.SPI_FirstBit = SPI_FirstBit_MSB;
 	SPI_Init(&SPI_InitStruct1);
-	//åˆå§‹åŒ–ç¡¬ä»¶GPIOå¼•æ“
-	//ä¸é€‚ç”¨ç¡¬ä»¶ CS ä½¿ç”¨GPIOåšCS
+	//³õÊ¼»¯Ó²¼şGPIOÒıÇæ
+	//²»ÊÊÓÃÓ²¼ş CS Ê¹ÓÃGPIO×öCS
 	GPIO_InitStruct1.GPIO_Pin = NRF2401_InitStruct->CS_GPIO_Pin;
 	GPIO_InitStruct1.GPIO_InitState = Bit_SET;
 	GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;
 	GPIO_InitStruct1.GPIO_Mode = GPIO_Mode_OPP;
 	GPIO_InitStruct1.GPIOx = (GPIO_Type*) NRF2401_InitStruct->CS_GPIO_Instance;
 	GPIO_Init(&GPIO_InitStruct1);
-	//IOç”µå¹³åˆå§‹åŒ–
+	//IOµçÆ½³õÊ¼»¯
 	GPIO_ResetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin);// chip enable
 	GPIO_ResetBits((GPIO_Type*) gpNRF2401->CS_GPIO_Instance, gpNRF2401->CS_GPIO_Pin);// cs disable
-	//æ£€æµ‹NRF2401 æ˜¯å¦å­˜åœ¨
+	//¼ì²âNRF2401 ÊÇ·ñ´æÔÚ
 	return 0;
 }
 
-const uint8_t TX_ADDRESS[TX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //å‘é€åœ°å€
-const uint8_t RX_ADDRESS[RX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //æ¥æ”¶åœ°å€
-//è¯¥å‡½æ•°åˆå§‹åŒ–NRF24L01åˆ°RXæ¨¡å¼
-//è®¾ç½®RXåœ°å€,å†™RXæ•°æ®å®½åº¦,é€‰æ‹©RFé¢‘é“,æ³¢ç‰¹ç‡å’ŒLNA HCURR
-//å½“CEå˜é«˜å,å³è¿›å…¥RXæ¨¡å¼,å¹¶å¯ä»¥æ¥æ”¶æ•°æ®äº†		   
+const uint8_t TX_ADDRESS[TX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //·¢ËÍµØÖ·
+const uint8_t RX_ADDRESS[RX_ADR_WIDTH]={0x34,0x43,0x10,0x10,0x01}; //½ÓÊÕµØÖ·
+//¸Ãº¯Êı³õÊ¼»¯NRF24L01µ½RXÄ£Ê½
+//ÉèÖÃRXµØÖ·,Ğ´RXÊı¾İ¿í¶È,Ñ¡ÔñRFÆµµÀ,²¨ÌØÂÊºÍLNA HCURR
+//µ±CE±ä¸ßºó,¼´½øÈëRXÄ£Ê½,²¢¿ÉÒÔ½ÓÊÕÊı¾İÁË		   
 void NRF2401_SetRXMode(void)
 {
 	GPIO_ResetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin);// chip enable
-	NRF2401_WriteBuffer(WRITE_REG+RX_ADDR_P0,(uint8_t*)RX_ADDRESS,RX_ADR_WIDTH);//å†™RXèŠ‚ç‚¹åœ°å€
-	NRF2401_ReadWriteReg(WRITE_REG+EN_AA,0x01);    //ä½¿èƒ½é€šé“0çš„è‡ªåŠ¨åº”ç­”    
-	NRF2401_ReadWriteReg(WRITE_REG+EN_RXADDR,0x01);//ä½¿èƒ½é€šé“0çš„æ¥æ”¶åœ°å€  	 
-	NRF2401_ReadWriteReg(WRITE_REG+RF_CH,40);	     //è®¾ç½®RFé€šä¿¡é¢‘ç‡		  
-	NRF2401_ReadWriteReg(WRITE_REG+RX_PW_P0,RX_PLOAD_WIDTH);//é€‰æ‹©é€šé“0çš„æœ‰æ•ˆæ•°æ®å®½åº¦ 	    
-	NRF2401_ReadWriteReg(WRITE_REG+RF_SETUP,0x0f);//è®¾ç½®TXå‘å°„å‚æ•°,0dbå¢ç›Š,2Mbps,ä½å™ªå£°å¢ç›Šå¼€å¯   
-	NRF2401_ReadWriteReg(WRITE_REG+CONFIG, 0x0f);//é…ç½®åŸºæœ¬å·¥ä½œæ¨¡å¼çš„å‚æ•°;PWR_UP,EN_CRC,16BIT_CRC,æ¥æ”¶æ¨¡å¼ 
-  GPIO_SetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin); //CEä¸ºé«˜,è¿›å…¥æ¥æ”¶æ¨¡å¼ 
+	NRF2401_WriteBuffer(WRITE_REG+RX_ADDR_P0,(uint8_t*)RX_ADDRESS,RX_ADR_WIDTH);//Ğ´RX½ÚµãµØÖ·
+	NRF2401_ReadWriteReg(WRITE_REG+EN_AA,0x01);    //Ê¹ÄÜÍ¨µÀ0µÄ×Ô¶¯Ó¦´ğ    
+	NRF2401_ReadWriteReg(WRITE_REG+EN_RXADDR,0x01);//Ê¹ÄÜÍ¨µÀ0µÄ½ÓÊÕµØÖ·  	 
+	NRF2401_ReadWriteReg(WRITE_REG+RF_CH,40);	     //ÉèÖÃRFÍ¨ĞÅÆµÂÊ		  
+	NRF2401_ReadWriteReg(WRITE_REG+RX_PW_P0,RX_PLOAD_WIDTH);//Ñ¡ÔñÍ¨µÀ0µÄÓĞĞ§Êı¾İ¿í¶È 	    
+	NRF2401_ReadWriteReg(WRITE_REG+RF_SETUP,0x0f);//ÉèÖÃTX·¢Éä²ÎÊı,0dbÔöÒæ,2Mbps,µÍÔëÉùÔöÒæ¿ªÆô   
+	NRF2401_ReadWriteReg(WRITE_REG+CONFIG, 0x0f);//ÅäÖÃ»ù±¾¹¤×÷Ä£Ê½µÄ²ÎÊı;PWR_UP,EN_CRC,16BIT_CRC,½ÓÊÕÄ£Ê½ 
+  GPIO_SetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin); //CEÎª¸ß,½øÈë½ÓÊÕÄ£Ê½ 
 }			
-//è¯¥å‡½æ•°åˆå§‹åŒ–NRF24L01åˆ°TXæ¨¡å¼
-//è®¾ç½®TXåœ°å€,å†™TXæ•°æ®å®½åº¦,è®¾ç½®RXè‡ªåŠ¨åº”ç­”çš„åœ°å€,å¡«å……TXå‘é€æ•°æ®,é€‰æ‹©RFé¢‘é“,æ³¢ç‰¹ç‡å’ŒLNA HCURR
-//PWR_UP,CRCä½¿èƒ½
-//å½“CEå˜é«˜å,å³è¿›å…¥RXæ¨¡å¼,å¹¶å¯ä»¥æ¥æ”¶æ•°æ®äº†		   
-//CEä¸ºé«˜å¤§äº10us,åˆ™å¯åŠ¨å‘é€.	 
+//¸Ãº¯Êı³õÊ¼»¯NRF24L01µ½TXÄ£Ê½
+//ÉèÖÃTXµØÖ·,Ğ´TXÊı¾İ¿í¶È,ÉèÖÃRX×Ô¶¯Ó¦´ğµÄµØÖ·,Ìî³äTX·¢ËÍÊı¾İ,Ñ¡ÔñRFÆµµÀ,²¨ÌØÂÊºÍLNA HCURR
+//PWR_UP,CRCÊ¹ÄÜ
+//µ±CE±ä¸ßºó,¼´½øÈëRXÄ£Ê½,²¢¿ÉÒÔ½ÓÊÕÊı¾İÁË		   
+//CEÎª¸ß´óÓÚ10us,ÔòÆô¶¯·¢ËÍ.	 
 void NRF2401_SetTXMode(void)
 {				
   GPIO_ResetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin); 
-	NRF2401_WriteBuffer(WRITE_REG+TX_ADDR,(uint8_t*)TX_ADDRESS,TX_ADR_WIDTH);//å†™TXèŠ‚ç‚¹åœ°å€ 
-	NRF2401_WriteBuffer(WRITE_REG+RX_ADDR_P0,(uint8_t*)RX_ADDRESS,RX_ADR_WIDTH); //è®¾ç½®TXèŠ‚ç‚¹åœ°å€,ä¸»è¦ä¸ºäº†ä½¿èƒ½ACK	  
-	NRF2401_ReadWriteReg(WRITE_REG+EN_AA,0x01);     //ä½¿èƒ½é€šé“0çš„è‡ªåŠ¨åº”ç­”    
-	NRF2401_ReadWriteReg(WRITE_REG+EN_RXADDR,0x01); //ä½¿èƒ½é€šé“0çš„æ¥æ”¶åœ°å€  
-	NRF2401_ReadWriteReg(WRITE_REG+SETUP_RETR,0x1a);//è®¾ç½®è‡ªåŠ¨é‡å‘é—´éš”æ—¶é—´:500us + 86us;æœ€å¤§è‡ªåŠ¨é‡å‘æ¬¡æ•°:10æ¬¡
-	NRF2401_ReadWriteReg(WRITE_REG+RF_CH,40);       //è®¾ç½®RFé€šé“ä¸º40
-	NRF2401_ReadWriteReg(WRITE_REG+RF_SETUP,0x0f);  //è®¾ç½®TXå‘å°„å‚æ•°,0dbå¢ç›Š,2Mbps,ä½å™ªå£°å¢ç›Šå¼€å¯   
-	NRF2401_ReadWriteReg(WRITE_REG+CONFIG,0x0e);    //é…ç½®åŸºæœ¬å·¥ä½œæ¨¡å¼çš„å‚æ•°;PWR_UP,EN_CRC,16BIT_CRC,æ¥æ”¶æ¨¡å¼,å¼€å¯æ‰€æœ‰ä¸­æ–­
-  GPIO_SetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin); //CEä¸ºé«˜,è¿›å…¥æ¥æ”¶æ¨¡å¼ 
+	NRF2401_WriteBuffer(WRITE_REG+TX_ADDR,(uint8_t*)TX_ADDRESS,TX_ADR_WIDTH);//Ğ´TX½ÚµãµØÖ· 
+	NRF2401_WriteBuffer(WRITE_REG+RX_ADDR_P0,(uint8_t*)RX_ADDRESS,RX_ADR_WIDTH); //ÉèÖÃTX½ÚµãµØÖ·,Ö÷ÒªÎªÁËÊ¹ÄÜACK	  
+	NRF2401_ReadWriteReg(WRITE_REG+EN_AA,0x01);     //Ê¹ÄÜÍ¨µÀ0µÄ×Ô¶¯Ó¦´ğ    
+	NRF2401_ReadWriteReg(WRITE_REG+EN_RXADDR,0x01); //Ê¹ÄÜÍ¨µÀ0µÄ½ÓÊÕµØÖ·  
+	NRF2401_ReadWriteReg(WRITE_REG+SETUP_RETR,0x1a);//ÉèÖÃ×Ô¶¯ÖØ·¢¼ä¸ôÊ±¼ä:500us + 86us;×î´ó×Ô¶¯ÖØ·¢´ÎÊı:10´Î
+	NRF2401_ReadWriteReg(WRITE_REG+RF_CH,40);       //ÉèÖÃRFÍ¨µÀÎª40
+	NRF2401_ReadWriteReg(WRITE_REG+RF_SETUP,0x0f);  //ÉèÖÃTX·¢Éä²ÎÊı,0dbÔöÒæ,2Mbps,µÍÔëÉùÔöÒæ¿ªÆô   
+	NRF2401_ReadWriteReg(WRITE_REG+CONFIG,0x0e);    //ÅäÖÃ»ù±¾¹¤×÷Ä£Ê½µÄ²ÎÊı;PWR_UP,EN_CRC,16BIT_CRC,½ÓÊÕÄ£Ê½,¿ªÆôËùÓĞÖĞ¶Ï
+  GPIO_SetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin); //CEÎª¸ß,½øÈë½ÓÊÕÄ£Ê½ 
 }
 
 
-//å¯åŠ¨NRF24L01å‘é€ä¸€æ¬¡æ•°æ®
-//txbuf:å¾…å‘é€æ•°æ®é¦–åœ°å€
-//è¿”å›å€¼:å‘é€å®ŒæˆçŠ¶å†µ
+//Æô¶¯NRF24L01·¢ËÍÒ»´ÎÊı¾İ
+//txbuf:´ı·¢ËÍÊı¾İÊ×µØÖ·
+//·µ»ØÖµ:·¢ËÍÍê³É×´¿ö
 uint8_t NRF2401_SendData(uint8_t *txbuf)
 {
 	uint8_t sta;
   GPIO_ResetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin); 
-	NRF2401_WriteBuffer(WR_TX_PLOAD,txbuf,TX_PLOAD_WIDTH);//å†™æ•°æ®åˆ°TX BUF  32ä¸ªå­—èŠ‚
- 	GPIO_SetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin); //å¯åŠ¨å‘é€	  
-	while(GPIO_ReadInputDataBit((GPIO_Type*) gpNRF2401->IRQ_GPIO_Instance, gpNRF2401->IRQ_GPIO_Pin) != 0);//ç­‰å¾…å‘é€å®Œæˆ
-	sta = NRF2401_ReadWriteReg(STATUS,0xFF);  //è¯»å–çŠ¶æ€å¯„å­˜å™¨çš„å€¼	
-	NRF2401_ReadWriteReg(WRITE_REG+STATUS,sta); //æ¸…é™¤TX_DSæˆ–MAX_RTä¸­æ–­æ ‡å¿—
+	NRF2401_WriteBuffer(WR_TX_PLOAD,txbuf,TX_PLOAD_WIDTH);//Ğ´Êı¾İµ½TX BUF  32¸ö×Ö½Ú
+ 	GPIO_SetBits((GPIO_Type*) gpNRF2401->CE_GPIO_Instance, gpNRF2401->CE_GPIO_Pin); //Æô¶¯·¢ËÍ	  
+	while(GPIO_ReadInputDataBit((GPIO_Type*) gpNRF2401->IRQ_GPIO_Instance, gpNRF2401->IRQ_GPIO_Pin) != 0);//µÈ´ı·¢ËÍÍê³É
+	sta = NRF2401_ReadWriteReg(STATUS,0xFF);  //¶ÁÈ¡×´Ì¬¼Ä´æÆ÷µÄÖµ	
+	NRF2401_ReadWriteReg(WRITE_REG+STATUS,sta); //Çå³ıTX_DS»òMAX_RTÖĞ¶Ï±êÖ¾
 	
-	if(sta&MAX_TX)//è¾¾åˆ°æœ€å¤§é‡å‘æ¬¡æ•°
+	if(sta&MAX_TX)//´ïµ½×î´óÖØ·¢´ÎÊı
 	{
-		NRF2401_ReadWriteReg(FLUSH_TX,0xff);//æ¸…é™¤TX FIFOå¯„å­˜å™¨ 
+		NRF2401_ReadWriteReg(FLUSH_TX,0xff);//Çå³ıTX FIFO¼Ä´æÆ÷ 
 		return MAX_TX; 
 	}
-	if(sta&TX_OK)//å‘é€å®Œæˆ
+	if(sta&TX_OK)//·¢ËÍÍê³É
 	{
 		return TX_OK;
 	}
-	return 0xff;//å…¶ä»–åŸå› å‘é€å¤±è´¥
+	return 0xff;//ÆäËûÔ­Òò·¢ËÍÊ§°Ü
 }
 
-//å¯åŠ¨NRF24L01å‘é€ä¸€æ¬¡æ•°æ®
-//txbuf:å¾…å‘é€æ•°æ®é¦–åœ°å€
-//è¿”å›å€¼:0ï¼Œæ¥æ”¶å®Œæˆï¼›å…¶ä»–ï¼Œé”™è¯¯ä»£ç 
+//Æô¶¯NRF24L01·¢ËÍÒ»´ÎÊı¾İ
+//txbuf:´ı·¢ËÍÊı¾İÊ×µØÖ·
+//·µ»ØÖµ:0£¬½ÓÊÕÍê³É£»ÆäËû£¬´íÎó´úÂë
 uint8_t NRF2401_RecData(uint8_t *rxbuf)
 {
 	uint8_t sta;		    							   
-	sta=NRF2401_ReadWriteReg(STATUS,0xFF);  //è¯»å–çŠ¶æ€å¯„å­˜å™¨çš„å€¼    	 
-	NRF2401_ReadWriteReg(WRITE_REG+STATUS,sta); //æ¸…é™¤TX_DSæˆ–MAX_RTä¸­æ–­æ ‡å¿—
-	if(sta&RX_OK)//æ¥æ”¶åˆ°æ•°æ®
+	sta=NRF2401_ReadWriteReg(STATUS,0xFF);  //¶ÁÈ¡×´Ì¬¼Ä´æÆ÷µÄÖµ    	 
+	NRF2401_ReadWriteReg(WRITE_REG+STATUS,sta); //Çå³ıTX_DS»òMAX_RTÖĞ¶Ï±êÖ¾
+	if(sta&RX_OK)//½ÓÊÕµ½Êı¾İ
 	{
-		NRF2401_ReadBuffer(RD_RX_PLOAD,rxbuf,RX_PLOAD_WIDTH);//è¯»å–æ•°æ®
-		NRF2401_ReadWriteReg(FLUSH_RX,0xff);//æ¸…é™¤RX FIFOå¯„å­˜å™¨ 
+		NRF2401_ReadBuffer(RD_RX_PLOAD,rxbuf,RX_PLOAD_WIDTH);//¶ÁÈ¡Êı¾İ
+		NRF2401_ReadWriteReg(FLUSH_RX,0xff);//Çå³ıRX FIFO¼Ä´æÆ÷ 
 		return 0; 
 	}	   
-	return 1;//æ²¡æ”¶åˆ°ä»»ä½•æ•°æ®
+	return 1;//Ã»ÊÕµ½ÈÎºÎÊı¾İ
 }			
 
 

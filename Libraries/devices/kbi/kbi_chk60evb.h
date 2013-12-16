@@ -1,9 +1,9 @@
-ï»¿#ifndef __KBI_CHK60EVB_H__
+#ifndef __KBI_CHK60EVB_H__
 #define __KBI_CHK60EVB_H__
 
 #include "kbi.h"
 
-//!< CHK60EBæ¿ è¶…æ ¸K60å¼€å‘æ¿ä¸Š KEYèµ„æº
+//!< CHK60EB°å ³¬ºËK60¿ª·¢°åÉÏ KEY×ÊÔ´
 typedef enum
 { 
     kKEY1,

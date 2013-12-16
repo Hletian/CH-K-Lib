@@ -1,26 +1,26 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    ftm.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ FTM å®šæ—¶å™¨ é©±åŠ¨ é©±åŠ¨æ–‡ä»¶
+  * @brief   ³¬ºËK60¹Ì¼ş¿â FTM ¶¨Ê±Æ÷ Çı¶¯ Çı¶¯ÎÄ¼ş
   ******************************************************************************
   */
 #include "ftm.h"
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè®¾ç½®PWMå·¥ä½œæ¨¡å¼
- å½¢å‚ï¼šFTM_PWM_InitTypeDef:PWMåˆå§‹åŒ–ç»“æ„
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºÉèÖÃPWM¹¤×÷Ä£Ê½
+ ĞÎ²Î£ºFTM_PWM_InitTypeDef:PWM³õÊ¼»¯½á¹¹
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 static void FTM_PWM_SetMode(FTM_InitTypeDef *FTM_InitStruct)
 {
 	FTM_Type *FTMx = NULL;
 	FTM_PWM_MapTypeDef *pFTM_Map = NULL;
 	pFTM_Map = (FTM_PWM_MapTypeDef*)&(FTM_InitStruct->FTMxMAP);
-	//æ‰¾å‡ºFTMå£
+	//ÕÒ³öFTM¿Ú
 	switch(pFTM_Map->FTM_Index)
 	{
 		case 0:
@@ -36,14 +36,14 @@ static void FTM_PWM_SetMode(FTM_InitTypeDef *FTM_InitStruct)
 	}
 	switch(FTM_InitStruct->FTM_Mode)
 	{
-		case FTM_Mode_EdgeAligned: //è¾¹æ²¿å¯¹é½æ¨¡å¼
-			//ç¦æ­¢å†™ä¿æŠ¤
+		case FTM_Mode_EdgeAligned: //±ßÑØ¶ÔÆëÄ£Ê½
+			//½ûÖ¹Ğ´±£»¤
 			FTMx->MODE |= FTM_MODE_WPDIS_MASK;
-		  //ç¦æ­¢å¢å¼ºæ¨¡å¼
+		  //½ûÖ¹ÔöÇ¿Ä£Ê½
 			FTMx->MODE &= ~FTM_MODE_FTMEN_MASK;
-		  //ç¦æ­¢æ­£äº¤ç¼–ç æ¨¡å¼
+		  //½ûÖ¹Õı½»±àÂëÄ£Ê½
 			FTMx->QDCTRL &= ~FTM_QDCTRL_QUADEN_MASK;
-		  //è¾¹æ²¿å¯¹é½
+		  //±ßÑØ¶ÔÆë
 			FTMx->SC &= ~FTM_SC_CPWMS_MASK;
 			FTMx->CONTROLS[pFTM_Map->FTM_CH_Index].CnSC = 0;
 			FTMx->CONTROLS[pFTM_Map->FTM_CH_Index].CnSC |= (FTM_CnSC_MSB_MASK|FTM_CnSC_ELSB_MASK);	
@@ -72,8 +72,8 @@ static void FTM_PWM_SetMode(FTM_InitTypeDef *FTM_InitStruct)
 				default:break;
 			}
 			break;
-		case FTM_Mode_CenterAligned: //å±…ä¸­å¯¹é½æ¨¡å¼
-			//ç¦æ­¢å†™ä¿æŠ¤ å¯ä»¥å†™å…¥æ‰€æœ‰FTMå¯„å­˜å™¨ ç¦æ­¢å¢å¼ºæ¨¡å¼
+		case FTM_Mode_CenterAligned: //¾ÓÖĞ¶ÔÆëÄ£Ê½
+			//½ûÖ¹Ğ´±£»¤ ¿ÉÒÔĞ´ÈëËùÓĞFTM¼Ä´æÆ÷ ½ûÖ¹ÔöÇ¿Ä£Ê½
 			FTMx->MODE |= FTM_MODE_WPDIS_MASK;
 			FTMx->MODE &= ~FTM_MODE_FTMEN_MASK;
 			FTMx->QDCTRL &= ~FTM_QDCTRL_QUADEN_MASK;
@@ -105,18 +105,18 @@ static void FTM_PWM_SetMode(FTM_InitTypeDef *FTM_InitStruct)
 				default:break;
 			}
 			break;
-		case FTM_Mode_Combine:  //ç»„åˆæ¨¡å¼ Chl(n) & Chl(n+1) ç»„åˆ åœ¨Chl(n) è¾“å‡º
-			//ç¦æ­¢å†™ä¿æŠ¤ å¯ä»¥å†™å…¥æ‰€æœ‰FTMå¯„å­˜å™¨ å¼€å¯å¢å¼ºæ¨¡å¼
+		case FTM_Mode_Combine:  //×éºÏÄ£Ê½ Chl(n) & Chl(n+1) ×éºÏ ÔÚChl(n) Êä³ö
+			//½ûÖ¹Ğ´±£»¤ ¿ÉÒÔĞ´ÈëËùÓĞFTM¼Ä´æÆ÷ ¿ªÆôÔöÇ¿Ä£Ê½
 			FTMx->MODE |= FTM_MODE_WPDIS_MASK;
 			FTMx->MODE |= FTM_MODE_FTMEN_MASK;
 			FTMx->QDCTRL &= ~FTM_QDCTRL_QUADEN_MASK;
 			FTMx->SC &= ~FTM_SC_CPWMS_MASK;
-		  //æ­»åŒºæ§åˆ¶
+		  //ËÀÇø¿ØÖÆ
 			//FTMx->DEADTIME=FTM_DEADTIME_DTPS(2)|FTM_DEADTIME_DTVAL(10);
-		  //åŒæ­¥æ§åˆ¶
+		  //Í¬²½¿ØÖÆ
 			FTMx->SYNC = FTM_SYNC_CNTMIN_MASK|FTM_SYNC_CNTMAX_MASK;
 			FTMx->SYNC |= FTM_SYNC_SWSYNC_MASK;
-		  //è£…å…¥è®¡æ•°å€¼
+		  //×°Èë¼ÆÊıÖµ
 			FTMx->CONTROLS[pFTM_Map->FTM_CH_Index].CnSC = 0;
 			FTMx->CONTROLS[pFTM_Map->FTM_CH_Index].CnSC |= (FTM_CnSC_MSB_MASK|FTM_CnSC_ELSB_MASK);	
 			switch(pFTM_Map->FTM_CH_Index)
@@ -158,17 +158,17 @@ static void FTM_PWM_SetMode(FTM_InitTypeDef *FTM_InitStruct)
 			break;
 			case FTM_Mode_Complementary:
 			{
-				//ç¦æ­¢å†™ä¿æŠ¤ å¯ä»¥å†™å…¥æ‰€æœ‰FTMå¯„å­˜å™¨ å¼€å¯å¢å¼ºæ¨¡å¼
+				//½ûÖ¹Ğ´±£»¤ ¿ÉÒÔĞ´ÈëËùÓĞFTM¼Ä´æÆ÷ ¿ªÆôÔöÇ¿Ä£Ê½
 				FTMx->MODE |= FTM_MODE_WPDIS_MASK;
 				FTMx->MODE |= FTM_MODE_FTMEN_MASK;
 				FTMx->QDCTRL &= ~FTM_QDCTRL_QUADEN_MASK;
 				FTMx->SC &= ~FTM_SC_CPWMS_MASK;
-				//æ­»åŒºæ§åˆ¶
+				//ËÀÇø¿ØÖÆ
 				FTMx->DEADTIME=FTM_DEADTIME_DTPS(2)|FTM_DEADTIME_DTVAL(5);
-				//åŒæ­¥æ§åˆ¶
+				//Í¬²½¿ØÖÆ
 				FTMx->SYNC = FTM_SYNC_CNTMIN_MASK|FTM_SYNC_CNTMAX_MASK;
 				FTMx->SYNC |= FTM_SYNC_SWSYNC_MASK;
-				//è£…å…¥è®¡æ•°å€¼
+				//×°Èë¼ÆÊıÖµ
 				FTMx->CONTROLS[pFTM_Map->FTM_CH_Index].CnSC = 0;
 				FTMx->CONTROLS[pFTM_Map->FTM_CH_Index].CnSC |= (FTM_CnSC_MSB_MASK|FTM_CnSC_ELSB_MASK);
 				switch(pFTM_Map->FTM_CH_Index)
@@ -213,21 +213,21 @@ static void FTM_PWM_SetMode(FTM_InitTypeDef *FTM_InitStruct)
 	}
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šæ”¹å˜PWMé€šé“å ç©ºæ¯”
- å½¢å‚ï¼šFTMxMAP:PWM é€šé“é€‰æ‹©
-			 @arg  FTM0_CH0_PC1: FTM0æ¨¡å— 0 é€šé“ PC1å¼•è„š
-			 @arg  FTM0_CH0_PA3: FTM0æ¨¡å— 0 é€šé“ PA3å¼•è„š
+ ¹¦ÄÜ£º¸Ä±äPWMÍ¨µÀÕ¼¿Õ±È
+ ĞÎ²Î£ºFTMxMAP:PWM Í¨µÀÑ¡Ôñ
+			 @arg  FTM0_CH0_PC1: FTM0Ä£¿é 0 Í¨µÀ PC1Òı½Å
+			 @arg  FTM0_CH0_PA3: FTM0Ä£¿é 0 Í¨µÀ PA3Òı½Å
 			 @arg  ...
-			 PWMDuty: å ç©ºæ¯”0-10000 å¯¹åº”0-100%
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+			 PWMDuty: Õ¼¿Õ±È0-10000 ¶ÔÓ¦0-100%
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void FTM_PWM_ChangeDuty(uint32_t FTMxMAP,uint32_t PWMDuty)
 {
 	uint32_t cv = 0;
 	FTM_Type *FTMx = NULL;
 	FTM_PWM_MapTypeDef* pFTM_Map = (FTM_PWM_MapTypeDef*) &FTMxMAP;
-	//æ£€æµ‹å‚æ•°
+	//¼ì²â²ÎÊı
 	assert_param(IS_FTM_PWM_MAP(FTMxMAP));
 	assert_param(IS_FTM_PWM_DUTY(PWMDuty));
 	
@@ -244,29 +244,29 @@ void FTM_PWM_ChangeDuty(uint32_t FTMxMAP,uint32_t PWMDuty)
 			break;
 		default:break;
 	}
-	cv = ((FTMx->MOD)*(PWMDuty))/10000; //è®¡ç®—æ¯”è¾ƒå€¼
+	cv = ((FTMx->MOD)*(PWMDuty))/10000; //¼ÆËã±È½ÏÖµ
 	FTMx->CONTROLS[pFTM_Map->FTM_CH_Index].CnV = cv; 
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šåˆå§‹åŒ–PWMåŠŸèƒ½
- å½¢å‚ï¼šFTM_PWM_InitTypeDef PWMåˆå§‹åŒ–ç»“æ„
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£º³õÊ¼»¯PWM¹¦ÄÜ
+ ĞÎ²Î£ºFTM_PWM_InitTypeDef PWM³õÊ¼»¯½á¹¹
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void FTM_Init(FTM_InitTypeDef *FTM_InitStruct)
 {
-	uint8_t prescaler;   //åˆ†é¢‘å› æ•°
+	uint8_t prescaler;   //·ÖÆµÒòÊı
 	uint32_t mod;
 	FTM_Type *FTMx = NULL;
 	PORT_Type *FTM_PORT = NULL;
 	FTM_PWM_MapTypeDef *pFTM_Map = (FTM_PWM_MapTypeDef*)&(FTM_InitStruct->FTMxMAP);
 	
-	//æ£€æµ‹å‚æ•°
+	//¼ì²â²ÎÊı
 	assert_param(IS_FTM_PWM_MAP(FTM_InitStruct->FTMxMAP));
 	assert_param(IS_FTM_PWM_MODE(FTM_InitStruct->FTM_Mode));
 	assert_param(IS_FTM_PWM_DUTY(FTM_InitStruct->InitalDuty));
 	
-	//æ‰¾å‡ºFTMå£
+	//ÕÒ³öFTM¿Ú
 	switch(pFTM_Map->FTM_Index)
 	{
 		case 0:
@@ -283,7 +283,7 @@ void FTM_Init(FTM_InitTypeDef *FTM_InitStruct)
 			break;
 		default:break;	
 	}
-	//æ‰¾å‡ºPORTç«¯å£
+	//ÕÒ³öPORT¶Ë¿Ú
 	switch(pFTM_Map->FTM_GPIO_Index)
 	{
 		case 0:
@@ -307,39 +307,39 @@ void FTM_Init(FTM_InitTypeDef *FTM_InitStruct)
 			SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;
 			break;
 	}
-	//è®¾ç½®å¯¹åº”çš„IOå£ä¸ºPWMæ¨¡å¼
+	//ÉèÖÃ¶ÔÓ¦µÄIO¿ÚÎªPWMÄ£Ê½
 	FTM_PORT->PCR[pFTM_Map->FTM_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	FTM_PORT->PCR[pFTM_Map->FTM_Pin_Index] |= PORT_PCR_MUX(pFTM_Map->FTM_Alt_Index);
-  //è®¡ç®—åˆ†é¢‘å’ŒMODEå‚æ•° 
+  //¼ÆËã·ÖÆµºÍMODE²ÎÊı 
 	prescaler = (CPUInfo.BusClock/(FTM_InitStruct->Frequency))/65535;
- //PS>4æ—¶æ€»ä¼šå‡ºé”™
+ //PS>4Ê±×Ü»á³ö´í
 	if(prescaler >= 4 ) prescaler = 4;
-	//è®¡ç®—MODEè£…è½½å‚æ•°
+	//¼ÆËãMODE×°ÔØ²ÎÊı
 	mod = (CPUInfo.BusClock/((FTM_InitStruct->Frequency)*(1<<prescaler)));
-  //æ—¶é’ŸæºåŠåˆ†é¢‘é€‰æ‹©
+  //Ê±ÖÓÔ´¼°·ÖÆµÑ¡Ôñ
 	FTMx->SC &=~ FTM_SC_CLKS_MASK;
 	FTMx->SC &= ~FTM_SC_PS_MASK;
 	FTMx->SC |= (FTM_SC_CLKS(1)| FTM_SC_PS(prescaler));         
 	
-  //è®¾ç½®PWMå‘¨æœŸåŠå ç©ºæ¯”
-	FTMx->MOD = mod;                     //è®¡æ•°å™¨æœ€å¤§å€¼
-	FTMx->CNTIN = 0x0000u;	             //è®¡æ•°å™¨åˆå§‹åŒ–æ—¶çš„è®¡æ•°å€¼
-	FTMx->CNT = 0x0000u;                 //è®¡æ•°å™¨å¼€å§‹çš„å€¼
-	//é€‚å½“å»¶æ—¶
-	for(mod=0;mod < 400000;mod++){}; //åšé€‚å½“å»¶æ—¶ ç­‰å¾…ç¡¬ä»¶æ¨¡å—å¯åŠ¨æ“ä½œ
-	//è®¾ç½®å„ä¸ªé€šé“çš„æ¨¡å¼
+  //ÉèÖÃPWMÖÜÆÚ¼°Õ¼¿Õ±È
+	FTMx->MOD = mod;                     //¼ÆÊıÆ÷×î´óÖµ
+	FTMx->CNTIN = 0x0000u;	             //¼ÆÊıÆ÷³õÊ¼»¯Ê±µÄ¼ÆÊıÖµ
+	FTMx->CNT = 0x0000u;                 //¼ÆÊıÆ÷¿ªÊ¼µÄÖµ
+	//ÊÊµ±ÑÓÊ±
+	for(mod=0;mod < 400000;mod++){}; //×öÊÊµ±ÑÓÊ± µÈ´ıÓ²¼şÄ£¿éÆô¶¯²Ù×÷
+	//ÉèÖÃ¸÷¸öÍ¨µÀµÄÄ£Ê½
 	 FTM_PWM_SetMode(FTM_InitStruct);
-  //è®¾ç½®åˆå§‹å ç©ºæ¯”	
+  //ÉèÖÃ³õÊ¼Õ¼¿Õ±È	
 	FTM_PWM_ChangeDuty(FTM_InitStruct->FTMxMAP,FTM_InitStruct->InitalDuty);
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šFTM è·å¾—æ­£äº¤ç¼–ç æ•°æ®
- å½¢å‚ï¼šftm: FTMæ¨¡å—å·
-       value: ç¼–ç è®¡æ•°å€¼æŒ‡é’ˆ
-       dirï¼š  æ–¹å‘æŒ‡é’ˆ 0æ­£å‘ 1åç›¸ 
- è¿”å›ï¼š0
- è¯¦è§£ï¼šAdded in 2013-12-12
+ ¹¦ÄÜ£ºFTM »ñµÃÕı½»±àÂëÊı¾İ
+ ĞÎ²Î£ºftm: FTMÄ£¿éºÅ
+       value: ±àÂë¼ÆÊıÖµÖ¸Õë
+       dir£º  ·½ÏòÖ¸Õë 0ÕıÏò 1·´Ïà 
+ ·µ»Ø£º0
+ Ïê½â£ºAdded in 2013-12-12
 ************************************************************************************************/
 void FTM_QDGetData(FTM_Type *ftm, uint32_t* value, uint8_t* dir)
 {
@@ -348,12 +348,12 @@ void FTM_QDGetData(FTM_Type *ftm, uint32_t* value, uint8_t* dir)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šFTM æ­£äº¤è§£ç å™¨ åˆå§‹åŒ– 
- å½¢å‚ï¼šFTM1_QD_A12_PHA_A13_PHB: FTM1 A12-PHA  A13-PHB
+ ¹¦ÄÜ£ºFTM Õı½»½âÂëÆ÷ ³õÊ¼»¯ 
+ ĞÎ²Î£ºFTM1_QD_A12_PHA_A13_PHB: FTM1 A12-PHA  A13-PHB
        FTM1_QD_B00_PHA_B01_PHB
        FTM2_QD_B18_PHA_B19_PHB
- è¿”å›ï¼š0
- è¯¦è§£ï¼šAdded in 2013-12-12
+ ·µ»Ø£º0
+ Ïê½â£ºAdded in 2013-12-12
 ************************************************************************************************/
 void FTM_QDInit(uint32_t FTM_QD_Maps)
 {
@@ -413,13 +413,13 @@ void FTM_QDInit(uint32_t FTM_QD_Maps)
     FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] |= PORT_PCR_PE_MASK;
     FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] |= PORT_PCR_PS_MASK;
 		
-    FTMx->MOD = 14000; //æ ¹æ®éœ€è¦è®¾ç½®
+    FTMx->MOD = 14000; //¸ù¾İĞèÒªÉèÖÃ
     FTMx->CNTIN = 0;
-    FTMx->MODE |= FTM_MODE_WPDIS_MASK; //ç¦æ­¢å†™ä¿æŠ¤
-    FTMx->MODE |= FTM_MODE_FTMEN_MASK; //FTMEN=1,å…³é—­TPMå…¼å®¹æ¨¡å¼ï¼Œå¼€å¯FTMæ‰€æœ‰åŠŸèƒ½
-    FTMx->QDCTRL &= ~FTM_QDCTRL_QUADMODE_MASK; //é€‰å®šç¼–ç æ¨¡å¼ä¸ºAç›¸ä¸Bç›¸ç¼–ç æ¨¡å¼ 
-    FTMx->QDCTRL |= FTM_QDCTRL_QUADEN_MASK; //ä½¿èƒ½æ­£äº¤è§£ç æ¨¡å¼
-    //è®¾ç½®æ—¶é’Ÿ
+    FTMx->MODE |= FTM_MODE_WPDIS_MASK; //½ûÖ¹Ğ´±£»¤
+    FTMx->MODE |= FTM_MODE_FTMEN_MASK; //FTMEN=1,¹Ø±ÕTPM¼æÈİÄ£Ê½£¬¿ªÆôFTMËùÓĞ¹¦ÄÜ
+    FTMx->QDCTRL &= ~FTM_QDCTRL_QUADMODE_MASK; //Ñ¡¶¨±àÂëÄ£Ê½ÎªAÏàÓëBÏà±àÂëÄ£Ê½ 
+    FTMx->QDCTRL |= FTM_QDCTRL_QUADEN_MASK; //Ê¹ÄÜÕı½»½âÂëÄ£Ê½
+    //ÉèÖÃÊ±ÖÓ
     FTMx->SC |= FTM_SC_CLKS(1)|FTM_SC_PS(3);
 }
 
@@ -447,7 +447,7 @@ void PWM_CalConstValue(void)
 		UART_printf("(0x%xU)\r\n",value);
 	}
 }
-//ç”Ÿæˆ
+//Éú³É
 static const FTM_PWM_MapTypeDef FTM_PWM_Check_Maps[] = 
 { 
     {0, 0, 1, 2, 4},  //FTM0_CH0_PC1
@@ -488,12 +488,12 @@ void PWM_CalConstValue(void)
 }
 */
 /***********************************************************************************************
- åŠŸèƒ½ï¼šFTM_ITConfig
- å½¢å‚ï¼šFTMx : FTMæ¨¡å—é€šé“ 
-       @arg FTM0 : FTM0æ¨¡å—
-			 @arg FTM1 : FTM1æ¨¡å—
-			 @arg FTM2 : FTM2æ¨¡å—
-			 FTM_IT ï¼š FTMä¸­æ–­æº
+ ¹¦ÄÜ£ºFTM_ITConfig
+ ĞÎ²Î£ºFTMx : FTMÄ£¿éÍ¨µÀ 
+       @arg FTM0 : FTM0Ä£¿é
+			 @arg FTM1 : FTM1Ä£¿é
+			 @arg FTM2 : FTM2Ä£¿é
+			 FTM_IT £º FTMÖĞ¶ÏÔ´
 			 @arg FTM_IT_TOF          
 			 @arg FTM_IT_CHF0          
 			 @arg FTM_IT_CHF1          
@@ -503,15 +503,15 @@ void PWM_CalConstValue(void)
 			 @arg FTM_IT_CHF5          
 			 @arg FTM_IT_CHF6          
 			 @arg FTM_IT_CHF7         
-			 NewState: å…³é—­æˆ–è€…ä½¿èƒ½
-			 @arg ENABLE : ä½¿èƒ½
-			 @arg DISABLE:ç¦æ­¢
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+			 NewState: ¹Ø±Õ»òÕßÊ¹ÄÜ
+			 @arg ENABLE : Ê¹ÄÜ
+			 @arg DISABLE:½ûÖ¹
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void FTM_ITConfig(FTM_Type* FTMx, uint16_t FTM_IT, FunctionalState NewState)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_FTM_ALL_PERIPH(FTMx));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
 	
@@ -534,12 +534,12 @@ void FTM_ITConfig(FTM_Type* FTMx, uint16_t FTM_IT, FunctionalState NewState)
 	}
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šFTM_GetITStatus è·å¾—ITæ ‡å¿—ä½
- å½¢å‚ï¼šFTMx : FTMæ¨¡å—é€šé“ 
-       @arg FTM0 : FTM0æ¨¡å—
-			 @arg FTM1 : FTM1æ¨¡å—
-			 @arg FTM2 : FTM2æ¨¡å—
-			 FTM_IT ï¼š FTMä¸­æ–­æº
+ ¹¦ÄÜ£ºFTM_GetITStatus »ñµÃIT±êÖ¾Î»
+ ĞÎ²Î£ºFTMx : FTMÄ£¿éÍ¨µÀ 
+       @arg FTM0 : FTM0Ä£¿é
+			 @arg FTM1 : FTM1Ä£¿é
+			 @arg FTM2 : FTM2Ä£¿é
+			 FTM_IT £º FTMÖĞ¶ÏÔ´
 			 @arg FTM_IT_TOF          
 			 @arg FTM_IT_CHF0          
 			 @arg FTM_IT_CHF1          
@@ -549,15 +549,15 @@ void FTM_ITConfig(FTM_Type* FTMx, uint16_t FTM_IT, FunctionalState NewState)
 			 @arg FTM_IT_CHF5          
 			 @arg FTM_IT_CHF6          
 			 @arg FTM_IT_CHF7         
- è¿”å›ï¼šITStatus:æ ‡å¿—
-       @arg SET:æ ‡å¿—ä½ç½®ä½
-       @arg RESET:æ ‡å¿—ä½æ¸…0
- è¯¦è§£ï¼š0
+ ·µ»Ø£ºITStatus:±êÖ¾
+       @arg SET:±êÖ¾Î»ÖÃÎ»
+       @arg RESET:±êÖ¾Î»Çå0
+ Ïê½â£º0
 ************************************************************************************************/
 ITStatus FTM_GetITStatus(FTM_Type* FTMx, uint16_t FTM_IT)
 {
 	ITStatus retval;
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_FTM_ALL_PERIPH(FTMx));
 	assert_param(IS_FTM_IT(FTM_IT));
 	
@@ -581,12 +581,12 @@ ITStatus FTM_GetITStatus(FTM_Type* FTMx, uint16_t FTM_IT)
 	return retval;
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šæ¸…IT æ ‡å¿—ä½
- å½¢å‚ï¼šFTMx : FTMæ¨¡å—é€šé“ 
-       @arg FTM0 : FTM0æ¨¡å—
-			 @arg FTM1 : FTM1æ¨¡å—
-			 @arg FTM2 : FTM2æ¨¡å—
-			 FTM_IT ï¼š FTMä¸­æ–­æº
+ ¹¦ÄÜ£ºÇåIT ±êÖ¾Î»
+ ĞÎ²Î£ºFTMx : FTMÄ£¿éÍ¨µÀ 
+       @arg FTM0 : FTM0Ä£¿é
+			 @arg FTM1 : FTM1Ä£¿é
+			 @arg FTM2 : FTM2Ä£¿é
+			 FTM_IT £º FTMÖĞ¶ÏÔ´
 			 @arg FTM_IT_TOF          
 			 @arg FTM_IT_CHF0          
 			 @arg FTM_IT_CHF1          
@@ -596,13 +596,13 @@ ITStatus FTM_GetITStatus(FTM_Type* FTMx, uint16_t FTM_IT)
 			 @arg FTM_IT_CHF5          
 			 @arg FTM_IT_CHF6          
 			 @arg FTM_IT_CHF7         
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void FTM_ClearITPendingBit(FTM_Type *FTMx,uint16_t FTM_IT)
 {
 	uint32_t read_value = 0;
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_FTM_ALL_PERIPH(FTMx));
 	assert_param(IS_FTM_IT(FTM_IT));
 	

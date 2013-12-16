@@ -1,22 +1,22 @@
-﻿#include "mytype.h"
+#include "mytype.h"
 #include "config.h"
 #include "deviceio.h"
 
-#include "sd.h" //存储设备驱动头文件
-struct znFAT_IO_Ctl ioctl; //用于扇区读写的IO控制，尽量减少物理扇区操作，提高效率
-extern UINT8 Dev_No; //设备号
+#include "sd.h" //�洢�豸����ͷ�ļ�
+struct znFAT_IO_Ctl ioctl; //����������д��IO���ƣ��������������������������Ч��
+extern UINT8 Dev_No; //�豸��
 extern UINT8 *znFAT_Buffer;
 
 /*******************************************************************
- 功能：存储设备初始化
- 形参：无形参
- 返回：存储设备初始化错误信息
- 详解：znFAT支持多设备，即同时挂接多种存储设备，所有存储设备的初始
-       化均在这里完成。返回值的某一位为1，则说明相应的存储设备初始
-       化失败。例如：设备0失败，而其它设备均成功，则返回值为0X01、
-       设备1与设备2失败，而其它设备成功，则返回值为0X06。为了使返回
-       值如实的反映相应设备的初始化状态，请注意存储设备初始化函数
-       调用的顺序。
+ ���ܣ��洢�豸��ʼ��
+ �βΣ����β�
+ ���أ��洢�豸��ʼ��������Ϣ
+ ��⣺znFAT֧�ֶ��豸����ͬʱ�ҽӶ��ִ洢�豸�����д洢�豸�ĳ�ʼ
+       ������������ɡ�����ֵ��ĳһλΪ1����˵����Ӧ�Ĵ洢�豸��ʼ
+       ��ʧ�ܡ����磺�豸0ʧ�ܣ��������豸���ɹ����򷵻�ֵΪ0X01��
+       �豸1���豸2ʧ�ܣ��������豸�ɹ����򷵻�ֵΪ0X06��Ϊ��ʹ����
+       ֵ��ʵ�ķ�ӳ��Ӧ�豸�ĳ�ʼ��״̬����ע��洢�豸��ʼ������
+       ���õ�˳��
 *******************************************************************/
 
 UINT8 znFAT_Device_Init(void) 
@@ -27,41 +27,41 @@ UINT8 znFAT_Device_Init(void)
  ioctl.just_dev=0;
  ioctl.just_sec=0;
 
- //以下为各存储设备的初始化函数调用，请沿袭以下格式
+ //����Ϊ���洢�豸�ĳ�ʼ���������ã�����Ϯ���¸�ʽ
 	SD_InitStruct1.SD_BaudRate = 2000000;
-	//等待SD卡初始化成功
+	//�ȴ�SD����ʼ���ɹ�
 	res = SD_Init(&SD_InitStruct1);
  if(res != ESDHC_OK) err|=0X01;
  //res=Device1_Init();
  //if(res) err|=0X02;
 
- return res; //返回错误码，如果某一设备初始化失败，则err相应位为1
+ return res; //���ش����룬���ĳһ�豸��ʼ��ʧ�ܣ���err��ӦλΪ1
 }
 
 /*****************************************************************************
- 功能：znFAT的存储设备物理扇区读取驱动接口
- 形参：addr:物理扇区地址 buffer:数据缓冲区指针
- 返回：0
- 详解：各存储设备的物理扇区读取驱动函数放到case的各个分支中，分支序号就是此设
-       备的设备号。 
+ ���ܣ�znFAT�Ĵ洢�豸����������ȡ�����ӿ�
+ �βΣ�addr:����������ַ buffer:���ݻ�����ָ��
+ ���أ�0
+ ��⣺���洢�豸������������ȡ���������ŵ�case�ĸ�����֧�У���֧��ž��Ǵ���
+       �����豸�š� 
 *****************************************************************************/
 UINT8 znFAT_Device_Read_Sector(UINT32 addr,UINT8 *buffer)
 {
- if(buffer==znFAT_Buffer) //如果是针对znFAT内部缓冲区的操作
+ if(buffer==znFAT_Buffer) //��������znFAT�ڲ��������Ĳ���
  {
-  if(ioctl.just_dev==Dev_No  //如果现在要读取的扇区与内部缓冲所对应的扇区（即最近一次操作的扇区）是同一扇区
-     && (ioctl.just_sec==addr && 0!=ioctl.just_sec)) //则不再进行读取，直接返回
+  if(ioctl.just_dev==Dev_No  //�������Ҫ��ȡ���������ڲ���������Ӧ�������������һ�β�������������ͬһ����
+     && (ioctl.just_sec==addr && 0!=ioctl.just_sec)) //���ٽ��ж�ȡ��ֱ�ӷ���
   {                                           
    return 0;      
   }
-  else //否则，就将最近一次操作的扇区标记为当前扇区
+  else //���򣬾ͽ����һ�β������������Ϊ��ǰ����
   {
    ioctl.just_dev=Dev_No; 
    ioctl.just_sec=addr; 
   }
  }
 
- switch(Dev_No) //有多少个存储设备，就有多少个case分支
+ switch(Dev_No) //�ж��ٸ��洢�豸�����ж��ٸ�case��֧
  {
   case 0:
 	     while(SD_ReadSingleBlock(addr,buffer));
@@ -76,18 +76,18 @@ UINT8 znFAT_Device_Read_Sector(UINT32 addr,UINT8 *buffer)
 }
 
 /*****************************************************************************
- 功能：znFAT的存储设备物理扇区写入驱动接口
- 形参：addr:物理扇区地址 buffer:数据缓冲区指针
- 返回：0
- 详解：各存储设备的物理扇区写入驱动函数放到case的各个分支中，分支序号就是此设
-       备的设备号。 
+ ���ܣ�znFAT�Ĵ洢�豸��������д�������ӿ�
+ �βΣ�addr:����������ַ buffer:���ݻ�����ָ��
+ ���أ�0
+ ��⣺���洢�豸����������д�����������ŵ�case�ĸ�����֧�У���֧��ž��Ǵ���
+       �����豸�š� 
 *****************************************************************************/
 UINT8 znFAT_Device_Write_Sector(UINT32 addr,UINT8 *buffer) 
 {
- if(buffer==znFAT_Buffer) //如果数据缓冲区是内部缓冲
+ if(buffer==znFAT_Buffer) //������ݻ��������ڲ�����
  {
-  ioctl.just_dev=Dev_No; //更新为当前设备号
-  ioctl.just_sec=addr; //更新为当前操作的扇区地址	
+  ioctl.just_dev=Dev_No; //����Ϊ��ǰ�豸��
+  ioctl.just_sec=addr; //����Ϊ��ǰ������������ַ	
  }
 
  switch(Dev_No)
@@ -105,12 +105,12 @@ UINT8 znFAT_Device_Write_Sector(UINT32 addr,UINT8 *buffer)
 }
 
 /***********************************************************************************
- 功能：znFAT的存储设备物理扇区连续读取驱动接口
- 形参：nsec:要读取的扇区数 addr:连续扇区读取时的开始扇区地址 buffer:数据缓冲区指针
- 返回：0
- 详解：此函数接口在znFAT中用于完成若干个连续扇区的一次性读取。此函数接口的实现有两种
-       模式 1、单扇区读取驱动+循环 2、存储设备硬件上的连续扇区读取 使用2比1的效率要
-       得多，在高速且数据量比较大的应用场合，建议使用者提供硬件级的连续扇区读取函数
+ ���ܣ�znFAT�Ĵ洢�豸��������������ȡ�����ӿ�
+ �βΣ�nsec:Ҫ��ȡ�������� addr:����������ȡʱ�Ŀ�ʼ������ַ buffer:���ݻ�����ָ��
+ ���أ�0
+ ��⣺�˺����ӿ���znFAT������������ɸ�����������һ���Զ�ȡ���˺����ӿڵ�ʵ��������
+       ģʽ 1����������ȡ����+ѭ�� 2���洢�豸Ӳ���ϵ�����������ȡ ʹ��2��1��Ч��Ҫ
+       �ö࣬�ڸ������������Ƚϴ��Ӧ�ó��ϣ�����ʹ�����ṩӲ����������������ȡ����
 ***********************************************************************************/
 UINT8 znFAT_Device_Read_nSector(UINT32 nsec,UINT32 addr,UINT8 *buffer)
 {
@@ -118,12 +118,12 @@ UINT8 znFAT_Device_Read_nSector(UINT32 nsec,UINT32 addr,UINT8 *buffer)
 
  if(0==nsec) return 0;
 
- #ifndef USE_MULTISEC_R //此宏决定是否使用硬件级连续扇区读取驱动
+ #ifndef USE_MULTISEC_R //�˺�����Ƿ�ʹ��Ӳ��������������ȡ����
 
   switch(Dev_No)
   {
    case 0:
-          for(i=0;i<nsec;i++) //如果不使用硬件级连续扇区读取，则使用单扇区读取+循环的方式
+          for(i=0;i<nsec;i++) //�����ʹ��Ӳ��������������ȡ����ʹ�õ�������ȡ+ѭ���ķ�ʽ
           {
            while(SD_ReadSingleBlock(addr+i,buffer));
            buffer+=512;
@@ -148,10 +148,10 @@ UINT8 znFAT_Device_Read_nSector(UINT32 nsec,UINT32 addr,UINT8 *buffer)
 }
 
 /***********************************************************************************
- 功能：znFAT的存储设备物理扇区连续写入驱动接口
- 形参：nsec:要写入的扇区数 addr:连续扇区写入时的开始扇区地址 buffer:数据缓冲区指针
- 返回：0
- 详解：此函数接口与上面的连续读取驱动接口同理。
+ ���ܣ�znFAT�Ĵ洢�豸������������д�������ӿ�
+ �βΣ�nsec:Ҫд��������� addr:��������д��ʱ�Ŀ�ʼ������ַ buffer:���ݻ�����ָ��
+ ���أ�0
+ ��⣺�˺����ӿ��������������ȡ�����ӿ�ͬ����
 ***********************************************************************************/
 UINT8 znFAT_Device_Write_nSector(UINT32 nsec,UINT32 addr,UINT8 *buffer)
 {
@@ -159,7 +159,7 @@ UINT8 znFAT_Device_Write_nSector(UINT32 nsec,UINT32 addr,UINT8 *buffer)
  
  if(0==nsec) return 0;
 
- #ifndef USE_MULTISEC_W //此宏决定是否使用硬件的连续扇区写入函数
+ #ifndef USE_MULTISEC_W //�˺�����Ƿ�ʹ��Ӳ������������д�뺯��
 
   switch(Dev_No)
   {
@@ -190,18 +190,18 @@ UINT8 znFAT_Device_Write_nSector(UINT32 nsec,UINT32 addr,UINT8 *buffer)
 }
 
 /***********************************************************************************
- 功能：znFAT的存储设备物理扇区连续清0驱动接口
- 形参：nsec:要清0的扇区数 addr:连续扇区清0的开始扇区地址
- 返回：0
- 详解：在格式化功能中，最耗时的就是对FAT表扇区扇区的逐个清0，使用硬件级的连续扇区清0
-       驱动函数将可以很大程度上加速这一过程。
+ ���ܣ�znFAT�Ĵ洢�豸��������������0�����ӿ�
+ �βΣ�nsec:Ҫ��0�������� addr:����������0�Ŀ�ʼ������ַ
+ ���أ�0
+ ��⣺�ڸ�ʽ�������У����ʱ�ľ��Ƕ�FAT�����������������0��ʹ��Ӳ����������������0
+       �������������Ժܴ�̶��ϼ�����һ���̡�
 ***********************************************************************************/
 UINT8 znFAT_Device_Clear_nSector(UINT32 nsec,UINT32 addr)
 {
- #ifndef USE_MULTISEC_CLEAR  //此宏决定是否使用硬件级连续扇区清0函数，其主要用于格式化过程中FAT表的清0
+ #ifndef USE_MULTISEC_CLEAR  //�˺�����Ƿ�ʹ��Ӳ��������������0����������Ҫ���ڸ�ʽ��������FAT������0
   UINT32 i=0;
 
-  for(i=0;i<512;i++) //清空内部缓冲区，用于连续扇区清0
+  for(i=0;i<512;i++) //����ڲ�����������������������0
   {
    znFAT_Buffer[i]=0;
   }
@@ -223,18 +223,18 @@ UINT8 znFAT_Device_Clear_nSector(UINT32 nsec,UINT32 addr)
   switch(Dev_No)
   {
    case 0:
-          return Device0_Clear_nSector(nsec,addr); //在使用硬件级的连续扇区清0的时候，请将连续扇区清0函数写在这里
+          return Device0_Clear_nSector(nsec,addr); //��ʹ��Ӳ����������������0��ʱ���뽫����������0����д������
    //case 1:
           //return Device1_Clear_nSector(nsec,addr);
   }
 
  #endif
 
- ioctl.just_dev=Dev_No; //更新为当前设备号
- ioctl.just_sec=(addr+nsec-1); //更新为当前操作的扇区地址	 
+ ioctl.just_dev=Dev_No; //����Ϊ��ǰ�豸��
+ ioctl.just_sec=(addr+nsec-1); //����Ϊ��ǰ������������ַ	 
 
  return 0;  
 }
 
-//==============================【以上是设备驱动层】========================================================================
+//==============================���������豸�����㡿========================================================================
 

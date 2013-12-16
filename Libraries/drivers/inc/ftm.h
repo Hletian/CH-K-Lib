@@ -1,10 +1,10 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    ftm.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ FTM å®šæ—¶å™¨ é©±åŠ¨ å¤´æ–‡ä»¶
+  * @brief   ³¬ºËK60¹Ì¼ş¿â FTM ¶¨Ê±Æ÷ Çı¶¯ Í·ÎÄ¼ş
   ******************************************************************************
   */
 #ifndef __FTM_H_
@@ -16,22 +16,22 @@
 
 #include "sys.h"
 
-//å¯ç”¨çš„PWMå•ç«¯è¾“å‡ºç«¯å£
-//ä¾‹: FTM0_CH0_PC1:  FTM0æ¨¡å— 0 é€šé“ å¼•è„šä¸ºPTC1
+//¿ÉÓÃµÄPWMµ¥¶ËÊä³ö¶Ë¿Ú
+//Àı: FTM0_CH0_PC1:  FTM0Ä£¿é 0 Í¨µÀ Òı½ÅÎªPTC1
 #define FTM0_CH0_PC1    (0x00108100U)
-#define FTM0_CH0_PA3		(0x000c0300U)   //ä¸TJAGå†²çª æ…ç”¨
+#define FTM0_CH0_PA3		(0x000c0300U)   //ÓëTJAG³åÍ» É÷ÓÃ
 #define FTM0_CH1_PC2    (0x00108210U)
 #define FTM0_CH1_PA4    (0x000c0410U)
 #define FTM0_CH2_PC3    (0x00108320U)
-#define FTM0_CH2_PA5    (0x000c0520U)  //ä¸TJAGå†²çª æ…ç”¨
+#define FTM0_CH2_PA5    (0x000c0520U)  //ÓëTJAG³åÍ» É÷ÓÃ
 #define FTM0_CH3_PC4    (0x00108430U)
 #define FTM0_CH4_PD4    (0x0010c440U)
 #define FTM0_CH5_PD5    (0x0010c550U)
-#define FTM0_CH5_PA0    (0x000c0050U)  //ä¸TJAGå†²çª æ…ç”¨
+#define FTM0_CH5_PA0    (0x000c0050U)  //ÓëTJAG³åÍ» É÷ÓÃ
 #define FTM0_CH6_PD6    (0x0010c660U)
-#define FTM0_CH6_PA1    (0x000c0160U)  //ä¸TJAGå†²çª æ…ç”¨
+#define FTM0_CH6_PA1    (0x000c0160U)  //ÓëTJAG³åÍ» É÷ÓÃ
 #define FTM0_CH7_PD7    (0x0010c770U)
-#define FTM0_CH7_PA2    (0x000c0270U)  //ä¸TJAGå†²çª æ…ç”¨
+#define FTM0_CH7_PA2    (0x000c0270U)  //ÓëTJAG³åÍ» É÷ÓÃ
 #define FTM1_CH0_PA12   (0x000c0c01U)
 #define FTM1_CH0_PB0    (0x000c4001U)
 #define FTM1_CH1_PA13   (0x000c0d11U)
@@ -43,7 +43,7 @@
 #define FTM1_QD_B00_PHA_B01_PHB    (0x6104001U)
 #define FTM2_QD_B18_PHA_B19_PHB    (0x614D202U)
 
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊı¼ì²éÆ÷
 #define IS_FTM_PWM_MAP(MAP)  (((MAP) == FTM0_CH0_PC1)  || \
                               ((MAP) == FTM0_CH0_PA3)  || \
                               ((MAP) == FTM0_CH1_PC2)  || \
@@ -65,7 +65,7 @@
 															((MAP) == FTM2_CH0_PB18) || \
 															((MAP) == FTM2_CH1_PB19))								
 													
-//FTM_PWMæ˜ å°„
+//FTM_PWMÓ³Éä
 typedef struct
 {
     uint32_t FTM_Index:4;
@@ -86,17 +86,17 @@ typedef struct
 		uint32_t FTM_Alt_Index:4;
 }FTM_QD_MapTypeDef;
 
-//FTM  æ¨¡å¼é€‰æ‹©
+//FTM  Ä£Ê½Ñ¡Ôñ
 typedef enum
 {
-	FTM_Mode_EdgeAligned,     //è¾¹æ²¿å¯¹é½
-	FTM_Mode_CenterAligned,   //ä¸­å¿ƒå¯¹é½ é¢‘ç‡æ˜¯è¾¹æ²¿å¯¹é½çš„ä¸€åŠ
-	FTM_Mode_Combine,         //ç»„åˆæ¨¡å¼
-	FTM_Mode_Complementary,   //äº’è¡¥æ¨¡å¼
+	FTM_Mode_EdgeAligned,     //±ßÑØ¶ÔÆë
+	FTM_Mode_CenterAligned,   //ÖĞĞÄ¶ÔÆë ÆµÂÊÊÇ±ßÑØ¶ÔÆëµÄÒ»°ë
+	FTM_Mode_Combine,         //×éºÏÄ£Ê½
+	FTM_Mode_Complementary,   //»¥²¹Ä£Ê½
 }FTM_Mode_TypeDef;
 
 
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊı¼ì²éÆ÷
 #define IS_FTM_PWM_MODE(MODE) (((MODE) == FTM_Mode_EdgeAligned)    || \
                                ((MODE) == FTM_Mode_CenterAligned)  || \
 													  	 ((MODE) == FTM_Mode_Combine)        || \
@@ -106,16 +106,16 @@ typedef enum
                                     ((PERIPH) == FTM1) || \
                                     ((PERIPH) == FTM2))
 
-//å•ç«¯PWMå ç©ºæ¯”è¾“å‡º åˆå§‹åŒ–ç»“æ„
+//µ¥¶ËPWMÕ¼¿Õ±ÈÊä³ö ³õÊ¼»¯½á¹¹
 typedef struct
 {
-  uint32_t Frequency;      //æ³¢ç‰¹ç‡
-	uint32_t FTMxMAP;        //åˆå§‹åŒ–ç»“æ„
-	uint32_t InitalDuty;     //åˆå§‹å ç©ºæ¯”
+  uint32_t Frequency;      //²¨ÌØÂÊ
+	uint32_t FTMxMAP;        //³õÊ¼»¯½á¹¹
+	uint32_t InitalDuty;     //³õÊ¼Õ¼¿Õ±È
 	FTM_Mode_TypeDef  FTM_Mode;
 }FTM_InitTypeDef;
 
-//FTMä¸­æ–­æº
+//FTMÖĞ¶ÏÔ´
 #define FTM_IT_TOF           (uint16_t)(10)
 #define FTM_IT_CHF0          (uint16_t)(0)
 #define FTM_IT_CHF1          (uint16_t)(1)
@@ -140,7 +140,7 @@ typedef struct
 
 
 
-//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°åˆ—è¡¨
+//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯ÊıÁĞ±í
 void FTM_Init(FTM_InitTypeDef *FTM_InitStruct);
 void FTM_PWM_ChangeDuty(uint32_t FTMxMAP,uint32_t PWMDuty);
 void FTM_ITConfig(FTM_Type* FTMx, uint16_t FTM_IT, FunctionalState NewState);

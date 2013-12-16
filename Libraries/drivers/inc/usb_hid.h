@@ -1,19 +1,19 @@
-ï»¿#ifndef __USB_HID_H__
+#ifndef __USB_HID_H__
 #define __USB_HID_H__
 /***********************************************************************************************
-//CH_Kinetisé©±åŠ¨åº“  V2.3   
-//ä½œè€…    :YANDLD 
+//CH_KinetisÇı¶¯¿â  V2.3   
+//×÷Õß    :YANDLD 
 //E-MAIL  :yandld@126.com
-//ä¿®æ”¹æ—¥æœŸ:2013/2/14
-//ç‰ˆæœ¬ï¼šV2.3
-//æ·˜å®ï¼šhttp://upcmcu.taobao.com
+//ĞŞ¸ÄÈÕÆÚ:2013/2/14
+//°æ±¾£ºV2.3
+//ÌÔ±¦£ºhttp://upcmcu.taobao.com
 //QQ    1453363089
 //Copyright(C) YANDLD 2012-2022
 //All rights reserved
 ************************************************************************************************/
-//å¤–éƒ¨æ•°æ®æ¥å£
+//Íâ²¿Êı¾İ½Ó¿Ú
 #include <stdint.h>
-//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
+//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
 void USB_HID_SetMouse(uint8_t HOffset,uint8_t VOffset,uint8_t SOffset,uint8_t Key);
 void HID_Proc(void);
 void USB_HID_SendData(uint8_t* buf,uint8_t len);

@@ -1,10 +1,10 @@
-﻿/**
+/**
   ******************************************************************************
   * @file    spilcd.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   超核原子核核心板 BSP构件 SPILCD驱动
+  * @brief   ����ԭ�Ӻ˺��İ� BSP���� SPILCD����
   ******************************************************************************
   */
 #ifndef __SPILCD_H__
@@ -12,8 +12,8 @@
 #include "gpio.h"
 #include "spi.h"
 
-//SPILCD驱动头文件
-//端口宏定义
+//SPILCD����ͷ�ļ�
+//�˿ں궨��
 #define SPILCD_RS_PORT    PTA
 #define SPILCD_RST_PORT   PTA
 
@@ -26,11 +26,11 @@
 #define SPILCD_PORT_DATA     (SPI0_SCK_PA15_SOUT_PA16_SIN_PA17)
 #define SPILCD_PORT_CS       (SPI0_PCS0_PA14)
 
-//液晶屏尺寸定义
+//Һ�����ߴ綨��
 #define SPILCD_W 128
 #define SPILCD_H 160
 
-//本构件实现的接口函数
+//������ʵ�ֵĽӿں���
 void LCD_InvDisplayOn(void);
 void LCD_InvDisplayOff(void);
 void SPILCD_Init(void);

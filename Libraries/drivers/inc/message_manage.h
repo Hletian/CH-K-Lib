@@ -1,4 +1,4 @@
-﻿#ifndef __MESSAGE_MANAGE_H__
+#ifndef __MESSAGE_MANAGE_H__
 #define __MESSAGE_MANAGE_H__
 
 #ifdef __cplusplus

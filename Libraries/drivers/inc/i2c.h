@@ -1,10 +1,10 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    i2c.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ IIC å¤´æ–‡ä»¶
+  * @brief   ³¬ºËK60¹Ì¼ş¿â IIC Í·ÎÄ¼ş
   ******************************************************************************
   */
 #ifndef __I2C_H__
@@ -16,23 +16,23 @@
 	 
 #include "sys.h"
 
-//I2C åˆå§‹åŒ–ç»“æ„ 
+//I2C ³õÊ¼»¯½á¹¹ 
 typedef struct
 {
 	uint32_t I2CxMAP;
   uint32_t I2C_ClockSpeed;        
 }I2C_InitTypeDef;
-//å‚æ•°æ£€æŸ¥å™¨														
+//²ÎÊı¼ì²éÆ÷														
 #define IS_I2C_ALL_PERIPH(PERIPH) ((PERIPH) == I2C0 || (PERIPH) == I2C1)
 
-//I2C é€Ÿåº¦å®šä¹‰
+//I2C ËÙ¶È¶¨Òå
 #define I2C_CLOCK_SPEED_50KHZ                   ( 50*1000)
 #define I2C_CLOCK_SPEED_100KHZ                  (100*1000)
 #define I2C_CLOCK_SPEED_150KHZ                  (150*1000)
 #define I2C_CLOCK_SPEED_200KHZ                  (200*1000)
 #define I2C_CLOCK_SPEED_250KHZ                  (250*1000)
 #define I2C_CLOCK_SPEED_300KHZ                  (300*1000)
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊı¼ì²éÆ÷
 #define IS_I2C_CLOCK_SPEED(SPEED)  (((SPEED) == I2C_CLOCK_SPEED_50KHZ)  || \
                                     ((SPEED) == I2C_CLOCK_SPEED_100KHZ) || \
                                     ((SPEED) == I2C_CLOCK_SPEED_150KHZ) || \
@@ -40,7 +40,7 @@ typedef struct
                                     ((SPEED) == I2C_CLOCK_SPEED_250KHZ) || \
                                     ((SPEED) == I2C_CLOCK_SPEED_300KHZ))
 
-//I2C å¤–è®¾å®šä¹‰
+//I2C ÍâÉè¶¨Òå
 typedef struct
 {
     uint32_t I2C_Index:4;
@@ -51,43 +51,43 @@ typedef struct
 	  uint32_t I2C_Reserved:8;
 }I2C_MapTypeDef;
 
-//I2C è®¾å¤‡å¤–è®¾å¼•è„šå®šä¹‰
+//I2C Éè±¸ÍâÉèÒı½Å¶¨Òå
 #define I2C1_SCL_PE1_SDA_PE0       (0x00001641U)
 #define I2C0_SCL_PB0_SDA_PB1       (0x00040210U)
 #define I2C0_SCL_PB2_SDA_PB3       (0x000c2210U)
 #define I2C1_SCL_PC10_SDA_PC11     (0x002ca221U)
-//å‚æ•°æ£€æŸ¥
+//²ÎÊı¼ì²é
 #define IS_I2C_DATA_CHL(CHL)     (((CHL) == I2C1_SCL_PE1_SDA_PE0) || \
                                   ((CHL) == I2C0_SCL_PB0_SDA_PB1) || \
                                   ((CHL) == I2C0_SCL_PB2_SDA_PB3) || \
                                   ((CHL) == I2C1_SCL_PC10_SDA_PC11))
 
-//ä¸­æ–­é…ç½®
+//ÖĞ¶ÏÅäÖÃ
 #define I2C_IT_TCF             (uint16_t)(0)
 #define I2C_IT_IAAS            (uint16_t)(1)
 #define I2C_IT_ARBL            (uint16_t)(2)
 #define I2C_IT_SLTF            (uint16_t)(3)
 #define I2C_IT_SHTF2           (uint16_t)(4)
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊı¼ì²éÆ÷
 #define IS_I2C_IT(IT) (((IT) == I2C_IT_TCF)     || \
                        ((IT) == I2C_IT_SLTF)    || \
                        ((IT) == I2C_IT_ARBL)    || \
                        ((IT) == I2C_IT_SHTF2)   || \
                        ((IT) == I2C_IT_IAAS))
 
-//DMAå‘½ä»¤
+//DMAÃüÁî
 #define I2C_DMAReq_TCF             ((uint16_t)0)
 #define IS_I2C_DMAREQ(REQ)   ((REQ) == I2C_DMAReq_TCF)
 
-//I2Cä¸»æœºè¯»å†™æ–¹å‘
+//I2CÖ÷»ú¶ÁĞ´·½Ïò
 #define I2C_MASTER_WRITE   (0)
 #define I2C_MASTER_READ    (1)
-//å‚æ•°æ£€æŸ¥
+//²ÎÊı¼ì²é
 #define IS_I2C_MASTER_DIRECTION(DIR)    (((DIR) == I2C_MASTER_WRITE) || \
                                         ((DIR) == I2C_MASTER_READ))
               
 
-//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
+//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
 void I2C_Init(I2C_InitTypeDef* I2C_InitStruct);
 void I2C_GenerateSTART(I2C_Type *I2Cx);
 void I2C_GenerateRESTART(I2C_Type *I2Cx);

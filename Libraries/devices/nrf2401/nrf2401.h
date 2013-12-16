@@ -1,10 +1,10 @@
-﻿/**
+/**
   ******************************************************************************
   * @file    nrf2401.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   超核原子核核心板 BSP构件 NRF2401驱动
+  * @brief   ����ԭ�Ӻ˺��İ� BSP���� NRF2401����
   ******************************************************************************
   */
 #ifndef __NRF24L01_H__
@@ -31,32 +31,32 @@ typedef struct
 
   
 
-//返回常量
+//���س���
 #define NRF_OK      (0x00)
 #define NRF_ERR     (0x01)
-#define MAX_TX  		(0x10)  //达到最大发送次数中断
-#define TX_OK   		(0x20)  //TX发送完成中断
-#define RX_OK   		(0x40)  //接收到数据中断
+#define MAX_TX  		(0x10)  //�ﵽ����ʹ����ж�
+#define TX_OK   		(0x20)  //TX��������ж�
+#define RX_OK   		(0x40)  //���յ������ж�
 
 
 //********************************************************************************************************************// 
-// SPI(nRF24L01) 指令
-#define READ_REG    0x00   // 读配置寄存器
-#define WRITE_REG   0x20   // 写配置寄存器
-#define RD_RX_PLOAD 0x61   // 读取RX FIFO中的数据
-#define WR_TX_PLOAD 0xA0   // 向TX FIFO中写入数据
-#define FLUSH_TX    0xE1   // 清除TX FIFO中的数据 应用于发射模式下
-#define FLUSH_RX    0xE2   // 清除RX FIFO中的数据 应用于接收模式下
-#define REUSE_TX_PL 0xE3   // 重新使用上一包有效数据
-#define NOP         0xFF   // 保留
+// SPI(nRF24L01) ָ��
+#define READ_REG    0x00   // �����üĴ���
+#define WRITE_REG   0x20   // д���üĴ���
+#define RD_RX_PLOAD 0x61   // ��ȡRX FIFO�е�����
+#define WR_TX_PLOAD 0xA0   // ��TX FIFO��д������
+#define FLUSH_TX    0xE1   // ���TX FIFO�е����� Ӧ���ڷ���ģʽ��
+#define FLUSH_RX    0xE2   // ���RX FIFO�е����� Ӧ���ڽ���ģʽ��
+#define REUSE_TX_PL 0xE3   // ����ʹ����һ����Ч����
+#define NOP         0xFF   // ����
 //********************************************************************************************************************// 
-// SPI(nRF24L01) 寄存器(地址)
-#define CONFIG      0x00  //配置发送状态，CRC校验模式以及发收发状态响应方式
-#define EN_AA       0x01  //自动应答功能设置
-#define EN_RXADDR   0x02  //可用信道设置
-#define SETUP_AW    0x03  //收发地址宽度设置
-#define SETUP_RETR  0x04  //自动重发功能设设置
-#define RF_CH       0x05  //工作频率设定
+// SPI(nRF24L01) �Ĵ���(��ַ)
+#define CONFIG      0x00  //���÷���״̬��CRCУ��ģʽ�Լ����շ�״̬��Ӧ��ʽ
+#define EN_AA       0x01  //�Զ�Ӧ��������
+#define EN_RXADDR   0x02  //�����ŵ�����
+#define SETUP_AW    0x03  //�շ���ַ��������
+#define SETUP_RETR  0x04  //�Զ��ط�����������
+#define RF_CH       0x05  //����Ƶ���趨
 #define RF_SETUP    0x06
 #define STATUS      0x07
 #define OBSERVE_TX  0x08
@@ -81,11 +81,11 @@ typedef struct
 #define STATUS_RX_DR  0x40
 
 
-//24L01发送接收数据宽度定义
-#define TX_ADR_WIDTH    5   	//5字节的地址宽度
-#define RX_ADR_WIDTH    5   	//5字节的地址宽度
-#define TX_PLOAD_WIDTH  32  	//32字节的用户数据宽度
-#define RX_PLOAD_WIDTH  32  	//32字节的用户数据宽度
+//24L01���ͽ������ݿ��ȶ���
+#define TX_ADR_WIDTH    5   	//5�ֽڵĵ�ַ����
+#define RX_ADR_WIDTH    5   	//5�ֽڵĵ�ַ����
+#define TX_PLOAD_WIDTH  32  	//32�ֽڵ��û����ݿ���
+#define RX_PLOAD_WIDTH  32  	//32�ֽڵ��û����ݿ���
 
 
 

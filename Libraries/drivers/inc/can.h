@@ -1,10 +1,10 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    can.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ CAN é©±åŠ¨æ–‡ä»¶
+  * @brief   ³¬ºËK60¹Ì¼ş¿â CAN Çı¶¯ÎÄ¼ş
   ******************************************************************************
   */
 #ifndef __CAN_H__
@@ -16,19 +16,19 @@
 
 #include "sys.h"
 
-//CANåˆå§‹åŒ–ç»“æ„
+//CAN³õÊ¼»¯½á¹¹
 typedef struct
 {
-	uint32_t CANxMap;               //æ•°æ®ç«¯å£å®šä¹‰
-	uint32_t CAN_BaudRateSelect;    //é€Ÿç‡å®šä¹‰
-	FunctionalState FilterEnable;   //æ˜¯å¦ä½¿èƒ½é‚®ç®±è¿‡æ»¤åŠŸèƒ½ 
+	uint32_t CANxMap;               //Êı¾İ¶Ë¿Ú¶¨Òå
+	uint32_t CAN_BaudRateSelect;    //ËÙÂÊ¶¨Òå
+	FunctionalState FilterEnable;   //ÊÇ·ñÊ¹ÄÜÓÊÏä¹ıÂË¹¦ÄÜ 
 }CAN_InitTypeDef;
 
-//å‚æ•°æ£€æŸ¥å™¨														
+//²ÎÊı¼ì²éÆ÷														
 #define IS_CAN_ALL_PERIPH(PERIPH)  ((PERIPH) == CAN0)  || \
                                    ((PERIPH) == CAN1)
 
-//CANç»“æ„å®šä¹‰
+//CAN½á¹¹¶¨Òå
 typedef struct
 {
     uint32_t CAN_Index:2;
@@ -38,29 +38,29 @@ typedef struct
 		uint32_t CAN_RX_Pin_Index:6;
 }CAN_MapTypeDef;
 
-//å‘é€é‚®ç®±æ¶ˆæ¯ä¿¡æ¯ç»“æ„ 
+//·¢ËÍÓÊÏäÏûÏ¢ĞÅÏ¢½á¹¹ 
 typedef struct
 {
-  uint32_t Id;      //IDå·
-	uint32_t MBIndex; //ä½¿ç”¨çš„é‚®ç®±å· å‘é€å’Œæ¥æ”¶ä¸èƒ½é‡å¤
-	uint8_t IDE;      //æ‹“å±•å¸§æ ‡å¿—
-  uint8_t RTR;      //è¿œç¨‹å¸§æ ‡å¿—
-  uint8_t DLC;      //ä¼ è¾“å¸§é•¿åº¦
-  uint8_t Data[8];  //å¸§æ•°æ® æœ€é•¿8å­—èŠ‚
+  uint32_t Id;      //IDºÅ
+	uint32_t MBIndex; //Ê¹ÓÃµÄÓÊÏäºÅ ·¢ËÍºÍ½ÓÊÕ²»ÄÜÖØ¸´
+	uint8_t IDE;      //ÍØÕ¹Ö¡±êÖ¾
+  uint8_t RTR;      //Ô¶³ÌÖ¡±êÖ¾
+  uint8_t DLC;      //´«ÊäÖ¡³¤¶È
+  uint8_t Data[8];  //Ö¡Êı¾İ ×î³¤8×Ö½Ú
 } CAN_TxMsgTypeDef;
 
-//æ¥æ”¶é‚®ç®±ä¿¡æ¯ç»“æ„
+//½ÓÊÕÓÊÏäĞÅÏ¢½á¹¹
 typedef struct
 {
-  uint32_t Id;      //IDå·
-	uint32_t MBIndex; //ä½¿ç”¨çš„é‚®ç®±å· å‘é€å’Œæ¥æ”¶ä¸èƒ½é‡å¤
-  uint8_t IDE;      //æ‹“å±•å¸§æ ‡å¿—
-  uint8_t RTR;      //è¿œç¨‹å¸§æ ‡å¿—
-  uint8_t DLC;      //ä¼ è¾“å¸§é•¿åº¦
-  uint8_t Data[8];  //å¸§æ•°æ® æœ€é•¿8å­—èŠ‚
+  uint32_t Id;      //IDºÅ
+	uint32_t MBIndex; //Ê¹ÓÃµÄÓÊÏäºÅ ·¢ËÍºÍ½ÓÊÕ²»ÄÜÖØ¸´
+  uint8_t IDE;      //ÍØÕ¹Ö¡±êÖ¾
+  uint8_t RTR;      //Ô¶³ÌÖ¡±êÖ¾
+  uint8_t DLC;      //´«ÊäÖ¡³¤¶È
+  uint8_t Data[8];  //Ö¡Êı¾İ ×î³¤8×Ö½Ú
 } CAN_RxMsgTypeDef;
 
-//å¸§é•¿åº¦ 
+//Ö¡³¤¶È 
 #define CAN_DLC_1Byte    (uint8_t)(1)
 #define CAN_DLC_2Byte    (uint8_t)(2)
 #define CAN_DLC_3Byte    (uint8_t)(3)
@@ -80,7 +80,7 @@ typedef struct
 
 
 
-//å¼•è„šå®šä¹‰
+//Òı½Å¶¨Òå
 #define CAN0_TX_PA12_RX_PA13   (0x00034c08U)
 #define CAN0_TX_PB18_RX_PB19   (0x0004d228U)
 #define CAN1_TX_PE24_RX_PE25   (0x00065889U)
@@ -90,7 +90,7 @@ typedef struct
                                ((MAP) == CAN1_TX_PE24_RX_PE25) || \
                                ((MAP) == CAN1_TX_PC17_RX_PC16))
 
-//é‚®ç®±å·å®šä¹‰
+//ÓÊÏäºÅ¶¨Òå
 #define CAN_MB0                (uint32_t)(0)
 #define CAN_MB1                (uint32_t)(1)
 #define CAN_MB2                (uint32_t)(2)
@@ -109,7 +109,7 @@ typedef struct
 #define CAN_MB15               (uint32_t)(15)
 #define IS_CAN_MB_NUM(NUM)     ((NUM) < 16)
 
-//CANé€Ÿåº¦å®šä¹‰
+//CANËÙ¶È¶¨Òå
 /*
 #define CAN_SPEED_33K     (uint8_t)(0)
 #define CAN_SPEED_83K     (uint8_t)(1)
@@ -120,7 +120,7 @@ typedef struct
 #define CAN_SPEED_500K    (uint8_t)(6)
 #define CAN_SPEED_1000K   (uint8_t)(7)
 */
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊı¼ì²éÆ÷
 #define IS_CAN_SPEED(SPEED)    (((SPEED) == CAN_SPEED_33K)   || \
 																((SPEED) == CAN_SPEED_83K)   || \
 																((SPEED) == CAN_SPEED_50K)   || \
@@ -130,17 +130,17 @@ typedef struct
 																((SPEED) == CAN_SPEED_500K)  || \
 																((SPEED) == CAN_SPEED_1000K))						 
 
-//è¿œç¨‹å¸§è¿˜æ˜¯æ•°æ®å¸§
+//Ô¶³ÌÖ¡»¹ÊÇÊı¾İÖ¡
 #define CAN_RTR_Data                ((uint8_t)0x00)  
 #define CAN_RTR_Remote              ((uint8_t)0x01) 
 #define IS_CAN_RTR(VALUE)   (((VALUE) == CAN_RTR_Data) || ((VALUE) == CAN_RTR_Remote))
 
-//æ ‡å‡†å¸§è¿˜æ˜¯æ‹“å±•å¸§
+//±ê×¼Ö¡»¹ÊÇÍØÕ¹Ö¡
 #define CAN_IDE_Standard             ((uint8_t)0x00) 
 #define CAN_IDE_Extended             ((uint8_t)0x01) 
 #define IS_CAN_IDE(VALUE)  (((VALUE) == CAN_IDE_Standard) || (VALUE) == CAN_IDE_Extended)
 
-//CANä¸­æ–­æº
+//CANÖĞ¶ÏÔ´
 #define CAN_IT_MB0     (uint16_t)(0)
 #define CAN_IT_MB1     (uint16_t)(1)
 #define CAN_IT_MB2     (uint16_t)(2)
@@ -163,7 +163,7 @@ typedef struct
 #define CAN_get_code(cs)			(((cs) & CAN_CS_CODE_MASK)>>24)
 #define CAN_get_length(cs)    (((cs) & CAN_CS_DLC_MASK)>>16)
 
-//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
+//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
 void CAN_Init(CAN_InitTypeDef* CAN_InitStruct);
 void CAN_EnableReceiveMB(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage);
 uint8_t CAN_Receive(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage);
@@ -182,14 +182,14 @@ void CAN_ClearAllITPendingBit(CAN_Type* CANx);
 
 
 
-//é»˜è®¤è®¾ç½®
+//Ä¬ÈÏÉèÖÃ
 #define CAN_DEFAULT_TXID               (5)
 #define CAN_DEFAULT_RXID               (6)
 #define CAN_DEFAULT_TXMSGBOXINDEX      (1)
 #define CAN_DEFAULT_RXMSGBOXINDEX      (2)
 #define CAN_DEFAULT_SPEED              CAN_SPEED_125K
 
-//CANæ€»çº¿é€Ÿåº¦é€‰æ‹©
+//CAN×ÜÏßËÙ¶ÈÑ¡Ôñ
 typedef enum CAN_BAUDRATE_SELECT
 {
 	CAN_SPEED_33K,
@@ -201,18 +201,18 @@ typedef enum CAN_BAUDRATE_SELECT
 	CAN_SPEED_500K,
 	CAN_SPEED_1000K,
 }CAN_BAUDRATE_SELECT;
-//CAN æ§åˆ¶ç»“æ„
+//CAN ¿ØÖÆ½á¹¹
 typedef struct can_dev
 {
-	uint16_t txid; //å‘é€åœ°å€
-	uint16_t rxid; //æ¥æ”¶åœ°å€
-	uint16_t txmsgboxindex; //å‘é€æ—¶å€™ä½¿ç”¨çš„é‚®ç®±
-	uint16_t rxmsgboxindex; //æ¥æ”¶æ—¶å€™ä½¿ç”¨çš„é‚®ç®±
-	CAN_BAUDRATE_SELECT baudrate; //é€Ÿåº¦é€‰æ‹©
-	uint8_t  len; //å‘é€æ¯ä¸ªå¸§æ•°æ®é•¿åº¦ 0-8
-	uint8_t reclen;//æ¥æ”¶åˆ°çš„æ•°æ®å¸§é•¿åº¦
+	uint16_t txid; //·¢ËÍµØÖ·
+	uint16_t rxid; //½ÓÊÕµØÖ·
+	uint16_t txmsgboxindex; //·¢ËÍÊ±ºòÊ¹ÓÃµÄÓÊÏä
+	uint16_t rxmsgboxindex; //½ÓÊÕÊ±ºòÊ¹ÓÃµÄÓÊÏä
+	CAN_BAUDRATE_SELECT baudrate; //ËÙ¶ÈÑ¡Ôñ
+	uint8_t  len; //·¢ËÍÃ¿¸öÖ¡Êı¾İ³¤¶È 0-8
+	uint8_t reclen;//½ÓÊÕµ½µÄÊı¾İÖ¡³¤¶È
 }CAN_DevType_t;
-extern CAN_DevType_t candev; //å®ä½“åŒ–can æ§åˆ¶ç»“æ„
+extern CAN_DevType_t candev; //ÊµÌå»¯can ¿ØÖÆ½á¹¹
 
 
 

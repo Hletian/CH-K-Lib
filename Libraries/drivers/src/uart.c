@@ -1,16 +1,16 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    uart.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.25
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ UART ä¸²å£ é©±åŠ¨åº“
+  * @brief   ³¬ºËK60¹Ì¼ş¿â UART ´®¿Ú Çı¶¯¿â
   ******************************************************************************
   */
 #include "uart.h"
 #include "sys.h"
 #include "string.h"
-//å‘é€ç»“æ„
+//·¢ËÍ½á¹¹
 UART_TxSendTypeDef UART_TxIntStruct1;
 UART_Type* UART_DebugPort = NULL;
 
@@ -18,10 +18,10 @@ void UART_DebugPortInit(uint32_t UARTxMAP,uint32_t UART_BaudRate)
 {
 	UART_InitTypeDef UART_DebugInitStruct1;
 	UART_MapTypeDef *pUART_Map = (UART_MapTypeDef*)&(UARTxMAP);
-	//é…ç½®é»˜è®¤çš„è°ƒè¯•UARTä¸²å£
+	//ÅäÖÃÄ¬ÈÏµÄµ÷ÊÔUART´®¿Ú
 	UART_DebugInitStruct1.UART_BaudRate = UART_BaudRate;
 	UART_DebugInitStruct1.UARTxMAP = UARTxMAP;
-	//æ‰¾å‡ºå¯¹åº”çš„UARTç«¯å£
+	//ÕÒ³ö¶ÔÓ¦µÄUART¶Ë¿Ú
 	switch(pUART_Map->UART_Index)
 	{
 			case 0:
@@ -46,10 +46,10 @@ void UART_DebugPortInit(uint32_t UARTxMAP,uint32_t UART_BaudRate)
 	UART_Init(&UART_DebugInitStruct1);
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šåˆå§‹åŒ–ä¸²å£
- å½¢å‚ï¼šUART_InitStruct UARTåˆå§‹åŒ–ç»“æ„
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£º³õÊ¼»¯´®¿Ú
+ ĞÎ²Î£ºUART_InitStruct UART³õÊ¼»¯½á¹¹
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void UART_Init(UART_InitTypeDef* UART_InitStruct)
 {
@@ -60,9 +60,9 @@ void UART_Init(UART_InitTypeDef* UART_InitStruct)
 	uint32_t clock;
 	UART_MapTypeDef *pUART_Map = NULL;
 	pUART_Map = (UART_MapTypeDef*)&(UART_InitStruct->UARTxMAP);
-  //æ£€æµ‹å‚æ•°
+  //¼ì²â²ÎÊı
 	assert_param(IS_UART_MAP(UART_InitStruct->UARTxMAP));
-	//æ‰¾å‡ºå¯¹åº”çš„UARTç«¯å£
+	//ÕÒ³ö¶ÔÓ¦µÄUART¶Ë¿Ú
 	switch(pUART_Map->UART_Index)
 	{
 			case 0:
@@ -89,7 +89,7 @@ void UART_Init(UART_InitTypeDef* UART_InitStruct)
 					UARTx = NULL;
 					break;
 	}
-	 //æ‰¾å‡º PORTç«¯å£ å¹¶ä½¿èƒ½æ—¶é’Ÿ
+	 //ÕÒ³ö PORT¶Ë¿Ú ²¢Ê¹ÄÜÊ±ÖÓ
 	switch(pUART_Map->UART_GPIO_Index )
 	{
 		case 0:
@@ -115,50 +115,50 @@ void UART_Init(UART_InitTypeDef* UART_InitStruct)
 		default:
 			break;
 	}
-	//é…ç½®å¯¹åº”å¼•è„šä¸ºä¸²å£æ¨¡å¼
+	//ÅäÖÃ¶ÔÓ¦Òı½ÅÎª´®¿ÚÄ£Ê½
 	UART_PORT->PCR[pUART_Map->UART_RX_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	UART_PORT->PCR[pUART_Map->UART_RX_Pin_Index] |= PORT_PCR_MUX(pUART_Map->UART_Alt_Index);
 	UART_PORT->PCR[pUART_Map->UART_TX_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	UART_PORT->PCR[pUART_Map->UART_TX_Pin_Index] |= PORT_PCR_MUX(pUART_Map->UART_Alt_Index);
-	//é…ç½®ä¼ è¾“é¢‘ç‡
-	GetCPUInfo();  //è®¡ç®—ç³»ç»Ÿæ—¶é’Ÿ
+	//ÅäÖÃ´«ÊäÆµÂÊ
+	GetCPUInfo();  //¼ÆËãÏµÍ³Ê±ÖÓ
   clock = CPUInfo.BusClock;
 	if((uint32_t)UARTx == UART0_BASE||(uint32_t)UARTx == UART1_BASE) 
 	{
-		clock = CPUInfo.CoreClock; //UART0 UART1ä½¿ç”¨CoreClock
+		clock = CPUInfo.CoreClock; //UART0 UART1Ê¹ÓÃCoreClock
 	}
 	sbr = (uint16_t)((clock)/((UART_InitStruct->UART_BaudRate)*16));
 	brfa = ((clock*2)/(UART_InitStruct->UART_BaudRate)-(sbr*32));
-	UARTx->BDH |= ((sbr>>8)&UART_BDH_SBR_MASK);//è®¾ç½®é«˜5ä½çš„æ•°æ®
-	UARTx->BDL = (sbr&UART_BDL_SBR_MASK);//è®¾ç½®ä½8ä½æ•°æ®
-	UARTx->C4 |= brfa&(UART_BDL_SBR_MASK>>3);//è®¾ç½®å°æ•°ä½
-	//é…ç½®uartæ§åˆ¶å¯„å­˜å™¨ï¼Œå®ç°åŸºæœ¬çš„å…«ä½ä¼ è¾“åŠŸèƒ½
-  UARTx->C2 &= ~(UART_C2_RE_MASK|UART_C2_TE_MASK);	 //ç¦æ­¢å‘é€æ¥å—
-	UARTx->C1 &= ~UART_C1_M_MASK;                      //é…ç½®æ•°æ®ä½æ•°ä¸º8ä½
-	UARTx->C1 &= ~(UART_C1_PE_MASK);                   //é…ç½®ä¸ºæ— å¥‡å¶æ ¡æ£€ä½
-	UARTx->S2 &= ~UART_S2_MSBF_MASK;                   //é…ç½®ä¸ºæœ€ä½ä½ä¼˜å…ˆä¼ è¾“
-	//ä½¿èƒ½æ¥æ”¶å™¨ä¸å‘é€å™¨
-	UARTx->C2|=(UART_C2_RE_MASK|UART_C2_TE_MASK);	 //å¼€å¯æ•°æ®å‘é€æ¥å—,å‚è§æ‰‹å†Œ1221é¡µ
-	//è®°å½•æœ€å¤§ç¼“å†²åŒºæ•°
+	UARTx->BDH |= ((sbr>>8)&UART_BDH_SBR_MASK);//ÉèÖÃ¸ß5Î»µÄÊı¾İ
+	UARTx->BDL = (sbr&UART_BDL_SBR_MASK);//ÉèÖÃµÍ8Î»Êı¾İ
+	UARTx->C4 |= brfa&(UART_BDL_SBR_MASK>>3);//ÉèÖÃĞ¡ÊıÎ»
+	//ÅäÖÃuart¿ØÖÆ¼Ä´æÆ÷£¬ÊµÏÖ»ù±¾µÄ°ËÎ»´«Êä¹¦ÄÜ
+  UARTx->C2 &= ~(UART_C2_RE_MASK|UART_C2_TE_MASK);	 //½ûÖ¹·¢ËÍ½ÓÊÜ
+	UARTx->C1 &= ~UART_C1_M_MASK;                      //ÅäÖÃÊı¾İÎ»ÊıÎª8Î»
+	UARTx->C1 &= ~(UART_C1_PE_MASK);                   //ÅäÖÃÎªÎŞÆæÅ¼Ğ£¼ìÎ»
+	UARTx->S2 &= ~UART_S2_MSBF_MASK;                   //ÅäÖÃÎª×îµÍÎ»ÓÅÏÈ´«Êä
+	//Ê¹ÄÜ½ÓÊÕÆ÷Óë·¢ËÍÆ÷
+	UARTx->C2|=(UART_C2_RE_MASK|UART_C2_TE_MASK);	 //¿ªÆôÊı¾İ·¢ËÍ½ÓÊÜ,²Î¼ûÊÖ²á1221Ò³
+	//¼ÇÂ¼×î´ó»º³åÇøÊı
 	UART_TxIntStruct1.MaxBufferSize = MAX_TX_BUF_SIZE;
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šé…ç½®ä¸­æ–­å¼€å¯
- å½¢å‚ï¼šUART_Type ä¸²å£é€‰æ‹©
-			 @arg  UART0: ä¸²å£0
-			 @arg  UART1: ä¸²å£1
-			 @arg  UART2: ä¸²å£2
-			 @arg  UART3: ä¸²å£3
-			 @arg  UART4: ä¸²å£4
+ ¹¦ÄÜ£ºÅäÖÃÖĞ¶Ï¿ªÆô
+ ĞÎ²Î£ºUART_Type ´®¿ÚÑ¡Ôñ
+			 @arg  UART0: ´®¿Ú0
+			 @arg  UART1: ´®¿Ú1
+			 @arg  UART2: ´®¿Ú2
+			 @arg  UART3: ´®¿Ú3
+			 @arg  UART4: ´®¿Ú4
 
-			 UART_IT : æ”¯æŒçš„ä¸­æ–­
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+			 UART_IT : Ö§³ÖµÄÖĞ¶Ï
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void UART_ITConfig(UART_Type* UARTx, uint16_t UART_IT, FunctionalState NewState)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_UART_ALL_PERIPH(UARTx));
 	assert_param(IS_UART_IT(UART_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -180,22 +180,22 @@ void UART_ITConfig(UART_Type* UARTx, uint16_t UART_IT, FunctionalState NewState)
 	}
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè·å¾—ä¸­æ–­æ ‡å¿—
- å½¢å‚ï¼šUART_Type ä¸²å£é€‰æ‹©
-			 @arg  UART0: ä¸²å£0
-			 @arg  UART1: ä¸²å£1
-			 @arg  UART2: ä¸²å£2
-			 @arg  UART3: ä¸²å£3
-			 @arg  UART4: ä¸²å£4
+ ¹¦ÄÜ£º»ñµÃÖĞ¶Ï±êÖ¾
+ ĞÎ²Î£ºUART_Type ´®¿ÚÑ¡Ôñ
+			 @arg  UART0: ´®¿Ú0
+			 @arg  UART1: ´®¿Ú1
+			 @arg  UART2: ´®¿Ú2
+			 @arg  UART3: ´®¿Ú3
+			 @arg  UART4: ´®¿Ú4
 
-			 UART_IT : æ”¯æŒçš„ä¸­æ–­
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+			 UART_IT : Ö§³ÖµÄÖĞ¶Ï
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 ITStatus UART_GetITStatus(UART_Type* UARTx, uint16_t UART_IT)
 {
 	ITStatus retval;
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_UART_ALL_PERIPH(UARTx));
 	assert_param(IS_UART_IT(UART_IT));
 	
@@ -220,17 +220,17 @@ ITStatus UART_GetITStatus(UART_Type* UARTx, uint16_t UART_IT)
 
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šä¸²å£å‘é€ä¸€ä¸ªå­—èŠ‚
- å½¢å‚ï¼šUART_Type ä¸²å£é€‰æ‹©
-			 @arg  UART0: ä¸²å£0
-			 @arg  UART1: ä¸²å£1
-			 @arg  UART2: ä¸²å£2
-			 @arg  UART3: ä¸²å£3
-			 @arg  UART4: ä¸²å£4
+ ¹¦ÄÜ£º´®¿Ú·¢ËÍÒ»¸ö×Ö½Ú
+ ĞÎ²Î£ºUART_Type ´®¿ÚÑ¡Ôñ
+			 @arg  UART0: ´®¿Ú0
+			 @arg  UART1: ´®¿Ú1
+			 @arg  UART2: ´®¿Ú2
+			 @arg  UART3: ´®¿Ú3
+			 @arg  UART4: ´®¿Ú4
 
-			 Data : 0-0xFF å‘é€çš„æ•°æ®
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+			 Data : 0-0xFF ·¢ËÍµÄÊı¾İ
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void UART_SendData(UART_Type* UARTx,uint8_t Data)
 {
@@ -238,54 +238,54 @@ void UART_SendData(UART_Type* UARTx,uint8_t Data)
 	UARTx->D = (uint8_t)Data;
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šä½¿ç”¨ä¸­æ–­å‘é€ä¸²å£æ•°æ®
- å½¢å‚ï¼šUART_Type ä¸²å£é€‰æ‹©
-			 @arg  UART0: ä¸²å£0
-			 @arg  UART1: ä¸²å£1
-			 @arg  UART2: ä¸²å£2
-			 @arg  UART3: ä¸²å£3
-			 @arg  UART4: ä¸²å£4
+ ¹¦ÄÜ£ºÊ¹ÓÃÖĞ¶Ï·¢ËÍ´®¿ÚÊı¾İ
+ ĞÎ²Î£ºUART_Type ´®¿ÚÑ¡Ôñ
+			 @arg  UART0: ´®¿Ú0
+			 @arg  UART1: ´®¿Ú1
+			 @arg  UART2: ´®¿Ú2
+			 @arg  UART3: ´®¿Ú3
+			 @arg  UART4: ´®¿Ú4
 
-			 *DataBuf : å‘é€çš„æ•°æ® ç¼“å†²åŒºæŒ‡é’ˆ
-			  Len     : å‘é€çš„æ•°æ®é•¿åº¦
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+			 *DataBuf : ·¢ËÍµÄÊı¾İ »º³åÇøÖ¸Õë
+			  Len     : ·¢ËÍµÄÊı¾İ³¤¶È
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void UART_SendDataInt(UART_Type* UARTx,uint8_t* pBuffer,uint8_t NumberOfBytes)
 {
-	//å‚æ•°æ£€æµ‹
+	//²ÎÊı¼ì²â
 	assert_param(IS_UART_ALL_PERIPH(UARTx));
 	
-	//å†…å­˜æ‹·è´
+	//ÄÚ´æ¿½±´
 	memcpy(UART_TxIntStruct1.TxBuf,pBuffer,NumberOfBytes);
 	UART_TxIntStruct1.Length = NumberOfBytes;
 	UART_TxIntStruct1.Offset = 0;
 	UART_TxIntStruct1.IsComplete = FALSE;
-	//ä½¿ç”¨ä¸­æ–­æ–¹å¼ä¼ è¾“ ä¸ä½¿ç”¨DMA
+	//Ê¹ÓÃÖĞ¶Ï·½Ê½´«Êä ²»Ê¹ÓÃDMA
 	UARTx->C5 &= ~UART_C5_TDMAS_MASK; 
-	//ä½¿èƒ½ä¼ é€ä¸­æ–­
+	//Ê¹ÄÜ´«ËÍÖĞ¶Ï
 	UARTx->C2 |= UART_C2_TIE_MASK;
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šå¼€å¯UART DMAæ”¯æŒs
- å½¢å‚ï¼šUART_Type ä¸²å£é€‰æ‹©
-			 @arg  UART0: ä¸²å£0
-			 @arg  UART1: ä¸²å£1
-			 @arg  UART2: ä¸²å£2
-			 @arg  UART3: ä¸²å£3
-			 @arg  UART4: ä¸²å£4
+ ¹¦ÄÜ£º¿ªÆôUART DMAÖ§³Ös
+ ĞÎ²Î£ºUART_Type ´®¿ÚÑ¡Ôñ
+			 @arg  UART0: ´®¿Ú0
+			 @arg  UART1: ´®¿Ú1
+			 @arg  UART2: ´®¿Ú2
+			 @arg  UART3: ´®¿Ú3
+			 @arg  UART4: ´®¿Ú4
 
-			 UART_DMAReq : DMAä¸­æ–­æº
+			 UART_DMAReq : DMAÖĞ¶ÏÔ´
 
-			 NewState    : ä½¿èƒ½æˆ–è€…å…³é—­
-			 @arg  ENABLE : ä½¿èƒ½
-			 @arg  DISABLE: ç¦æ­¢
- è¿”å›ï¼š0
- è¯¦è§£ï¼šéœ€è¦DMAæ„ä»¶çš„æ”¯æŒ éœ€è¦ä½¿ç”¨DMAæ„ä»¶ä¸­çš„ Iscompleteå‡½æ•°åˆ¤æ–­æ˜¯å¦å‘é€å®Œæˆ
+			 NewState    : Ê¹ÄÜ»òÕß¹Ø±Õ
+			 @arg  ENABLE : Ê¹ÄÜ
+			 @arg  DISABLE: ½ûÖ¹
+ ·µ»Ø£º0
+ Ïê½â£ºĞèÒªDMA¹¹¼şµÄÖ§³Ö ĞèÒªÊ¹ÓÃDMA¹¹¼şÖĞµÄ Iscompleteº¯ÊıÅĞ¶ÏÊÇ·ñ·¢ËÍÍê³É
 ************************************************************************************************/
 void UART_DMACmd(UART_Type* UARTx, uint16_t UART_DMAReq, FunctionalState NewState)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_UART_IT(UART_DMAReq));
 	assert_param(IS_UART_ALL_PERIPH(UARTx));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -302,15 +302,15 @@ void UART_DMACmd(UART_Type* UARTx, uint16_t UART_DMAReq, FunctionalState NewStat
 	}
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šä½¿ç”¨ä¸­æ–­æ–¹å¼ å‘é€ä¸²å£æ•°æ® ä¸­æ–­è¿‡ç¨‹
- å½¢å‚ï¼šUART_Type ä¸²å£é€‰æ‹©
-			 @arg  UART0: ä¸²å£0
-			 @arg  UART1: ä¸²å£1
-			 @arg  UART2: ä¸²å£2
-			 @arg  UART3: ä¸²å£3
-			 @arg  UART4: ä¸²å£4
- è¿”å›ï¼š0
- è¯¦è§£ï¼šå½“å¼€å¯ä¸²å£ä¸­æ–­å‘é€æ—¶ åœ¨å¯¹åº”çš„ä¸²å£ä¸­æ–­ä¸­è°ƒç”¨æ­¤è¿‡ç¨‹
+ ¹¦ÄÜ£ºÊ¹ÓÃÖĞ¶Ï·½Ê½ ·¢ËÍ´®¿ÚÊı¾İ ÖĞ¶Ï¹ı³Ì
+ ĞÎ²Î£ºUART_Type ´®¿ÚÑ¡Ôñ
+			 @arg  UART0: ´®¿Ú0
+			 @arg  UART1: ´®¿Ú1
+			 @arg  UART2: ´®¿Ú2
+			 @arg  UART3: ´®¿Ú3
+			 @arg  UART4: ´®¿Ú4
+ ·µ»Ø£º0
+ Ïê½â£ºµ±¿ªÆô´®¿ÚÖĞ¶Ï·¢ËÍÊ± ÔÚ¶ÔÓ¦µÄ´®¿ÚÖĞ¶ÏÖĞµ÷ÓÃ´Ë¹ı³Ì
 ************************************************************************************************/
 void UART_SendDataIntProcess(UART_Type* UARTx)
 {
@@ -322,36 +322,36 @@ void UART_SendDataIntProcess(UART_Type* UARTx)
 			if(UART_TxIntStruct1.Offset >= UART_TxIntStruct1.Length)
 			{
 					UART_TxIntStruct1.IsComplete = TRUE;
-				  //å…³é—­å‘é€ä¸­æ–­
+				  //¹Ø±Õ·¢ËÍÖĞ¶Ï
 					UARTx->C2 &= ~UART_C2_TIE_MASK;
 			}
 		} 
 	}
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šä¸²å£æ¥æ”¶ä¸€ä¸ªå­—èŠ‚
- å½¢å‚ï¼šUART_Type ä¸²å£é€‰æ‹©
-			 @arg  UART0: ä¸²å£0
-			 @arg  UART1: ä¸²å£1
-			 @arg  UART2: ä¸²å£2
-			 @arg  UART3: ä¸²å£3
-			 @arg  UART4: ä¸²å£4
+ ¹¦ÄÜ£º´®¿Ú½ÓÊÕÒ»¸ö×Ö½Ú
+ ĞÎ²Î£ºUART_Type ´®¿ÚÑ¡Ôñ
+			 @arg  UART0: ´®¿Ú0
+			 @arg  UART1: ´®¿Ú1
+			 @arg  UART2: ´®¿Ú2
+			 @arg  UART3: ´®¿Ú3
+			 @arg  UART4: ´®¿Ú4
 
-			 *ch : æ¥æ”¶åˆ°çš„å­—èŠ‚ ä¼ é€’æŒ‡é’ˆ
- è¿”å›ï¼š0 æ¥æ”¶å¤±è´¥
-       1 æ¥æ”¶æˆåŠŸ
- è¯¦è§£ï¼š0
+			 *ch : ½ÓÊÕµ½µÄ×Ö½Ú ´«µİÖ¸Õë
+ ·µ»Ø£º0 ½ÓÊÕÊ§°Ü
+       1 ½ÓÊÕ³É¹¦
+ Ïê½â£º0
 ************************************************************************************************/
 uint8_t UART_ReceiveData(UART_Type *UARTx,uint8_t *ch)
 {
-	if((UARTx->S1 & UART_S1_RDRF_MASK)!= 0)//åˆ¤æ–­æ¥æ”¶ç¼“å†²åŒºæ˜¯å¦æ»¡
+	if((UARTx->S1 & UART_S1_RDRF_MASK)!= 0)//ÅĞ¶Ï½ÓÊÕ»º³åÇøÊÇ·ñÂú
 	{
-		*ch = (UARTx->D);	//æ¥å—æ•°æ®
-		 return 1; 		  	//æ¥å—æˆåŠŸ
+		*ch = (UARTx->D);	//½ÓÊÜÊı¾İ
+		 return 1; 		  	//½ÓÊÜ³É¹¦
 	}
-	return 0;			      //å¦‚æœè¶…æ—¶ï¼Œæ¥å—å¤±è´¥
+	return 0;			      //Èç¹û³¬Ê±£¬½ÓÊÜÊ§°Ü
 }
-//å†…éƒ¨å‡½æ•°ä¸ºå®ç°UART_printf
+//ÄÚ²¿º¯ÊıÎªÊµÏÖUART_printf
 static void UART_puts(char *pch)
 {
 	while(*pch != '\0')
@@ -360,7 +360,7 @@ static void UART_puts(char *pch)
 		pch++;
 	}
 }
-//å†…éƒ¨å‡½æ•°ä¸ºå®ç°UART_printf
+//ÄÚ²¿º¯ÊıÎªÊµÏÖUART_printf
 static void printn(unsigned int n, unsigned int b)
 {
 	static char *ntab = "0123456789ABCDEF";
@@ -374,10 +374,10 @@ static void printn(unsigned int n, unsigned int b)
 	UART_SendData(UART_DebugPort,ntab[m]);
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šUART æ ¼å¼åŒ–è¾“å‡º
- å½¢å‚ï¼šfmt è¾“å…¥å­—ç¬¦ä¸²æŒ‡é’ˆ          
- è¿”å›ï¼š0
- è¯¦è§£ï¼šç±»ä¼¼äºCæ ‡å‡†åº“ä¸­çš„printf ä½†æ˜¯åªæ”¯æŒ %d %l %o %x %s
+ ¹¦ÄÜ£ºUART ¸ñÊ½»¯Êä³ö
+ ĞÎ²Î£ºfmt ÊäÈë×Ö·û´®Ö¸Õë          
+ ·µ»Ø£º0
+ Ïê½â£ºÀàËÆÓÚC±ê×¼¿âÖĞµÄprintf µ«ÊÇÖ»Ö§³Ö %d %l %o %x %s
 ************************************************************************************************/
 void UART_printf(char *fmt, ...)
 {
@@ -406,19 +406,19 @@ _loop:
     goto _loop;
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šæ‰“å°å¤„ç†å™¨ä¿¡æ¯
- å½¢å‚ï¼š0          
- è¿”å›ï¼š0
- è¯¦è§£ï¼šé’ˆå¯¹äºFreescale Kinetisç³»åˆ—
+ ¹¦ÄÜ£º´òÓ¡´¦ÀíÆ÷ĞÅÏ¢
+ ĞÎ²Î£º0          
+ ·µ»Ø£º0
+ Ïê½â£ºÕë¶ÔÓÚFreescale KinetisÏµÁĞ
 ************************************************************************************************/
 void DisplayCPUInfo(void)
 {
-    //æ‰“å°å›ºä»¶åº“ç‰ˆæœ¬
+    //´òÓ¡¹Ì¼ş¿â°æ±¾
     UART_printf("CH Kinetis FW Lib\r\n");
     UART_printf("Version:%d.%d.%d build %s\r\n",
                CHK_VERSION, CHK_SUBVERSION, CHK_REVISION, __DATE__);
     UART_printf("2010 - 2013 Copyright by yandld\r\n");
-	//æ‰“å°å¤ä½ä¿¡æ¯
+	//´òÓ¡¸´Î»ĞÅÏ¢
 	switch(CPUInfo.ResetState)
 	{
 		case 1: UART_printf("Software Reset\r\n");           break;
@@ -431,7 +431,7 @@ void DisplayCPUInfo(void)
 		case 8: UART_printf("Low-voltage Detect Reset\r\n"); break;
 		case 9: UART_printf("LLWU Reset\r\n");               break;
 	}
-	//æ‰“å°Kinetisç³»åˆ—å‹å·
+	//´òÓ¡KinetisÏµÁĞĞÍºÅ
 	switch(CPUInfo.FamilyType)
 	{
 		case 10: UART_printf("Family:K10\r\n"); break;
@@ -443,23 +443,23 @@ void DisplayCPUInfo(void)
 		case 60: UART_printf("Family:K60\r\n"); break;
 		default: UART_printf("\nUnrecognized Kinetis family device.\n"); break;  
 	}
-	//æ‰“å°å°è£…ä¿¡æ¯
+	//´òÓ¡·â×°ĞÅÏ¢
 	UART_printf("PinCnt:%d\r\n",CPUInfo.PinCnt);
-	//æ‰“å°SiliconRevID
+	//´òÓ¡SiliconRevID
 	UART_printf("SiliconRevID:%d.%d\r\n",CPUInfo.SiliconRev/10,CPUInfo.SiliconRev%10);
-	//æ‰“å°PFlashå¤§å°
+	//´òÓ¡PFlash´óĞ¡
 	UART_printf("PFlash Size: %dKB\r\n",CPUInfo.PFlashSize/1024);
-	//æ‰“å°FlexNVMå¤§å°
+	//´òÓ¡FlexNVM´óĞ¡
 	UART_printf("FlexNVM Size: %dKB\r\n",CPUInfo.FlexNVMSize/1024);
-	//æ‰“å°RAM å¤§å°
+	//´òÓ¡RAM ´óĞ¡
 	UART_printf("RAM Size :%dKB\r\n",CPUInfo.RAMSize/1024);
-	//æ‰“å°CoreClock
+	//´òÓ¡CoreClock
 	UART_printf("CoreClock: %dHz\r\n",CPUInfo.CoreClock);
-	//æ‰“å°BusClock
+	//´òÓ¡BusClock
 	UART_printf("BusClock: %dHz\r\n",CPUInfo.BusClock);
-	//æ‰“å°FlexBusClock
+	//´òÓ¡FlexBusClock
 	UART_printf("FlexBusClock: %dHz\r\n",CPUInfo.FlexBusClock);
-	//æ‰“å°FlashClock
+	//´òÓ¡FlashClock
 	UART_printf("FlashClock: %dHz\r\n",CPUInfo.FlashClock);
 }
 

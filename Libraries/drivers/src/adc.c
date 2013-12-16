@@ -4,27 +4,27 @@
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   超核K60固件库 ADC模块驱动
+  * @brief   超核K60�ƺ件�?ADC模块驱动
   ******************************************************************************
   */
 #include "adc.h"
 static uint8_t ADC_Cal(ADC_Type *ADCx);
 /***********************************************************************************************
- 功能：初始化ADC模块
- 形参：ADC_InitStruct: ADC初始化结构
- 返回：0
- 详解：0
+ �ɟ能�번���Ɍ�ADC模块
+ 形参：ADC_InitStruct: ADC初始化结�?
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 {
 	ADC_MapTypeDef *pADC_Map = (ADC_MapTypeDef*)&ADC_InitStruct->ADCxMap;
 	PORT_Type *ADC_PORT = NULL;
 	ADC_Type *ADCx = NULL;
-	//参数检查
+	//参数检��?
 	assert_param(IS_ADC_PRECISION(IS_ADC_PRECISION(ADC_InitStruct->ADC_Precision)));
 	
-	//找到对应的GPIO 并配置为ADC模式
-	if(pADC_Map->ADC_IsAnalogChl == 0) //如果是普通GPIO 的ADC通道
+	//�ؾ到对应�ЄGPIO 并配置为ADC模��
+	if(pADC_Map->ADC_IsAnalogChl == 0) //如果是普�͚GPIO �ЄADC�͚道
 	{
 		switch(pADC_Map->ADC_GPIO_Index)
 		{
@@ -50,11 +50,11 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 				break;
 			default:break;
 		}
-		//配置对应引脚为ADC模式
+		//�᫽�对应引脚为ADC模��
 		ADC_PORT->PCR[pADC_Map->ADC_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 		ADC_PORT->PCR[pADC_Map->ADC_Pin_Index] |= PORT_PCR_MUX(pADC_Map->ADC_Alt_Index);
 	}
-	//找出ADC端口
+	//�ؾ出ADC端口
 	switch(pADC_Map->ADC_Index)
 	{
 		case 0:
@@ -71,18 +71,18 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 			break;
 		default:break;
 	}
-	//配置转换精度
+	//�᫽�转换精度
 	ADCx->CFG1 &= ~(ADC_CFG1_MODE_MASK); 
 	ADCx->CFG1 |= ADC_CFG1_MODE(ADC_InitStruct->ADC_Precision);
-	//输入时钟源位BusClock
+	//��셥�߶钟源位BusClock
 	ADCx->CFG1 &= ~ADC_CFG1_ADICLK_MASK;
 	ADCx->CFG1 |=  ADC_CFG1_ADICLK(0); 
-	//快速采样
+	//快速采��?
 	ADCx->CFG1 &= ~ADC_CFG1_ADLSMP_MASK;
-	//配置ADC分频 最低分频
+	//�᫽�ADC分频 ���低分�?
 	ADCx->CFG1 &= ~ADC_CFG1_ADIV_MASK;
 	ADCx->CFG1 |= ADC_CFG1_ADIV(ADC_InitStruct->ADC_ClkDiv); 
-	//设置 A或者B通道
+	//设置 A或者B�͚道
 	ADCx->CFG2 = 0;
 	if(pADC_Map->ADC_IsChlAB == 0)
 	{
@@ -92,7 +92,7 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 	{
 		ADCx->CFG2 |= ADC_CFG2_MUXSEL_MASK;
 	}
-	//其他杂项配置
+	//其他杂项�᫽�
 	ADCx->CFG2 |= (ADACKEN_DISABLED|ADHSC_HISPEED|ADC_CFG2_ADLSTS(ADLSTS_20));
   ADCx->CV1 = 0x1234u; 
 	ADCx->CV2 = 0x5678u;
@@ -100,7 +100,7 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 	ADCx->SC3 = (CAL_OFF|ADCO_SINGLE|AVGE_ENABLED|ADC_SC3_AVGS(AVGS_32));
 	ADCx->PGA = (PGAEN_DISABLED|PGACHP_NOCHOP|PGALP_NORMAL|ADC_PGA_PGAG(PGAG_64));
 
-	//单端或者差分配置
+	//卿���或者差分配�?
 	if(pADC_Map->ADC_SingleDifferential == 0)
 	{
 		ADCx->SC1[pADC_Map->ADC_IsChlAB] &= ~ADC_SC1_DIFF_MASK; 
@@ -109,24 +109,24 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 	{
 		ADCx->SC1[pADC_Map->ADC_IsChlAB] |= ADC_SC1_DIFF_MASK; 
 	}
-	//校准
+	//�ݡ���
   ADC_Cal(ADCx);
-	//配置触发源
+	//�᫽�触发�?
 	(ADC_TRIGGER_HW == ADC_InitStruct->ADC_TriggerSelect)?(ADCx->SC2 |= ADC_SC2_ADTRG_MASK):(ADCx->SC2 &= ~ADC_SC2_ADTRG_MASK);
 }
 /***********************************************************************************************
- 功能：软件触发 采样一个通道
- 形参：ADCxMap: ADC通道定义
-			 @arg  ADC0_SE6B_PD5: ADC0模块 6通道 PD5引脚
+ �ɟ能�뵽�件触�?采样一个通道
+ 形参：ADCxMap: ADC�͚道��⹉
+			 @arg  ADC0_SE6B_PD5: ADC0模块 6�͚道 PD5引脚
        @arg ...
- 返回：0
- 详解：0
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 uint16_t ADC_GetConversionValue(uint32_t ADCxMap)
 {
 	ADC_Type *ADCx = NULL;
 	ADC_MapTypeDef *pADC_Map = (ADC_MapTypeDef*)&ADCxMap;
-	//参数检查
+	//参数检��?
 	
 	switch(pADC_Map->ADC_Index)
 	{
@@ -138,34 +138,34 @@ uint16_t ADC_GetConversionValue(uint32_t ADCxMap)
 			break;
 		default:break;
 	}
-	//配置通道
+	//�᫽��͚道
 	ADCx->SC1[pADC_Map->ADC_IsChlAB] &= ~(ADC_SC1_ADCH_MASK);	
 	ADCx->SC1[pADC_Map->ADC_IsChlAB] |= pADC_Map->ADC_Chl;
 	//等待转换完成
 	while((ADCx->SC1[pADC_Map->ADC_IsChlAB] & ADC_SC1_COCO_MASK) == 0);
-	//返回ADC输出返回结果
+	//返回ADC��쇺返回结果
 	return ADCx->R[pADC_Map->ADC_IsChlAB];
 }
 
 /***********************************************************************************************
- 功能：ADC模块中断配置
- 形参：ADCx: ADC模块号
+ �ɟ能：ADC模块中断�᫽�
+ 形参：ADCx: ADC模块�?
        @arg ADC0 : ADC模块0
        @arg ADC1 : ADC模块1
-       ADC_Mux : 复用选择
-       @arg A : 复用A 
-       @arg B : 复用B
+       ADC_Mux : �᫔��͉择
+       @arg A : �᫔�A 
+       @arg B : �᫔�B
        ADC_IT : ADC中断
        @arg ADC_IT_AI : ADC转换完成中断
-			 NewState : 使能或者关闭
+			 NewState : 使能或者关�?
        @arg ENABLE : 使能
        @arg DISABLE: 关闭
- 返回：0
- 详解：0
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 void ADC_ITConfig(ADC_Type* ADCx,uint8_t ADC_Mux, uint16_t ADC_IT, FunctionalState NewState)
 {
-	//参数检查
+	//参数检��?
 	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 	assert_param(IS_ADC_IT(ADC_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -179,22 +179,22 @@ void ADC_ITConfig(ADC_Type* ADCx,uint8_t ADC_Mux, uint16_t ADC_IT, FunctionalSta
 	}
 }
 /***********************************************************************************************
- 功能：ADC模块中断配置
- 形参：ADCx: ADC模块号
+ �ɟ能：ADC模块中断�᫽�
+ 形参：ADCx: ADC模块�?
        @arg ADC0 : ADC模块0
        @arg ADC1 : ADC模块1
-       ADC_Mux : 复用选择
-       @arg A : 复用A 
-       @arg B : 复用B
+       ADC_Mux : �᫔��͉择
+       @arg A : �᫔�A 
+       @arg B : �᫔�B
        ADC_IT : ADC中断
        @arg ADC_IT_AI : ADC转换完成中断
- 返回：SET  或者  RESET 
- 详解：0
+ 返回：SET  或�? RESET 
+ 详解�?
 ************************************************************************************************/
 ITStatus ADC_GetITStatus(ADC_Type* ADCx, uint8_t ADC_Mux, uint16_t ADC_IT)
 {
 	ITStatus retval;
-	//参数检查
+	//参数检��?
 	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 	assert_param(IS_ADC_MUX(ADC_Mux));
 	assert_param(IS_ADC_IT(ADC_IT));
@@ -210,21 +210,21 @@ ITStatus ADC_GetITStatus(ADC_Type* ADCx, uint8_t ADC_Mux, uint16_t ADC_IT)
 }
 
 /***********************************************************************************************
- 功能：ADC模块中断配置
- 形参：ADCx: ADC模块号
+ �ɟ能：ADC模块中断�᫽�
+ 形参：ADCx: ADC模块�?
        @arg ADC0 : ADC模块0
        @arg ADC1 : ADC模块1
        ADC_DMAReq : ADC触发源选择
        @arg ADC_DMAReq_COCO : ADC完成准换触发
-			 NewState : 使能或者关闭
+			 NewState : 使能或者关�?
        @arg ENABLE : 使能
        @arg DISABLE: 关闭
- 返回：SET  或者  RESET 
- 详解：0
+ 返回：SET  或�? RESET 
+ 详解�?
 ************************************************************************************************/
 void ADC_DMACmd(ADC_Type* ADCx, uint16_t ADC_DMAReq, FunctionalState NewState)
 {
-	//参数检查
+	//参数检��?
 	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 	assert_param(IS_ADC_DMAREQ(ADC_DMAReq));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -240,13 +240,13 @@ void ADC_DMACmd(ADC_Type* ADCx, uint16_t ADC_DMAReq, FunctionalState NewState)
 /*
 static const ADC_MapTypeDef ADC_Check_Maps[] = 
 {  //I  P  G  A  S  A   C
-	  //ADC0 查分输入通道
+	  //ADC0 �ҥ分��셥�͚道
     {0, 0, 0, 0, 1, 1 ,0, 0}, //ADC0_DP0_DM0
     {0, 0, 0, 0, 1, 1 ,0, 1}, //ADC0_DP1_DM1
     {0, 0, 0, 0, 1, 1 ,0, 2}, //ADC0_PGA0_DP_DM
     {0, 0, 0, 0, 1, 1 ,0, 3}, //ADC0_DP3_DM3
     {0, 0, 0, 0, 1, 1 ,0,26}, //ADC0_TEMP_SENOR_DIFF
-    //ADC0 单端输入通道
+    //ADC0 卿�����셥�͚道
     {0, 0, 0, 0, 0, 1 ,0,0}, //ADC0_SE0_DP0	
     {0, 0, 0, 0, 0, 1 ,0,1}, //ADC0_SE1_DP1	
     {0, 0, 0, 0, 0, 1 ,0,2}, //ADC0_SE2_PGA0_DP	
@@ -267,13 +267,13 @@ static const ADC_MapTypeDef ADC_Check_Maps[] =
 		{0, 0, 0, 0, 0, 1 ,0,20}, //ADC0_SE20_DM1	
 		{0, 0, 0, 0, 0, 1 ,0,26}, //ADC1_TEMP_SENOR_SE		
 	 //I  P  G  A  S  A   C
-		//ADC1差分输入通道
+		//ADC1差分��셥�͚道
 		{1, 0, 0, 0, 1, 1 ,0, 0}, //ADC1_DP0_DM0	
 		{1, 0, 0, 0, 1, 1 ,0, 1}, //ADC1_DP1_DM1	
 		{1, 0, 0, 0, 1, 1 ,0, 2}, //ADC1_PGA1_DP_DM	
 		{1, 0, 0, 0, 1, 1 ,0, 3}, //ADC1_DP3_DM3	
 		{1, 0, 0, 0, 1, 1 ,0,26}, //ADC1_TEMP_SENOR_DIFF
-    //ADC1单端输入通道
+    //ADC1卿�����셥�͚道
 		{1, 0, 0, 0, 0, 1 ,0, 0}, //ADC1_SE0_DP0		
 		{1, 0, 0, 0, 0, 1 ,0, 1}, //ADC1_SE1_DP1
 		{1, 0, 0, 0, 0, 1 ,0, 2}, //ADC1_SE2_PGA1_DP	
@@ -315,7 +315,7 @@ void ADC_CalConstValue(void)
 }
 */
 
-//ADC校准程序
+//ADC�ݡ�����ɺ�
 static uint8_t ADC_Cal(ADC_Type *ADCx)
 {
   unsigned short cal_var;

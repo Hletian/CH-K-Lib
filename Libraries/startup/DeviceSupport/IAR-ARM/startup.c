@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2013, Freescale Semiconductor, Inc.
  * All rights reserved.
  *

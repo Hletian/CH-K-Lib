@@ -1,7 +1,7 @@
-ï»¿#ifndef _DEVICE_IO_H_
+#ifndef _DEVICE_IO_H_
 #define _DEVICE_IO_H_
 
-struct znFAT_IO_Ctl //åº•å±‚é©±åŠ¨æ¥å£çš„IOé¢‘åº¦æ§åˆ¶ä½“ 
+struct znFAT_IO_Ctl //µ×²ãÇı¶¯½Ó¿ÚµÄIOÆµ¶È¿ØÖÆÌå 
 {
  UINT32 just_sec;
  UINT8  just_dev;

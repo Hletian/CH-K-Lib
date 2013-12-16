@@ -4,7 +4,7 @@
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   超核K60固件库 以太网 驱动文件
+  * @brief   超核K60�ƺ件�?以太�?驱动文件
   ******************************************************************************
   */
 #ifndef __ENET_H__
@@ -35,7 +35,7 @@
 #define PHY_PAGESEL                 (0x13)
 
 
-/* PHY_BMCR寄存器位定义 */
+/* PHY_BMCR寄存器位��⹉ */
 #define PHY_BMCR_RESET              (0x8000)
 #define PHY_BMCR_LOOP               (0x4000)
 #define PHY_BMCR_SPEED              (0x2000)
@@ -46,7 +46,7 @@
 #define PHY_BMCR_FDX                (0x0100)
 #define PHY_BMCR_COL_TEST           (0x0080)
 
-/* PHY_BMSR寄存器位定义 */
+/* PHY_BMSR寄存器位��⹉ */
 #define PHY_BMSR_100BT4             (0x8000)
 #define PHY_BMSR_100BTX_FDX         (0x4000)
 #define PHY_BMSR_100BTX             (0x2000)
@@ -60,7 +60,7 @@
 #define PHY_BMSR_JABBER             (0x0002)
 #define PHY_BMSR_EXTENDED           (0x0001)
 
-/* PHY_ANAR寄存器位定义 */
+/* PHY_ANAR寄存器位��⹉ */
 #define PHY_ANAR_NEXT_PAGE          (0x8001)
 #define PHY_ANAR_REM_FAULT          (0x2001)
 #define PHY_ANAR_PAUSE              (0x0401)
@@ -71,7 +71,7 @@
 #define PHY_ANAR_10BT               (0x0021)
 #define PHY_ANAR_802_3              (0x0001)
 
-/* PHY_ANLPAR寄存器位定义 */
+/* PHY_ANLPAR寄存器位��⹉ */
 #define PHY_ANLPAR_NEXT_PAGE        (0x8000)
 #define PHY_ANLPAR_ACK              (0x4000)
 #define PHY_ANLPAR_REM_FAULT        (0x2000)
@@ -83,7 +83,7 @@
 #define PHY_ANLPAR_10BT             (0x0020)
 
 
-/* PHY_PHYSTS寄存器位定义 */
+/* PHY_PHYSTS寄存器位��⹉ */
 #define PHY_PHYSTS_MDIXMODE         (0x4000)
 #define PHY_PHYSTS_RX_ERR_LATCH     (0x2000)
 #define PHY_PHYSTS_POL_STATUS       (0x1000)
@@ -100,7 +100,7 @@
 #define PHY_PHYSTS_LINKSTATUS       (0x0001)
 
 
-/* PHY硬件特性 */
+/* PHY硬件特�?*/
 #define PHY_STATUS								( 0x1F )
 #define PHY_DUPLEX_STATUS							( 4<<2 )
 #define PHY_SPEED_STATUS							( 1<<2 )
@@ -108,9 +108,9 @@
 #define CFG_PHY_ADDRESS	            0x01
 
 
-//Freescale处理器相关定义
+//Freescale处理器相关定�?
 
-/* TX缓冲区描述符位定义 */
+/* TX��솲区描述符位定�?*/
 #define TX_BD_R			0x0080
 #define TX_BD_TO1		0x0040
 #define TX_BD_W			0x0020
@@ -119,7 +119,7 @@
 #define TX_BD_TC		0x0004
 #define TX_BD_ABC		0x0002
 
-/* TX增强型缓冲区描述符位定义 */
+/* TX增强型缓冲区描述符位��⹉ */
 #define TX_BD_INT       0x00000040 
 #define TX_BD_TS        0x00000020 
 #define TX_BD_PINS      0x00000010 
@@ -134,8 +134,8 @@
 
 #define TX_BD_BDU       0x00000080    
 
-/* RX缓冲区描述符位定义 */
-// 0偏移标志 - 状态:大端格式
+/* RX��솲区描述符位定�?*/
+// 0���移�݇�֯ - �Ӷ�?大端�ݼ��
 #define RX_BD_E			0x0080
 #define RX_BD_R01		0x0040
 #define RX_BD_W			0x0020
@@ -150,7 +150,7 @@
 #define RX_BD_OV		0x0200
 #define RX_BD_TR		0x0100
 
-/* RX增强型缓冲区描述符位定义 */
+/* RX增强型缓冲区描述符位��⹉ */
 #define RX_BD_ME               0x00000080    
 #define RX_BD_PE               0x00000004    
 #define RX_BD_CE               0x00000002    
@@ -172,13 +172,13 @@
 
 typedef void (*ENET_ISR_CALLBACK)(void);
 
-/* 以太帧相关定义 */
+/* 以太帧相关定�?*/
 #define CFG_NUM_ENET_TX_BUFFERS       1     //发送缓冲区个数
-#define CFG_NUM_ENET_RX_BUFFERS	      8     //接收缓冲区个数
-#define CFG_ENET_BUFFER_SIZE	      1520    //以太发送帧缓冲区长度
+#define CFG_NUM_ENET_RX_BUFFERS	      8     //接收��솲区个�?
+#define CFG_ENET_BUFFER_SIZE	      1520    //以太发送帧��솲区����?
 #define CFG_ENET_MAX_PACKET_SIZE    1520    //以太发最大数据包长度
 
-/* 缓冲区描述符结构体 */
+/* ��솲区描述符结构�?*/
   typedef struct
   {
   	uint16_t status;	            /* control and status */
@@ -200,7 +200,7 @@ typedef struct
 }ENET_InitTypeDef;
 
 
-//本构件实现的接口函数
+//���构件实现的接口函数
 uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut);
 void ENET_MacSendData(uint8_t *ch, uint16_t len);
 uint16_t ENET_MacRecData(uint8_t *ch);

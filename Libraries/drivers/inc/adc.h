@@ -4,7 +4,7 @@
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   超核K60固件库 ADC模块驱动 头文件
+  * @brief   超核K60�ƺ件�?ADC模块驱动 头文�?
   ******************************************************************************
   */
 #ifndef __ADC_H__
@@ -17,12 +17,12 @@
 #include "sys.h"
 
 
-//ADC 精度定义
+//ADC 精度��⹉
 #define ADC_PRECISION_8BIT    (0x00U)
 #define ADC_PRECISION_10BIT   (0x02U)
 #define ADC_PRECISION_12BIT   (0x01U)
 #define ADC_PRECISION_16BIT   (0x03U)
-//参数检查
+//参数检��?
 #define IS_ADC_PRECISION(VALUE) (((VALUE) == ADC_PRECISION_8BIT) ||  \
 	                               ((VALUE) == ADC_PRECISION_10BIT) || \
 	                               ((VALUE) == ADC_PRECISION_12BIT) || \
@@ -33,32 +33,32 @@
 #define ADC_CLKDIV_4          (0x02U)
 #define ADC_CLKDIV_8          (0x03U)		 
 																 
-//ADC初始化结构
+//ADC初始化结�?
 typedef struct
 {
-  uint32_t ADCxMap;             //ADC 通道选择
-	uint32_t ADC_Precision;       //ADC 精度选择
+  uint32_t ADCxMap;             //ADC �͚道�͉择
+	uint32_t ADC_Precision;       //ADC 精度�͉择
 	uint16_t ADC_TriggerSelect;   //ADC 触发源选择
-	uint16_t ADC_ClkDiv;          //ADC 转换分屏选择
+	uint16_t ADC_ClkDiv;          //ADC 转换分屏�͉择
 }ADC_InitTypeDef;
 
 #define IS_ADC_ALL_PERIPH(PERIPH)  (((PERIPH) == ADC0) || \
                                     ((PERIPH) == ADC1))		
 
 
-//AD转换触发源定义
+//AD转换触发源定�?
 #define ADC_TRIGGER_HW     (uint16_t)(0)
 #define ADC_TRIGGER_SW     (uint16_t)(1)
 #define IS_ADC_TRIGGER_SELECT(TRIGGER)  (((TRIGGER) == ADC_TRIGGER_HW) || ((TRIGGER) == ADC_TRIGGER_SW))
 
-//中断源定义
+//中断源定�?
 #define ADC_IT_AI       (uint16_t)(0)
 #define IS_ADC_IT(IT)  ((IT) == ADC_IT_AI)
-//DMA命令
+//DMA�ͽ令
 #define ADC_DMAReq_COCO                     ((uint16_t)0)
 #define IS_ADC_DMAREQ(REQ)   ((REQ) == ADC_DMAReq_COCO)
 
-//ADC 通道位图定义
+//ADC �͚道位图��⹉
 typedef struct
 {
     uint32_t ADC_Index:6;
@@ -71,13 +71,13 @@ typedef struct
 	  uint32_t ADC_Chl:6;
 }ADC_MapTypeDef;
 
-//ADC0查分信号输入选择
+//ADC0�ҥ分信����셥�͉择
 #define ADC0_DP0_DM0          (0x00500000U)    
 #define ADC0_DP1_DM1          (0x04500000U)
 #define ADC0_PGA0_DP_DM       (0x08500000U)
 #define ADC0_DP3_DM3          (0x0c500000U)
 #define ADC0_TEMP_SENSOR_DIFF  (0x68500000U)
-//ADC0单端信号输入选择
+//ADC0卿���信����셥�͉择
 #define ADC0_SE0_DP0           (0x00400000U)
 #define ADC0_SE1_DP1           (0x04400000U)
 #define ADC0_SE2_PGA0_DP       (0x08400000U)
@@ -97,13 +97,13 @@ typedef struct
 #define ADC0_SE19_DM0          (0x4c400000U)
 #define ADC0_SE20_DM1          (0x50400000U)
 #define ADC0_TEMP_SENSOR_SE     (0x68400000U)
-//ADC1查分输入选择
+//ADC1�ҥ分��셥�͉择
 #define ADC1_DP0_DM0           (0x00500001U)   
 #define ADC1_DP1_DM1           (0x04500001U)
 #define ADC1_PGA1_DP_DM        (0x08500001U)
 #define ADC1_DP3_DM3           (0x0c500001U)
 #define ADC1_TEMP_SENSOR_DIFF   (0x68500001U)
-//ADC1单端输入通道
+//ADC1卿�����셥�͚道
 #define ADC1_SE0_DP0           (0x00400001U)
 #define ADC1_SE1_DP1           (0x04400001U)
 #define ADC1_SE2_PGA1_DP       (0x08400001U)
@@ -277,7 +277,7 @@ typedef struct
 #define PGAG_64            0x06
 
 
-//本构件所实现的函数接口
+//���构件所实现�Є函数接�?
 void ADC_Init(ADC_InitTypeDef* ADC_InitStruct);
 uint16_t ADC_GetConversionValue(uint32_t ADCxMap);
 void ADC_ITConfig(ADC_Type* ADCx,uint8_t ADC_Mux, uint16_t ADC_IT, FunctionalState NewState);

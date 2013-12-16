@@ -1,12 +1,12 @@
-ï»¿#include "spiflash.h"
+#include "spiflash.h"
 #include "spi.h"
 #include "gpio.h"
 #include "delay.h"
 /***********************************************************************************************
- åŠŸèƒ½ï¼šä½¿ç”¨ç¡¬ä»¶SPIè¯»å†™ä¸€ä¸ªå­—èŠ‚
- å½¢å‚ï¼š0       
- è¿”å›ï¼š0
- è¯¦è§£ï¼šéœ€è¦Kinetisç¡¬ä»¶SPIæ¨¡å—çš„æ”¯æŒ
+ ¹¦ÄÜ£ºÊ¹ÓÃÓ²¼şSPI¶ÁĞ´Ò»¸ö×Ö½Ú
+ ĞÎ²Î£º0       
+ ·µ»Ø£º0
+ Ïê½â£ºĞèÒªKinetisÓ²¼şSPIÄ£¿éµÄÖ§³Ö
 ************************************************************************************************/
 uint8_t SPI_FLASH_ReadWriteByte(uint8_t dat)
 {
@@ -14,16 +14,16 @@ uint8_t SPI_FLASH_ReadWriteByte(uint8_t dat)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè¯»å–èŠ¯ç‰‡ID
- å½¢å‚ï¼š0       
- è¿”å›ï¼šID
- è¯¦è§£ï¼š
+ ¹¦ÄÜ£º¶ÁÈ¡Ğ¾Æ¬ID
+ ĞÎ²Î£º0       
+ ·µ»Ø£ºID
+ Ïê½â£º
 ************************************************************************************************/
 uint16_t SPI_FLASH_ReadID(void)
 {
 	uint16_t Temp = 0;	  
 	SPI_CS_LOW;			    
-	SPI_FLASH_ReadWriteByte(0x90);//å‘é€è¯»å–IDå‘½ä»¤	    
+	SPI_FLASH_ReadWriteByte(0x90);//·¢ËÍ¶ÁÈ¡IDÃüÁî	    
 	SPI_FLASH_ReadWriteByte(0x00); 	    
 	SPI_FLASH_ReadWriteByte(0x00); 	    
 	SPI_FLASH_ReadWriteByte(0x00); 	 			   
@@ -34,17 +34,17 @@ uint16_t SPI_FLASH_ReadID(void)
 }   
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šSPI Flashåˆå§‹åŒ–
- å½¢å‚ï¼š0       
- è¿”å›ï¼š1å¤±è´¥ 0 æˆåŠŸ
- è¯¦è§£ï¼šåˆå§‹åŒ–SPI Flash éœ€è¦Kinetisç¡¬ä»¶SPIæ¨¡å—çš„æ”¯æŒ
-       ä¸ä½¿ç”¨ç¡¬ä»¶è‡ªå¸¦çš„CSä¿¡å·ï¼Œå°†CSé…ç½®ä¸ºæ™®é€šGPIO ç”¨è½¯ä»¶æ¥æ¨¡æ‹ŸCS 
+ ¹¦ÄÜ£ºSPI Flash³õÊ¼»¯
+ ĞÎ²Î£º0       
+ ·µ»Ø£º1Ê§°Ü 0 ³É¹¦
+ Ïê½â£º³õÊ¼»¯SPI Flash ĞèÒªKinetisÓ²¼şSPIÄ£¿éµÄÖ§³Ö
+       ²»Ê¹ÓÃÓ²¼ş×Ô´øµÄCSĞÅºÅ£¬½«CSÅäÖÃÎªÆÕÍ¨GPIO ÓÃÈí¼şÀ´Ä£ÄâCS 
 ************************************************************************************************/
 uint8_t SPI_FLASH_Init(void)
 {
     SPI_InitTypeDef SPI_InitStruct1;
     GPIO_InitTypeDef GPIO_InitStruct1;
-    //åˆå§‹åŒ–SPIä¸²è¡Œæ¥å£å¼•æ“
+    //³õÊ¼»¯SPI´®ĞĞ½Ó¿ÚÒıÇæ
     SPI_InitStruct1.SPIxDataMap = SPI_FLASH_PORT;
     SPI_InitStruct1.SPIxPCSMap = SPI_FLASH_CS_PORT;
     SPI_InitStruct1.SPI_DataSize = 8;
@@ -62,7 +62,7 @@ uint8_t SPI_FLASH_Init(void)
     GPIO_InitStruct1.GPIO_Pin = SPI_FLASH_CS_GPIO_PIN;
     GPIO_Init(&GPIO_InitStruct1);
 
-	SPI_FLASH_PowerUp();                                //å¯åŠ¨è®¾å¤‡
+	SPI_FLASH_PowerUp();                                //Æô¶¯Éè±¸
 	if(SPI_FLASH_GetCapacity() == 0)
 	{
 		return 1;
@@ -74,176 +74,176 @@ uint8_t SPI_FLASH_Init(void)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè¯»å–SPI_FLASHçš„çŠ¶æ€å¯„å­˜å™¨
- å½¢å‚ï¼š0       
- è¿”å›ï¼šçŠ¶æ€å¯„å­˜å™¨å€¼
- è¯¦è§£ï¼š
+ ¹¦ÄÜ£º¶ÁÈ¡SPI_FLASHµÄ×´Ì¬¼Ä´æÆ÷
+ ĞÎ²Î£º0       
+ ·µ»Ø£º×´Ì¬¼Ä´æÆ÷Öµ
+ Ïê½â£º
 			BIT  7    6   5   4   3   2   1   0
 		    	SPR  RV  TB BP2 BP1 BP0 WEL BUSY
-				SPR:é»˜è®¤0,çŠ¶æ€å¯„å­˜å™¨ä¿æŠ¤ä½,é…åˆWPä½¿ç”¨
-				TB,BP2,BP1,BP0:FLASHåŒºåŸŸå†™ä¿æŠ¤è®¾ç½®
-				WEL:å†™ä½¿èƒ½é”å®š
-				BUSY:å¿™æ ‡è®°ä½(1,å¿™;0,ç©ºé—²)
-				é»˜è®¤:0x00
+				SPR:Ä¬ÈÏ0,×´Ì¬¼Ä´æÆ÷±£»¤Î»,ÅäºÏWPÊ¹ÓÃ
+				TB,BP2,BP1,BP0:FLASHÇøÓòĞ´±£»¤ÉèÖÃ
+				WEL:Ğ´Ê¹ÄÜËø¶¨
+				BUSY:Ã¦±ê¼ÇÎ»(1,Ã¦;0,¿ÕÏĞ)
+				Ä¬ÈÏ:0x00
 ************************************************************************************************/
 uint8_t SPI_FLASH_ReadSR(void)   
 {  
 	uint8_t byte=0;   
-	SPI_CS_LOW;                            //ä½¿èƒ½å™¨ä»¶   
-	SPI_FLASH_ReadWriteByte(W25X_ReadStatusReg);    //å‘é€è¯»å–çŠ¶æ€å¯„å­˜å™¨å‘½ä»¤    
-	byte=SPI_FLASH_ReadWriteByte(0XFF);             //è¯»å–ä¸€ä¸ªå­—èŠ‚  
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰     
+	SPI_CS_LOW;                            //Ê¹ÄÜÆ÷¼ş   
+	SPI_FLASH_ReadWriteByte(W25X_ReadStatusReg);    //·¢ËÍ¶ÁÈ¡×´Ì¬¼Ä´æÆ÷ÃüÁî    
+	byte=SPI_FLASH_ReadWriteByte(0XFF);             //¶ÁÈ¡Ò»¸ö×Ö½Ú  
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡     
 	return byte;   
 } 
 /********************** *************************************************************************
- åŠŸèƒ½ï¼šå†™SPI_FLASHçŠ¶æ€å¯„å­˜å™¨
- å½¢å‚ï¼šå†™å…¥å€¼   
- è¿”å›ï¼š0
- è¯¦è§£ï¼šåªæœ‰SPR,TB,BP2,BP1,BP0(bit 7,5,4,3,2)å¯ä»¥å†™!!!
+ ¹¦ÄÜ£ºĞ´SPI_FLASH×´Ì¬¼Ä´æÆ÷
+ ĞÎ²Î£ºĞ´ÈëÖµ   
+ ·µ»Ø£º0
+ Ïê½â£ºÖ»ÓĞSPR,TB,BP2,BP1,BP0(bit 7,5,4,3,2)¿ÉÒÔĞ´!!!
 ************************************************************************************************/
 void SPI_FLASH_WriteSR(uint8_t sr)   
 {   
-	SPI_CS_LOW;                            //ä½¿èƒ½å™¨ä»¶   
-	SPI_FLASH_ReadWriteByte(W25X_WriteStatusReg);   //å‘é€å†™å–çŠ¶æ€å¯„å­˜å™¨å‘½ä»¤    
-	SPI_FLASH_ReadWriteByte(sr);               //å†™å…¥ä¸€ä¸ªå­—èŠ‚  
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰     	      
+	SPI_CS_LOW;                            //Ê¹ÄÜÆ÷¼ş   
+	SPI_FLASH_ReadWriteByte(W25X_WriteStatusReg);   //·¢ËÍĞ´È¡×´Ì¬¼Ä´æÆ÷ÃüÁî    
+	SPI_FLASH_ReadWriteByte(sr);               //Ğ´ÈëÒ»¸ö×Ö½Ú  
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡     	      
 }   
 
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šç­‰å¾…SPIFLASHå¿™
- å½¢å‚ï¼š0
- è¿”å›ï¼š0
- è¯¦è§£ï¼šå½“SPIFLASHå·¥ä½œæ—¶å€™ï¼Œä¸»æœºå¿…é¡»ç­‰å¾…SPIFLASHå·¥ä½œå®Œæˆåï¼Œæ‰èƒ½å‘é€æ–°çš„å‘½ä»¤
+ ¹¦ÄÜ£ºµÈ´ıSPIFLASHÃ¦
+ ĞÎ²Î£º0
+ ·µ»Ø£º0
+ Ïê½â£ºµ±SPIFLASH¹¤×÷Ê±ºò£¬Ö÷»ú±ØĞëµÈ´ıSPIFLASH¹¤×÷Íê³Éºó£¬²ÅÄÜ·¢ËÍĞÂµÄÃüÁî
 ************************************************************************************************/
 void SPI_FLASH_WaitBusy(void)   
 {   
-	while((SPI_FLASH_ReadSR()&0x01)==0x01);   // ç­‰å¾…BUSYä½æ¸…ç©º
+	while((SPI_FLASH_ReadSR()&0x01)==0x01);   // µÈ´ıBUSYÎ»Çå¿Õ
 }  
 /***********************************************************************************************
- åŠŸèƒ½ï¼šå†™ä½¿èƒ½
- å½¢å‚ï¼š0
- è¿”å›ï¼š0
- è¯¦è§£ï¼š
+ ¹¦ÄÜ£ºĞ´Ê¹ÄÜ
+ ĞÎ²Î£º0
+ ·µ»Ø£º0
+ Ïê½â£º
 ************************************************************************************************/
 void SPI_FLASH_WriteEnable(void)   
 {
-	SPI_CS_LOW;                           //ä½¿èƒ½å™¨ä»¶   
-  SPI_FLASH_ReadWriteByte(W25X_WriteEnable);      //å‘é€å†™ä½¿èƒ½  
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰     	      
+	SPI_CS_LOW;                           //Ê¹ÄÜÆ÷¼ş   
+  SPI_FLASH_ReadWriteByte(W25X_WriteEnable);      //·¢ËÍĞ´Ê¹ÄÜ  
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡     	      
 } 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šå†™ç¦æ­¢
- å½¢å‚ï¼š0
- è¿”å›ï¼š0
- è¯¦è§£ï¼š
+ ¹¦ÄÜ£ºĞ´½ûÖ¹
+ ĞÎ²Î£º0
+ ·µ»Ø£º0
+ Ïê½â£º
 ************************************************************************************************/
 void SPI_FLASH_WriteDisable(void)   
 {  
-	SPI_CS_LOW;                             //ä½¿èƒ½å™¨ä»¶   
-  SPI_FLASH_ReadWriteByte(W25X_WriteDisable);     //å‘é€å†™ç¦æ­¢æŒ‡ä»¤    
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰     	      
+	SPI_CS_LOW;                             //Ê¹ÄÜÆ÷¼ş   
+  SPI_FLASH_ReadWriteByte(W25X_WriteDisable);     //·¢ËÍĞ´½ûÖ¹Ö¸Áî    
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡     	      
 } 		
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè¯»å–SPI FLASH  
- å½¢å‚ï¼špBuffer:æ•°æ®å­˜å‚¨åŒº
-			 ReadAddr:å¼€å§‹è¯»å–çš„åœ°å€(24bit)
-	     NumByteToRead:è¦è¯»å–çš„å­—èŠ‚æ•°(æœ€å¤§65535)
- è¿”å›ï¼š0
- è¯¦è§£ï¼šåœ¨æŒ‡å®šåœ°å€å¼€å§‹è¯»å–æŒ‡å®šé•¿åº¦çš„æ•°æ®
+ ¹¦ÄÜ£º¶ÁÈ¡SPI FLASH  
+ ĞÎ²Î£ºpBuffer:Êı¾İ´æ´¢Çø
+			 ReadAddr:¿ªÊ¼¶ÁÈ¡µÄµØÖ·(24bit)
+	     NumByteToRead:Òª¶ÁÈ¡µÄ×Ö½ÚÊı(×î´ó65535)
+ ·µ»Ø£º0
+ Ïê½â£ºÔÚÖ¸¶¨µØÖ·¿ªÊ¼¶ÁÈ¡Ö¸¶¨³¤¶ÈµÄÊı¾İ
 ************************************************************************************************/
 void SPI_FLASH_Read(uint8_t* pBuffer,uint32_t ReadAddr,uint16_t NumByteToRead)   
 { 
  	uint16_t i;   										    
-	SPI_CS_LOW;                             //ä½¿èƒ½å™¨ä»¶   
-    SPI_FLASH_ReadWriteByte(W25X_ReadData);         //å‘é€è¯»å–å‘½ä»¤   
-    SPI_FLASH_ReadWriteByte((uint8_t)((ReadAddr)>>16));  //å‘é€24bitåœ°å€    
+	SPI_CS_LOW;                             //Ê¹ÄÜÆ÷¼ş   
+    SPI_FLASH_ReadWriteByte(W25X_ReadData);         //·¢ËÍ¶ÁÈ¡ÃüÁî   
+    SPI_FLASH_ReadWriteByte((uint8_t)((ReadAddr)>>16));  //·¢ËÍ24bitµØÖ·    
     SPI_FLASH_ReadWriteByte((uint8_t)((ReadAddr)>>8));   
     SPI_FLASH_ReadWriteByte((uint8_t)ReadAddr);   
     for(i=0;i<NumByteToRead;i++)
 	{ 
-        pBuffer[i]=SPI_FLASH_ReadWriteByte(0XFF);   //å¾ªç¯è¯»æ•°  
+        pBuffer[i]=SPI_FLASH_ReadWriteByte(0XFF);   //Ñ­»·¶ÁÊı  
     }
 	SPI_CS_HIGH;  				    	      
 }  
 /***********************************************************************************************
- åŠŸèƒ½ï¼šå†™1é¡µçš„SPIFLASH
- å½¢å‚ï¼špBuffer:æ•°æ®å­˜å‚¨åŒº
-			 ReadAddr:å¼€å§‹è¯»å–çš„åœ°å€(24bit)
-	     NumByteToRead:è¦è¯»å–çš„å­—èŠ‚æ•°(æœ€å¤§65535)
- è¿”å›ï¼š0
- è¯¦è§£ï¼šNumByteToWrite:è¦å†™å…¥çš„å­—èŠ‚æ•°(æœ€å¤§256),è¯¥æ•°ä¸åº”è¯¥è¶…è¿‡è¯¥é¡µçš„å‰©ä½™å­—èŠ‚æ•°!!!	
-			 1ä¸ªPAGE(æœ€å°å†™å•ä½)256Byte, 16ä¸ªPAGEç»„æˆ1ä¸ªSector(æœ€å°æ“¦é™¤å•ä½)
+ ¹¦ÄÜ£ºĞ´1Ò³µÄSPIFLASH
+ ĞÎ²Î£ºpBuffer:Êı¾İ´æ´¢Çø
+			 ReadAddr:¿ªÊ¼¶ÁÈ¡µÄµØÖ·(24bit)
+	     NumByteToRead:Òª¶ÁÈ¡µÄ×Ö½ÚÊı(×î´ó65535)
+ ·µ»Ø£º0
+ Ïê½â£ºNumByteToWrite:ÒªĞ´ÈëµÄ×Ö½ÚÊı(×î´ó256),¸ÃÊı²»Ó¦¸Ã³¬¹ı¸ÃÒ³µÄÊ£Óà×Ö½ÚÊı!!!	
+			 1¸öPAGE(×îĞ¡Ğ´µ¥Î»)256Byte, 16¸öPAGE×é³É1¸öSector(×îĞ¡²Á³ıµ¥Î»)
 ************************************************************************************************/
 void SPI_FLASH_WritePage(uint8_t* pBuffer,uint32_t WriteAddr,uint16_t NumByteToWrite)
 {
  	uint16_t i;  
     SPI_FLASH_WriteEnable();                  //SET WEL 
-	SPI_CS_LOW;                           //ä½¿èƒ½å™¨ä»¶   
-    SPI_FLASH_ReadWriteByte(W25X_PageProgram);      //å‘é€å†™é¡µå‘½ä»¤   
-    SPI_FLASH_ReadWriteByte((uint8_t)((WriteAddr)>>16)); //å‘é€24bitåœ°å€    
+	SPI_CS_LOW;                           //Ê¹ÄÜÆ÷¼ş   
+    SPI_FLASH_ReadWriteByte(W25X_PageProgram);      //·¢ËÍĞ´Ò³ÃüÁî   
+    SPI_FLASH_ReadWriteByte((uint8_t)((WriteAddr)>>16)); //·¢ËÍ24bitµØÖ·    
     SPI_FLASH_ReadWriteByte((uint8_t)((WriteAddr)>>8));   
     SPI_FLASH_ReadWriteByte((uint8_t)WriteAddr);   
-    for(i=0;i<NumByteToWrite;i++)SPI_FLASH_ReadWriteByte(pBuffer[i]);//å¾ªç¯å†™æ•°  
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰ 
-	SPI_FLASH_WaitBusy();					   //ç­‰å¾…å†™å…¥ç»“æŸ
+    for(i=0;i<NumByteToWrite;i++)SPI_FLASH_ReadWriteByte(pBuffer[i]);//Ñ­»·Ğ´Êı  
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡ 
+	SPI_FLASH_WaitBusy();					   //µÈ´ıĞ´Èë½áÊø
 } 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šæ“¦é™¤ä¸€ä¸ªæ‰‡åŒº
- å½¢å‚ï¼šDst_Addr:æ‰‡åŒºå·  ä¸æ˜¯åœ°å€ æ˜¯åœ°å€/4096
- è¿”å›ï¼š0
- è¯¦è§£ï¼šæ“¦é™¤ä¸€ä¸ªæ‰‡åŒºçš„æœ€å°‘æ—¶é—´:150ms
+ ¹¦ÄÜ£º²Á³ıÒ»¸öÉÈÇø
+ ĞÎ²Î£ºDst_Addr:ÉÈÇøºÅ  ²»ÊÇµØÖ· ÊÇµØÖ·/4096
+ ·µ»Ø£º0
+ Ïê½â£º²Á³ıÒ»¸öÉÈÇøµÄ×îÉÙÊ±¼ä:150ms
 ************************************************************************************************/
 void SPI_FLASH_EraseSector(uint32_t Dst_Addr)   
 {  
 	Dst_Addr*=4096;
 	SPI_FLASH_WriteEnable();                  //SET WEL 	 
 	SPI_FLASH_WaitBusy();   
-	SPI_CS_LOW;                             //ä½¿èƒ½å™¨ä»¶   
-	SPI_FLASH_ReadWriteByte(W25X_SectorErase);      //å‘é€æ‰‡åŒºæ“¦é™¤æŒ‡ä»¤ 
-	SPI_FLASH_ReadWriteByte((uint8_t)((Dst_Addr)>>16));  //å‘é€24bitåœ°å€    
+	SPI_CS_LOW;                             //Ê¹ÄÜÆ÷¼ş   
+	SPI_FLASH_ReadWriteByte(W25X_SectorErase);      //·¢ËÍÉÈÇø²Á³ıÖ¸Áî 
+	SPI_FLASH_ReadWriteByte((uint8_t)((Dst_Addr)>>16));  //·¢ËÍ24bitµØÖ·    
 	SPI_FLASH_ReadWriteByte((uint8_t)((Dst_Addr)>>8));   
 	SPI_FLASH_ReadWriteByte((uint8_t)Dst_Addr);  
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰     	      
-	SPI_FLASH_WaitBusy();   				   //ç­‰å¾…æ“¦é™¤å®Œæˆ
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡     	      
+	SPI_FLASH_WaitBusy();   				   //µÈ´ı²Á³ıÍê³É
 }  
 /***********************************************************************************************
- åŠŸèƒ½ï¼šæ— æ£€éªŒå†™SPI FLASH 
- å½¢å‚ï¼špBuffer         : æ•°æ®å­˜å‚¨åŒº
-			 WriteAddr       : å¼€å§‹å†™å…¥çš„åœ°å€(24bit)
-	     NumByteToWrite  :è¦å†™å…¥çš„å­—èŠ‚æ•°(æœ€å¤§65535)
- è¿”å›ï¼š0
- è¯¦è§£ï¼šå¿…é¡»ç¡®ä¿æ‰€å†™çš„åœ°å€èŒƒå›´å†…çš„æ•°æ®å…¨éƒ¨ä¸º0XFF,å¦åˆ™åœ¨é0XFFå¤„å†™å…¥çš„æ•°æ®å°†å¤±è´¥!
-			 å…·æœ‰è‡ªåŠ¨æ¢é¡µåŠŸèƒ½ 
-			 åœ¨æŒ‡å®šåœ°å€å¼€å§‹å†™å…¥æŒ‡å®šé•¿åº¦çš„æ•°æ®,ä½†æ˜¯è¦ç¡®ä¿åœ°å€ä¸è¶Šç•Œ!
+ ¹¦ÄÜ£ºÎŞ¼ìÑéĞ´SPI FLASH 
+ ĞÎ²Î£ºpBuffer         : Êı¾İ´æ´¢Çø
+			 WriteAddr       : ¿ªÊ¼Ğ´ÈëµÄµØÖ·(24bit)
+	     NumByteToWrite  :ÒªĞ´ÈëµÄ×Ö½ÚÊı(×î´ó65535)
+ ·µ»Ø£º0
+ Ïê½â£º±ØĞëÈ·±£ËùĞ´µÄµØÖ··¶Î§ÄÚµÄÊı¾İÈ«²¿Îª0XFF,·ñÔòÔÚ·Ç0XFF´¦Ğ´ÈëµÄÊı¾İ½«Ê§°Ü!
+			 ¾ßÓĞ×Ô¶¯»»Ò³¹¦ÄÜ 
+			 ÔÚÖ¸¶¨µØÖ·¿ªÊ¼Ğ´ÈëÖ¸¶¨³¤¶ÈµÄÊı¾İ,µ«ÊÇÒªÈ·±£µØÖ·²»Ô½½ç!
 ************************************************************************************************/
 void SPI_FLASH_WriteNoCheck(uint8_t* pBuffer,uint32_t WriteAddr,uint16_t NumByteToWrite)   
 { 			 		 
 	uint16_t pageremain;	   
-	pageremain=256-WriteAddr%256; //å•é¡µå‰©ä½™çš„å­—èŠ‚æ•°		 	    
-	if(NumByteToWrite<=pageremain)pageremain=NumByteToWrite;//ä¸å¤§äº256ä¸ªå­—èŠ‚
+	pageremain=256-WriteAddr%256; //µ¥Ò³Ê£ÓàµÄ×Ö½ÚÊı		 	    
+	if(NumByteToWrite<=pageremain)pageremain=NumByteToWrite;//²»´óÓÚ256¸ö×Ö½Ú
 	while(1)
 	{	   
 		SPI_FLASH_WritePage(pBuffer,WriteAddr,pageremain);
-		if(NumByteToWrite==pageremain)break;//å†™å…¥ç»“æŸäº†
+		if(NumByteToWrite==pageremain)break;//Ğ´Èë½áÊøÁË
 	 	else //NumByteToWrite>pageremain
 		{
 			pBuffer+=pageremain;
 			WriteAddr+=pageremain;	
 
-			NumByteToWrite-=pageremain;			  //å‡å»å·²ç»å†™å…¥äº†çš„å­—èŠ‚æ•°
-			if(NumByteToWrite>256)pageremain=256; //ä¸€æ¬¡å¯ä»¥å†™å…¥256ä¸ªå­—èŠ‚
-			else pageremain=NumByteToWrite; 	  //ä¸å¤Ÿ256ä¸ªå­—èŠ‚äº†
+			NumByteToWrite-=pageremain;			  //¼õÈ¥ÒÑ¾­Ğ´ÈëÁËµÄ×Ö½ÚÊı
+			if(NumByteToWrite>256)pageremain=256; //Ò»´Î¿ÉÒÔĞ´Èë256¸ö×Ö½Ú
+			else pageremain=NumByteToWrite; 	  //²»¹»256¸ö×Ö½ÚÁË
 		}
 	};	    
 } 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šå†™SPIFlash(ç”¨æˆ·æ¥å£)
- å½¢å‚ï¼špBuffer         : æ•°æ®å­˜å‚¨åŒº
-			 WriteAddr       : å¼€å§‹å†™å…¥çš„åœ°å€(24bit)
-	     NumByteToWrite  :è¦å†™å…¥çš„å­—èŠ‚æ•°(æœ€å¤§65535)
- è¿”å›ï¼š0
- è¯¦è§£ï¼š//è¯¥å‡½æ•°å¸¦æ“¦é™¤æ“ä½œ!
+ ¹¦ÄÜ£ºĞ´SPIFlash(ÓÃ»§½Ó¿Ú)
+ ĞÎ²Î£ºpBuffer         : Êı¾İ´æ´¢Çø
+			 WriteAddr       : ¿ªÊ¼Ğ´ÈëµÄµØÖ·(24bit)
+	     NumByteToWrite  :ÒªĞ´ÈëµÄ×Ö½ÚÊı(×î´ó65535)
+ ·µ»Ø£º0
+ Ïê½â£º//¸Ãº¯Êı´ø²Á³ı²Ù×÷!
 ************************************************************************************************/
 uint8_t SPI_FLASH_BUFFER[4096];		 
 void SPI_FLASH_Write(uint8_t* pBuffer,uint32_t WriteAddr,uint16_t NumByteToWrite)   
@@ -254,72 +254,72 @@ void SPI_FLASH_Write(uint8_t* pBuffer,uint32_t WriteAddr,uint16_t NumByteToWrite
  	uint16_t i;    
 	uint8_t * SPI_FLASH_BUF;	  
 	SPI_FLASH_BUF=SPI_FLASH_BUFFER;	     
- 	secpos=WriteAddr/4096;//æ‰‡åŒºåœ°å€  
-	secoff=WriteAddr%4096;//åœ¨æ‰‡åŒºå†…çš„åç§»
-	secremain=4096-secoff;//æ‰‡åŒºå‰©ä½™ç©ºé—´å¤§å°   
+ 	secpos=WriteAddr/4096;//ÉÈÇøµØÖ·  
+	secoff=WriteAddr%4096;//ÔÚÉÈÇøÄÚµÄÆ«ÒÆ
+	secremain=4096-secoff;//ÉÈÇøÊ£Óà¿Õ¼ä´óĞ¡   
 
- 	if(NumByteToWrite<=secremain)secremain=NumByteToWrite;//ä¸å¤§äº4096ä¸ªå­—èŠ‚
+ 	if(NumByteToWrite<=secremain)secremain=NumByteToWrite;//²»´óÓÚ4096¸ö×Ö½Ú
 	while(1) 
 	{	
-		SPI_FLASH_Read(SPI_FLASH_BUF,secpos*4096,4096);//è¯»å‡ºæ•´ä¸ªæ‰‡åŒºçš„å†…å®¹
-		for(i=0;i<secremain;i++)//æ ¡éªŒæ•°æ®
+		SPI_FLASH_Read(SPI_FLASH_BUF,secpos*4096,4096);//¶Á³öÕû¸öÉÈÇøµÄÄÚÈİ
+		for(i=0;i<secremain;i++)//Ğ£ÑéÊı¾İ
 		{
-			if(SPI_FLASH_BUF[secoff+i]!=0XFF)break;//éœ€è¦æ“¦é™¤  	  
+			if(SPI_FLASH_BUF[secoff+i]!=0XFF)break;//ĞèÒª²Á³ı  	  
 		}
-		if(i<secremain)//éœ€è¦æ“¦é™¤
+		if(i<secremain)//ĞèÒª²Á³ı
 		{
-			SPI_FLASH_EraseSector(secpos);//æ“¦é™¤è¿™ä¸ªæ‰‡åŒº
-			for(i=0;i<secremain;i++)	   //å¤åˆ¶åŸæ¥çš„æ•°æ®
+			SPI_FLASH_EraseSector(secpos);//²Á³ıÕâ¸öÉÈÇø
+			for(i=0;i<secremain;i++)	   //¸´ÖÆÔ­À´µÄÊı¾İ
 			{
 				SPI_FLASH_BUF[i+secoff]=pBuffer[i];	  
 			}
-			SPI_FLASH_WriteNoCheck(SPI_FLASH_BUF,secpos*4096,4096);//å†™å…¥æ•´ä¸ªæ‰‡åŒº  
-		}else SPI_FLASH_WriteNoCheck(pBuffer,WriteAddr,secremain);//å†™å·²ç»æ“¦é™¤äº†çš„,ç›´æ¥å†™å…¥æ‰‡åŒºå‰©ä½™åŒºé—´. 				   
-		if(NumByteToWrite==secremain)break;//å†™å…¥ç»“æŸäº†
-		else//å†™å…¥æœªç»“æŸ
+			SPI_FLASH_WriteNoCheck(SPI_FLASH_BUF,secpos*4096,4096);//Ğ´ÈëÕû¸öÉÈÇø  
+		}else SPI_FLASH_WriteNoCheck(pBuffer,WriteAddr,secremain);//Ğ´ÒÑ¾­²Á³ıÁËµÄ,Ö±½ÓĞ´ÈëÉÈÇøÊ£ÓàÇø¼ä. 				   
+		if(NumByteToWrite==secremain)break;//Ğ´Èë½áÊøÁË
+		else//Ğ´ÈëÎ´½áÊø
 		{
-			secpos++;//æ‰‡åŒºåœ°å€å¢1
-			secoff=0;//åç§»ä½ç½®ä¸º0 	 
+			secpos++;//ÉÈÇøµØÖ·Ôö1
+			secoff=0;//Æ«ÒÆÎ»ÖÃÎª0 	 
 
-		   	pBuffer+=secremain;  //æŒ‡é’ˆåç§»
-			WriteAddr+=secremain;//å†™åœ°å€åç§»	   
-		   	NumByteToWrite-=secremain;				//å­—èŠ‚æ•°é€’å‡
-			if(NumByteToWrite>4096)secremain=4096;	//ä¸‹ä¸€ä¸ªæ‰‡åŒºè¿˜æ˜¯å†™ä¸å®Œ
-			else secremain=NumByteToWrite;			//ä¸‹ä¸€ä¸ªæ‰‡åŒºå¯ä»¥å†™å®Œäº†
+		   	pBuffer+=secremain;  //Ö¸ÕëÆ«ÒÆ
+			WriteAddr+=secremain;//Ğ´µØÖ·Æ«ÒÆ	   
+		   	NumByteToWrite-=secremain;				//×Ö½ÚÊıµİ¼õ
+			if(NumByteToWrite>4096)secremain=4096;	//ÏÂÒ»¸öÉÈÇø»¹ÊÇĞ´²»Íê
+			else secremain=NumByteToWrite;			//ÏÂÒ»¸öÉÈÇø¿ÉÒÔĞ´ÍêÁË
 		}	 
 	}	 
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè¿›å…¥ä¼‘çœ æ¨¡å¼
- å½¢å‚ï¼š0
- è¿”å›ï¼š0
- è¯¦è§£ï¼š
+ ¹¦ÄÜ£º½øÈëĞİÃßÄ£Ê½
+ ĞÎ²Î£º0
+ ·µ»Ø£º0
+ Ïê½â£º
 ************************************************************************************************/
 void SPI_FLASH_PowerDown(void)   
 { 
-	SPI_CS_LOW;                            //ä½¿èƒ½å™¨ä»¶   
-	SPI_FLASH_ReadWriteByte(W25X_PowerDown);        //å‘é€æ‰ç”µå‘½ä»¤  
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰     	      
-	DelayUs(3);                               //ç­‰å¾…TPD  
+	SPI_CS_LOW;                            //Ê¹ÄÜÆ÷¼ş   
+	SPI_FLASH_ReadWriteByte(W25X_PowerDown);        //·¢ËÍµôµçÃüÁî  
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡     	      
+	DelayUs(3);                               //µÈ´ıTPD  
 }   
 /***********************************************************************************************
- åŠŸèƒ½ï¼šé€€å‡ºä¼‘çœ æ¨¡å¼
- å½¢å‚ï¼š0
- è¿”å›ï¼š0
- è¯¦è§£ï¼š
+ ¹¦ÄÜ£ºÍË³öĞİÃßÄ£Ê½
+ ĞÎ²Î£º0
+ ·µ»Ø£º0
+ Ïê½â£º
 ************************************************************************************************/
 void SPI_FLASH_PowerUp(void)   
 {  
-	SPI_CS_LOW;                            //ä½¿èƒ½å™¨ä»¶   
+	SPI_CS_LOW;                            //Ê¹ÄÜÆ÷¼ş   
 	SPI_FLASH_ReadWriteByte(W25X_ReleasePowerDown);   //  send W25X_PowerDown command 0xAB    
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰     	      
-	DelayUs(3);                               //ç­‰å¾…TRES1
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡     	      
+	DelayUs(3);                               //µÈ´ıTRES1
 }   
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè·å¾—SPIFlashå®¹é‡
- å½¢å‚ï¼š0
- è¿”å›ï¼šå®¹é‡ï¼Œå•ä½ä¸ºByte
- è¯¦è§£ï¼š
+ ¹¦ÄÜ£º»ñµÃSPIFlashÈİÁ¿
+ ĞÎ²Î£º0
+ ·µ»Ø£ºÈİÁ¿£¬µ¥Î»ÎªByte
+ Ïê½â£º
 ************************************************************************************************/
 uint32_t SPI_FLASH_GetCapacity(void)
 {
@@ -338,19 +338,19 @@ uint32_t SPI_FLASH_GetCapacity(void)
 	}
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šæ“¦é™¤æ•´ä¸ªèŠ¯ç‰‡
- å½¢å‚ï¼š0
- è¿”å›ï¼š0
- è¯¦è§£ï¼šç­‰å¾…æ—¶é—´è¶…é•¿...
+ ¹¦ÄÜ£º²Á³ıÕû¸öĞ¾Æ¬
+ ĞÎ²Î£º0
+ ·µ»Ø£º0
+ Ïê½â£ºµÈ´ıÊ±¼ä³¬³¤...
 ************************************************************************************************/
 void SPI_FLASH_EraseChip(void)   
 {                                   
 	SPI_FLASH_WriteEnable();                  //SET WEL 
 	SPI_FLASH_WaitBusy();   
-	SPI_CS_LOW;                            //ä½¿èƒ½å™¨ä»¶   
-	SPI_FLASH_ReadWriteByte(W25X_ChipErase);        //å‘é€ç‰‡æ“¦é™¤å‘½ä»¤  
-	SPI_CS_HIGH;                            //å–æ¶ˆç‰‡é€‰     	      
-	SPI_FLASH_WaitBusy();   				   //ç­‰å¾…èŠ¯ç‰‡æ“¦é™¤ç»“æŸ	
+	SPI_CS_LOW;                            //Ê¹ÄÜÆ÷¼ş   
+	SPI_FLASH_ReadWriteByte(W25X_ChipErase);        //·¢ËÍÆ¬²Á³ıÃüÁî  
+	SPI_CS_HIGH;                            //È¡ÏûÆ¬Ñ¡     	      
+	SPI_FLASH_WaitBusy();   				   //µÈ´ıĞ¾Æ¬²Á³ı½áÊø	
 }   
 
 

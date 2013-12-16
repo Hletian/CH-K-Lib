@@ -1,10 +1,10 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    dma.h
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ DMAé©±åŠ¨ å¤´æ–‡ä»¶ 
+  * @brief   ³¬ºËK60¹Ì¼þ¿â DMAÇý¶¯ Í·ÎÄ¼þ 
   ******************************************************************************
   */
 #ifndef __DMA_H__
@@ -18,7 +18,7 @@
 
 //=====================================
 //      DMA request sources Number
-//      å¤–è®¾DMAè¯·æ±‚å·
+//      ÍâÉèDMAÇëÇóºÅ
 //=====================================
 #define UART0_REV_DMAREQ  2
 #define UART0_TRAN_DMAREQ 3
@@ -77,10 +77,10 @@
 #define DMA_MUX1          58
 #define DMA_MUX2          59
 #define DMA_MUX3          60
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊý¼ì²éÆ÷
 #define IS_DMA_REQ(REQ)   (((REQ)>=2) && ((REQ)<= 60))
 	
-//DMA ä¼ è¾“çš„æ•°æ®é•¿åº¦
+//DMA ´«ÊäµÄÊý¾Ý³¤¶È
 #define DMA_SRC_8BIT   DMA_ATTR_SSIZE(0)
 #define DMA_SRC_16BIT  DMA_ATTR_SSIZE(1)
 #define DMA_SRC_32BIT  DMA_ATTR_SSIZE(2)
@@ -89,7 +89,7 @@
 #define DMA_DST_8BIT   DMA_ATTR_DSIZE(0)
 #define DMA_DST_16BIT  DMA_ATTR_DSIZE(1)
 #define DMA_DST_32BIT  DMA_ATTR_DSIZE(2)
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊý¼ì²éÆ÷
 #define IS_DMA_ATTR_SSIZE(SIZE)   (((SIZE) == DMA_ATTR_SSIZE(0)) || \
                                    ((SIZE) == DMA_ATTR_SSIZE(1)) || \
 																	 ((SIZE) == DMA_ATTR_SSIZE(2)))
@@ -97,7 +97,7 @@
 #define IS_DMA_ATTR_DSIZE(SIZE)   (((SIZE) == DMA_ATTR_DSIZE(0)) || \
                                    ((SIZE) == DMA_ATTR_DSIZE(1)) || \
 																	 ((SIZE) == DMA_ATTR_DSIZE(2)))
-//DMAé€šé“å·å®šä¹‰
+//DMAÍ¨µÀºÅ¶¨Òå
 #define  DMA_CH0    (uint8_t)(0)
 #define  DMA_CH1    (uint8_t)(1)
 #define  DMA_CH2    (uint8_t)(2)
@@ -114,44 +114,44 @@
 #define  DMA_CH13   (uint8_t)(13)
 #define  DMA_CH14   (uint8_t)(14)
 #define  DMA_CH15   (uint8_t)(15)
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊý¼ì²éÆ÷
 #define IS_DMA_CH(CHL)  ((CHL) <= DMA_CH15)
 
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊý¼ì²éÆ÷
 #define IS_DMA_MINOR_LOOP(LEN) ((LEN) < 32767)
 
-//DMAåˆå§‹åŒ–ç»“æž„
+//DMA³õÊ¼»¯½á¹¹
 typedef struct 
 {
-    uint8_t  Channelx;           //é€šé“ç¼–å·
-    uint8_t  PeripheralDMAReq;   //å¤–è®¾çš„DMAè¯·æ±‚å·
-    uint16_t MinorLoopLength;    //æ•°æ®é•¿åº¦
-    uint32_t TransferBytes;     //æ¯ä¸€æ¬¡DMAè¯·æ±‚åŽ ä¼ è¾“çš„å­—èŠ‚æ•°
-    FunctionalState  DMAAutoClose;    //ä¸»å¾ªçŽ¯å‡åˆ°0æ—¶ æ˜¯å¦å…³é—­DMA
-                               //ENABLE å¼€å¯è‡ªåŠ¨å…³é—­
-                               //DISABLE å…³é—­è‡ªåŠ¨å…³é—­
-    FunctionalState EnableState; //åˆå§‹åŒ–åŽæ˜¯å¦ç«‹å³å¼€å§‹ä¼ è¾“
+    uint8_t  Channelx;           //Í¨µÀ±àºÅ
+    uint8_t  PeripheralDMAReq;   //ÍâÉèµÄDMAÇëÇóºÅ
+    uint16_t MinorLoopLength;    //Êý¾Ý³¤¶È
+    uint32_t TransferBytes;     //Ã¿Ò»´ÎDMAÇëÇóºó ´«ÊäµÄ×Ö½ÚÊý
+    FunctionalState  DMAAutoClose;    //Ö÷Ñ­»·¼õµ½0Ê± ÊÇ·ñ¹Ø±ÕDMA
+                               //ENABLE ¿ªÆô×Ô¶¯¹Ø±Õ
+                               //DISABLE ¹Ø±Õ×Ô¶¯¹Ø±Õ
+    FunctionalState EnableState; //³õÊ¼»¯ºóÊÇ·ñÁ¢¼´¿ªÊ¼´«Êä
 	
-		//ä¼ è¾“æºé…ç½®
-    uint32_t SourceBaseAddr ;    //æºåœ°å€
-    uint16_t SourceDataSize ;    //æºåœ°å€å®½åº¦ 8 16 32
-    uint8_t  SourceMinorInc;     //åœ¨æ‰§è¡Œå®Œä¸€æ¬¡è¯·æ±‚åŽ åœ°å€æ˜¯å¦ç´¯åŠ 1  1ç´¯åŠ  0 ä¸ç´¯åŠ 
-    uint32_t SourceMajorInc;     //ä¸»æœºæ•°åˆ°è¾¾åŽ æ˜¯å¦æ”¹å˜æºåœ°å€
-    //ä¼ è¾“ç›®çš„åœ°é…ç½®
-    uint32_t DestBaseAddr ;          //ç›®æ ‡åœ°å€
-    uint16_t DestDataSize ;         //ç›®æ ‡åœ°å€å®½åº¦
-    uint8_t  DestMinorInc;            //åœ¨æ‰§è¡Œå®Œä¸€æ¬¡è¯·æ±‚åŽ åœ°å€æ˜¯å¦ç´¯åŠ 1  1ç´¯åŠ  0 ä¸ç´¯åŠ 
-    uint32_t DestMajorInc;      //ä¸»æœºæ•°åˆ°è¾¾åŽ æ˜¯å¦æ”¹å˜æºåœ°å€
+		//´«ÊäÔ´ÅäÖÃ
+    uint32_t SourceBaseAddr ;    //Ô´µØÖ·
+    uint16_t SourceDataSize ;    //Ô´µØÖ·¿í¶È 8 16 32
+    uint8_t  SourceMinorInc;     //ÔÚÖ´ÐÐÍêÒ»´ÎÇëÇóºó µØÖ·ÊÇ·ñÀÛ¼Ó1  1ÀÛ¼Ó 0 ²»ÀÛ¼Ó
+    uint32_t SourceMajorInc;     //Ö÷»úÊýµ½´ïºó ÊÇ·ñ¸Ä±äÔ´µØÖ·
+    //´«ÊäÄ¿µÄµØÅäÖÃ
+    uint32_t DestBaseAddr ;          //Ä¿±êµØÖ·
+    uint16_t DestDataSize ;         //Ä¿±êµØÖ·¿í¶È
+    uint8_t  DestMinorInc;            //ÔÚÖ´ÐÐÍêÒ»´ÎÇëÇóºó µØÖ·ÊÇ·ñÀÛ¼Ó1  1ÀÛ¼Ó 0 ²»ÀÛ¼Ó
+    uint32_t DestMajorInc;      //Ö÷»úÊýµ½´ïºó ÊÇ·ñ¸Ä±äÔ´µØÖ·
 }DMA_InitTypeDef;
 
-//DMA ä¸­æ–­æºå®šä¹‰
+//DMA ÖÐ¶ÏÔ´¶¨Òå
 #define DMA_IT_HALF      (uint16_t)(0)
 #define DMA_IT_MAJOR     (uint16_t)(1)
-//å‚æ•°æ£€æŸ¥å™¨
+//²ÎÊý¼ì²éÆ÷
 #define IS_DMA_IT(IT)  ((IT) == DMA_IT_HALF || (IT) == DMA_IT_MAJOR)
 
 
-//æœ¬æž„ä»¶å®žçŽ°çš„æŽ¥å£å‡½æ•°åˆ—è¡¨
+//±¾¹¹¼þÊµÏÖµÄ½Ó¿Úº¯ÊýÁÐ±í
 void DMA_Init(DMA_InitTypeDef *DMA_InittStruct);
 void DMA_SetEnableReq(uint8_t DMAChl,FunctionalState EnableState);
 uint8_t DMA_IsComplete(uint8_t DMAChl);

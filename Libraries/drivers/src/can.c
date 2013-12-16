@@ -1,19 +1,19 @@
-Ôªø/**
+/**
   ******************************************************************************
   * @file    can.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   Ë∂ÖÊ†∏K60Âõ∫‰ª∂Â∫ì CAN È©±Âä®Êñá‰ª∂
+  * @brief   ≥¨∫ÀK60πÃº˛ø‚ CAN «˝∂ØŒƒº˛
   ******************************************************************************
   */
 #include "can.h"
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN ËÆæÁΩÆÊ≥¢ÁâπÁéá
- ÂΩ¢ÂèÇÔºöCAN_Type: CANÁªìÊûÑ
-       @arg CAN0 : CAN0Ê®°Âùó
-			 @arg CAN1 : CAN1Ê®°Âùó
-			 baudrate: Ê≥¢ÁâπÁéá
+ π¶ƒ‹£∫CAN …Ë÷√≤®Ãÿ¬ 
+ –Œ≤Œ£∫CAN_Type: CANΩ·ππ
+       @arg CAN0 : CAN0ƒ£øÈ
+			 @arg CAN1 : CAN1ƒ£øÈ
+			 baudrate: ≤®Ãÿ¬ 
 			 @arg CAN_SPEED_33K
 			 @arg CAN_SPEED_83K
 			 @arg CAN_SPEED_50K
@@ -22,8 +22,8 @@
 			 @arg CAN_SPEED_250K
 			 @arg CAN_SPEED_500K
 			 @arg CAN_SPEED_1000K			 
- ËøîÂõûÔºö0
- ËØ¶Ëß£Ôºö0
+ ∑µªÿ£∫0
+ œÍΩ‚£∫0
 ************************************************************************************************/
 static uint8_t CAN_SetBaudrate(CAN_Type *can,uint8_t baudrate)
 {
@@ -115,10 +115,10 @@ static uint8_t CAN_SetBaudrate(CAN_Type *can,uint8_t baudrate)
 }
 
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN ÂàùÂßãÂåñ
- ÂΩ¢ÂèÇÔºöCAN_InitStruct: CAN ÂàùÂßãÂåñÁªìÊûÑ
- ËøîÂõûÔºö0
- ËØ¶Ëß£Ôºö0
+ π¶ƒ‹£∫CAN ≥ı ºªØ
+ –Œ≤Œ£∫CAN_InitStruct: CAN ≥ı ºªØΩ·ππ
+ ∑µªÿ£∫0
+ œÍΩ‚£∫0
 ************************************************************************************************/
 void CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
 {
@@ -126,11 +126,11 @@ void CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
 	PORT_Type *CAN_PORT = NULL;
 	CAN_MapTypeDef *pCAN_Map = (CAN_MapTypeDef*)&(CAN_InitStruct->CANxMap);
   CAN_Type  *CANx = NULL;
-	//ÂèÇÊï∞Ê£ÄÊµã
+	//≤Œ ˝ºÏ≤‚
 	assert_param(IS_FUNCTIONAL_STATE(CAN_InitStruct->FilterEnable));
 	assert_param(IS_CAN_MAP(CAN_InitStruct->CANxMap));
 	assert_param(IS_CAN_SPEED(CAN_InitStruct->CAN_BaudRateSelect));
-	//ÊâæÂá∫CANÊ®°Âùó ÂºÄÂêØCANÊ®°ÂùóÊó∂Èíü
+	//’“≥ˆCANƒ£øÈ ø™∆ÙCANƒ£øÈ ±÷”
 	switch(pCAN_Map->CAN_Index )
 	{
 		case 0:
@@ -143,7 +143,7 @@ void CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
 			break;
 		default:break;     
 	}
-	//ÊâæÂá∫ÂØπÂ∫îÁöÑPORT
+	//’“≥ˆ∂‘”¶µƒPORT
 	switch(pCAN_Map->CAN_GPIO_Index)
 	{
 		case 0:
@@ -168,23 +168,23 @@ void CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
 			break;
 		default:break;
 	}
-	//ÂºÄÂêØÂØπÂ∫îÁöÑÂºïËÑö 
+	//ø™∆Ù∂‘”¶µƒ“˝Ω≈ 
 	CAN_PORT->PCR[pCAN_Map->CAN_TX_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	CAN_PORT->PCR[pCAN_Map->CAN_RX_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	CAN_PORT->PCR[pCAN_Map->CAN_TX_Pin_Index] |= PORT_PCR_MUX(pCAN_Map->CAN_Alt_Index);
 	CAN_PORT->PCR[pCAN_Map->CAN_RX_Pin_Index] |= PORT_PCR_MUX(pCAN_Map->CAN_Alt_Index);
-	//ÈÄâÊã©‰∏∫BusClockÊó∂Èíü
+	//—°‘ÒŒ™BusClock ±÷”
 	CANx->CTRL1 |=  CAN_CTRL1_CLKSRC_MASK;	
-	//‰ΩøËÉΩÂÜªÁªìÊ®°Âºè Âè™ÊúâËøõÂÖ•ÂÜªÁªìÊ®°ÂºèÊâçËÉΩÈÖçÁΩÆÊ≥¢ÁâπÁéá
+	// πƒ‹∂≥Ω·ƒ£ Ω ÷ª”–Ω¯»Î∂≥Ω·ƒ£ Ω≤≈ƒ‹≈‰÷√≤®Ãÿ¬ 
 	CANx->MCR|=CAN_MCR_FRZ_MASK;
-	//ÂºÄÂêØCANÈÄö‰ø°Ê®°Âùó 
+	//ø™∆ÙCANÕ®–≈ƒ£øÈ 
 	CANx->MCR &= ~CAN_MCR_MDIS_MASK;
-	//Á≠âÂæÖÈÄö‰ø°Ê®°ÂùóÂ§ç‰ΩçÂêØÂä®
+	//µ»¥˝Õ®–≈ƒ£øÈ∏¥Œª∆Ù∂Ø
 	while((CAN_MCR_LPMACK_MASK & (CANx->MCR)));
-	//ËΩØ‰ª∂Â§ç‰ΩçÊ®°Âùó //Á≠âÂæÖËΩØ‰ª∂Â§ç‰ΩçÂÆåÊàê
+	//»Ìº˛∏¥Œªƒ£øÈ //µ»¥˝»Ìº˛∏¥ŒªÕÍ≥…
 	CANx->MCR |= CAN_MCR_SOFTRST_MASK;
 	while(CAN_MCR_SOFTRST_MASK & (CANx->MCR));
-	// Á≠âÂæÖÊ®°ÂùóËøõÂÖ•ÂÜªÁªìÊ®°Âºè
+	// µ»¥˝ƒ£øÈΩ¯»Î∂≥Ω·ƒ£ Ω
 	while(!(CAN_MCR_FRZACK_MASK & (CANx->MCR)));
 	for(i=0;i<16;i++)
 	{
@@ -193,24 +193,24 @@ void CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
 		CANx->MB[i].WORD0 = 0x00000000;
 		CANx->MB[i].WORD1 = 0x00000000;
 	}
-	//ÈÖçÁΩÆËøúÁ®ãËØ∑Ê±Ç‰∫ßÁîüÔºåÊé•Êî∂ÈÇÆÁÆ±ËøáÊª§ideÔºåËøúÁ®ãËØ∑Ê±Ç‰∏çÊØîËæÉÔºå
-	//ÈÇÆÁÆ±È¶ñÂÖà‰ªéÊé•Êî∂fifoÂåπÈÖçÂêéÂÜçÈÇÆÁÆ±‰∏≠ÂåπÈÖçËßÅÂèÇËÄÉÊâãÂÜå
+	//≈‰÷√‘∂≥Ã«Î«Û≤˙…˙£¨Ω” ’” œ‰π˝¬Àide£¨‘∂≥Ã«Î«Û≤ª±»Ωœ£¨
+	//” œ‰ ◊œ»¥”Ω” ’fifo∆•≈‰∫Û‘Ÿ” œ‰÷–∆•≈‰º˚≤Œøº ÷≤·
 	CANx->CTRL2 = (0|CAN_CTRL2_TASD(22)); 
-	//ÈÖçÁΩÆIDÊ®°ÂºèÔºåÁõÆÂâçÈÄâÊã©ÁöÑÊòØAÊ†ºÂºè
-	//ÊåâÁÖßÂ∑•‰ΩúË¶ÅÊ±ÇÈÖçÁΩÆMCRÂØÑÂ≠òÂô®
+	//≈‰÷√IDƒ£ Ω£¨ƒø«∞—°‘Òµƒ «A∏Ò Ω
+	//∞¥’’π§◊˜“™«Û≈‰÷√MCRºƒ¥Ê∆˜
 	CANx->MCR |= CAN_MCR_IDAM(0); 
-	//‰ΩøËÉΩ‰∏™Âà´Êª§Ê≥¢ÂíåÊé•ÂèóÈòüÂàóÁâπÁÇπ?
-	//ÈÖçÁΩÆÈÄö‰ø°È¢ëÁéáÂíåÂàùÂßãÂåñCTRL1  ÔºàËá™Â∑±ÁêÜËß£ÁöÑÔºåËÆæÁΩÆ‰º†Ëæì‰∏ÄbiteÁöÑÊó∂Èó¥Ôºâ	 |CAN_CTRL1_LPB_MASK
+	// πƒ‹∏ˆ±¬À≤®∫ÕΩ” ‹∂”¡–Ãÿµ„?
+	//≈‰÷√Õ®–≈∆µ¬ ∫Õ≥ı ºªØCTRL1  £®◊‘º∫¿ÌΩ‚µƒ£¨…Ë÷√¥´ ‰“ªbiteµƒ ±º‰£©	 |CAN_CTRL1_LPB_MASK
   CANx->MCR |= CAN_MCR_IRMQ_MASK;    
-  //ËÆæÁΩÆ‰º†ËæìÈÄüÁéá
+  //…Ë÷√¥´ ‰ÀŸ¬ 
 	CAN_SetBaudrate(CANx,CAN_InitStruct->CAN_BaudRateSelect);
-	CANx->MCR |= CAN_MCR_IDAM(0); //ÈÖçÁΩÆIDÊ®°ÂºèÔºåÁõÆÂâçÈÄâÊã©ÁöÑÊòØAÊ†ºÂºè
-	//ËÆæÁΩÆÂ±èËîΩÂäüËÉΩ
+	CANx->MCR |= CAN_MCR_IDAM(0); //≈‰÷√IDƒ£ Ω£¨ƒø«∞—°‘Òµƒ «A∏Ò Ω
+	//…Ë÷√∆¡±Œπ¶ƒ‹
 	if(CAN_InitStruct->FilterEnable == ENABLE)
 	{
 		for(i = 0; i < 16 ; i++)
 		{
-			CANx->RXIMR[i] = 0x1FFFFFFF; //ËÆæÁΩÆ16‰∏™Êé•Êî∂idÁöÑÊé©Á†ÅÂØÑÂ≠òÂô® 
+			CANx->RXIMR[i] = 0x1FFFFFFF; //…Ë÷√16∏ˆΩ” ’idµƒ—⁄¬Îºƒ¥Ê∆˜ 
 			CANx->RXMGMASK = 0x1FFFFFFF;
 		} 	
 	}
@@ -218,42 +218,42 @@ void CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
 	{
 		for(i = 0; i < 16 ; i++)
 		{
-			CANx->RXIMR[i] = 0; //ËÆæÁΩÆ16‰∏™Êé•Êî∂idÁöÑÊé©Á†ÅÂØÑÂ≠òÂô® 
+			CANx->RXIMR[i] = 0; //…Ë÷√16∏ˆΩ” ’idµƒ—⁄¬Îºƒ¥Ê∆˜ 
 			CANx->RXMGMASK = 0;
 		} 		
 	}
-	//Âè™ÊúâÂú®ÂÜªÁªìÊ®°Âºè‰∏ãÊâçËÉΩÈÖçÁΩÆ ÈÖçÁΩÆÂÆåÈÄÄÂá∫ÂÜªÁªìÊ®°Âºè
+	//÷ª”–‘⁄∂≥Ω·ƒ£ Ωœ¬≤≈ƒ‹≈‰÷√ ≈‰÷√ÕÍÕÀ≥ˆ∂≥Ω·ƒ£ Ω
 	CANx->MCR &= ~(CAN_MCR_HALT_MASK);
-	//Á≠âÂæÖÊ®°ÂùóÊé®Âá∫ÂÜªÁªìÊ®°Âºè
+	//µ»¥˝ƒ£øÈÕ∆≥ˆ∂≥Ω·ƒ£ Ω
 	while((CAN_MCR_FRZACK_MASK & (CANx->MCR)));  
-	//Á≠âÂæÖÂêåÊ≠•
+	//µ»¥˝Õ¨≤Ω
 	while(((CANx->MCR)&CAN_MCR_NOTRDY_MASK));    
-	//ËÆæÁΩÆÊé•Êî∂IDËøáÊª§ÂäüËÉΩ
+	//…Ë÷√Ω” ’IDπ˝¬Àπ¶ƒ‹
 }
 
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN ‰ΩøËÉΩÈÇÆÁÆ±Êé•Êî∂ÂäüËÉΩ
- ÂΩ¢ÂèÇÔºöCAN_Type: CANÁªìÊûÑ
-       @arg CAN0 : CAN0Ê®°Âùó
-			 @arg CAN1 : CAN1Ê®°Âùó
-			 RxMessage : Êé•Êî∂Ê∂àÊÅØÁªìÊûÑ
- ËøîÂõûÔºö0
- ËØ¶Ëß£Ôºö0
+ π¶ƒ‹£∫CAN  πƒ‹” œ‰Ω” ’π¶ƒ‹
+ –Œ≤Œ£∫CAN_Type: CANΩ·ππ
+       @arg CAN0 : CAN0ƒ£øÈ
+			 @arg CAN1 : CAN1ƒ£øÈ
+			 RxMessage : Ω” ’œ˚œ¢Ω·ππ
+ ∑µªÿ£∫0
+ œÍΩ‚£∫0
 ************************************************************************************************/
 void CAN_EnableReceiveMB(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage)
 {
-	//ÂèÇÊï∞Ê£ÄÊü•
+	//≤Œ ˝ºÏ≤È
 	assert_param(IS_CAN_ALL_PERIPH(CANx));
 	assert_param(IS_CAN_MB_NUM(RxMessage->MBIndex));
 
-	//‰∏çÊøÄÊ¥ªÈÇÆÁÆ±
+	//≤ªº§ªÓ” œ‰
 	CANx->MB[RxMessage->MBIndex].CS = CAN_CS_CODE(0);
-	//ÂÜôÂÖ•ID
-	//ÊãìÂ±ïÂ∏ßËøòÊòØÊôÆÈÄöÂ∏ß
+	//–¥»ÎID
+	//Õÿ’π÷°ªπ «∆’Õ®÷°
 	if(RxMessage->IDE == CAN_IDE_Extended)
 	{
 		CANx->MB[RxMessage->MBIndex].ID = RxMessage->Id;
-		CANx->MB[RxMessage->MBIndex].CS = (0|CAN_CS_CODE(4)|CAN_CS_IDE_MASK);	 // ÊøÄÊ¥ªËøô‰∏™ MB ‰Ωú‰∏∫Êé•ÂèóÊï∞ÊçÆ
+		CANx->MB[RxMessage->MBIndex].CS = (0|CAN_CS_CODE(4)|CAN_CS_IDE_MASK);	 // º§ªÓ’‚∏ˆ MB ◊˜Œ™Ω” ‹ ˝æ›
 	}
 	else
 	{
@@ -263,20 +263,20 @@ void CAN_EnableReceiveMB(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage)
 }
 
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN ÂèëÈÄÅ‰∏ÄÂàôÊ∂àÊÅØ
- ÂΩ¢ÂèÇÔºöCAN_Type: CANÁªìÊûÑ
-       @arg CAN0 : CAN0Ê®°Âùó
-			 @arg CAN1 : CAN1Ê®°Âùó
-			 TxMessage : ÂèëÈÄÅÊ∂àÊÅØÁªìÊûÑ
- ËøîÂõûÔºö0
- ËØ¶Ëß£Ôºö0
+ π¶ƒ‹£∫CAN ∑¢ÀÕ“ª‘Úœ˚œ¢
+ –Œ≤Œ£∫CAN_Type: CANΩ·ππ
+       @arg CAN0 : CAN0ƒ£øÈ
+			 @arg CAN1 : CAN1ƒ£øÈ
+			 TxMessage : ∑¢ÀÕœ˚œ¢Ω·ππ
+ ∑µªÿ£∫0
+ œÍΩ‚£∫0
 ************************************************************************************************/
 uint8_t CAN_Transmit(CAN_Type* CANx, CAN_TxMsgTypeDef* TxMessage)
 {
 	uint32_t temp_id = 0;
 	uint16_t i,j;
 	uint32_t word[2] = {0};
-	//ÂèÇÊï∞Ê£ÄÊü•
+	//≤Œ ˝ºÏ≤È
 	assert_param(IS_CAN_MB_NUM(TxMessage->MBIndex));
 	assert_param(IS_CAN_RTR(TxMessage->RTR));
 	assert_param(IS_CAN_IDE(TxMessage->IDE));
@@ -284,7 +284,7 @@ uint8_t CAN_Transmit(CAN_Type* CANx, CAN_TxMsgTypeDef* TxMessage)
 	assert_param(IS_CAN_DLC(TxMessage->DLC));
 	assert_param(IS_CAN_IDE(TxMessage->IDE ));
 
-	//ËΩ¨Êç¢Êï∞ÊçÆÊ†ºÂºè
+	//◊™ªª ˝æ›∏Ò Ω
 	for(i=0;i<TxMessage->DLC;i++)
 	{
 		if(i < 4)
@@ -296,14 +296,14 @@ uint8_t CAN_Transmit(CAN_Type* CANx, CAN_TxMsgTypeDef* TxMessage)
 			word[1] |= ((TxMessage->Data[i])<<((7-i)*8));		
 		}
 	}
-	//ÊãìÂ±ïÂ∏ßËøòÊòØÊôÆÈÄöÂ∏ß
+	//Õÿ’π÷°ªπ «∆’Õ®÷°
 	(TxMessage->IDE == CAN_IDE_Extended)?(temp_id = ((1<<29)|TxMessage->Id)):(temp_id = ((1<<29)|(TxMessage->Id << 18)));
-	//‰º†ËæìÂ§ÑÁêÜ
-	CANx->MB[TxMessage->MBIndex].CS = CAN_CS_CODE(8); // ÂÜôÈùûÊøÄÊ¥ª‰ª£Á†Å
+	//¥´ ‰¥¶¿Ì
+	CANx->MB[TxMessage->MBIndex].CS = CAN_CS_CODE(8); // –¥∑«º§ªÓ¥˙¬Î
 	CANx->MB[TxMessage->MBIndex].ID = temp_id;    
 	CANx->MB[TxMessage->MBIndex].WORD0 = word[0];
 	CANx->MB[TxMessage->MBIndex].WORD1 = word[1];  
-	for(i = 0;i < 50;i++);	   //Âª∂Êó∂Â§ÑÁêÜÔºåËÆ©Á°¨‰ª∂ÂáÜÂ§áÂ•Ω
+	for(i = 0;i < 50;i++);	   //—” ±¥¶¿Ì£¨»√”≤º˛◊º±∏∫√
 	if(TxMessage->IDE == 1)
 	{
 		CANx->MB[TxMessage->MBIndex].CS = CAN_CS_CODE(12)|CAN_CS_IDE_MASK|CAN_CS_DLC(TxMessage->DLC)|CAN_CS_SRR_MASK;
@@ -312,30 +312,30 @@ uint8_t CAN_Transmit(CAN_Type* CANx, CAN_TxMsgTypeDef* TxMessage)
 	{
 		CANx->MB[TxMessage->MBIndex].CS = CAN_CS_CODE(12)|CAN_CS_DLC(TxMessage->DLC);
 	}
-	//ËøúÁ®ãÂ∏ßËøòÊòØÊï∞ÊçÆÂ∏ß
+	//‘∂≥Ã÷°ªπ « ˝æ›÷°
 	(TxMessage->RTR == CAN_RTR_Remote)?(CANx->MB[TxMessage->MBIndex].CS |= CAN_CS_RTR_MASK):(CANx->MB[TxMessage->MBIndex].CS &= ~CAN_CS_RTR_MASK);
 	j=0; 
-	//Á≠âÂæÖÊï∞ÊçÆÂèëÈÄÅÂÆåÊàêÊàñÂàôË∂ÖÊó∂
+	//µ»¥˝ ˝æ›∑¢ÀÕÕÍ≥…ªÚ‘Ú≥¨ ±
 	while(!(CANx->IFLAG1 & (1<<TxMessage->MBIndex)))
 	{
 		if((j++)>0x1000)
 		return FALSE;
 	}
-	//Ê∏ÖÊä•ÊñáÁºìÂÜ≤Âå∫‰∏≠Êñ≠Ê†áÂøó
-	CANx->IFLAG1 = (1<<TxMessage->MBIndex);	 //ÂøÖÈ°ªÊ∏ÖÈô§
+	//«Â±®Œƒª∫≥Â«¯÷–∂œ±Í÷æ
+	CANx->IFLAG1 = (1<<TxMessage->MBIndex);	 //±ÿ–Î«Â≥˝
 	return TRUE;
 }
 
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN Êé•Êî∂‰∏ÄÂàôÊ∂àÊÅØ
- ÂΩ¢ÂèÇÔºöCAN_Type: CANÁªìÊûÑ
-       @arg CAN0 : CAN0Ê®°Âùó
-			 @arg CAN1 : CAN1Ê®°Âùó
-			 RxMessage   : CANÈÇÆÁÆ±Êé•Êî∂ÁªìÊûÑ
- ËøîÂõûÔºö
-			 @arg TRUE  : Êé•Êî∂ÊàêÂäü
-			 @arg FALSE : Êé•Êî∂Â§±Ë¥•
- ËØ¶Ëß£Ôºö0
+ π¶ƒ‹£∫CAN Ω” ’“ª‘Úœ˚œ¢
+ –Œ≤Œ£∫CAN_Type: CANΩ·ππ
+       @arg CAN0 : CAN0ƒ£øÈ
+			 @arg CAN1 : CAN1ƒ£øÈ
+			 RxMessage   : CAN” œ‰Ω” ’Ω·ππ
+ ∑µªÿ£∫
+			 @arg TRUE  : Ω” ’≥…π¶
+			 @arg FALSE : Ω” ’ ß∞‹
+ œÍΩ‚£∫0
 ************************************************************************************************/
 uint8_t CAN_Receive(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage)
 {
@@ -343,14 +343,14 @@ uint8_t CAN_Receive(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage)
 	uint8_t i = 0;
 	uint8_t len = 0;
 	uint32_t word[2] = {0};
-	//ÂèÇÊï∞Ê£ÄÊü•
+	//≤Œ ˝ºÏ≤È
 	assert_param(IS_CAN_MB_NUM(RxMessage->MBIndex));
 	assert_param(IS_CAN_ALL_PERIPH(CANx));
 
 
-	code = CANx->TIMER;    // ÂÖ®Â±ÄËß£ÈîÅ MB Êìç‰Ωú
+	code = CANx->TIMER;    // »´æ÷Ω‚À¯ MB ≤Ÿ◊˜
 	
-	//Êü•ÁúãÊ†áÂøó‰Ωç
+	//≤Èø¥±Í÷æŒª
 	if((CANx->IFLAG1 & (1<<(RxMessage->MBIndex))) == 0)
 	{
 		return FALSE;
@@ -358,7 +358,7 @@ uint8_t CAN_Receive(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage)
 	code = CAN_get_code(CANx->MB[RxMessage->MBIndex].CS);
 	if(code != 0x02)
 	{
-		//Êé•Êî∂Â§±Ë¥•
+		//Ω” ’ ß∞‹
 		RxMessage->IDE = 0;
 		return FALSE;
 	}
@@ -369,11 +369,11 @@ uint8_t CAN_Receive(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage)
 		return FALSE;
 	}
 	RxMessage->IDE = len;
-	code = CANx->TIMER;    // ÂÖ®Â±ÄËß£ÈîÅ MB Êìç‰Ωú
-	CANx->IFLAG1 = (1<<(RxMessage->MBIndex));//ÂøÖÈ°ªÊ∏ÖÈô§
-	word[0] = CANx->MB[RxMessage->MBIndex].WORD0;   //ËØªÂèñÊé•Êî∂ÁöÑÊï∞ÊçÆ
-	word[1] = CANx->MB[RxMessage->MBIndex].WORD1;   //ËØªÂèñÊé•Êî∂ÁöÑÊï∞ÊçÆ
-	//Âà§Êñ≠ÊòØÊ†áÂáÜÂ∏ßËøòÊòØÊãìÂ±ïÂ∏ß
+	code = CANx->TIMER;    // »´æ÷Ω‚À¯ MB ≤Ÿ◊˜
+	CANx->IFLAG1 = (1<<(RxMessage->MBIndex));//±ÿ–Î«Â≥˝
+	word[0] = CANx->MB[RxMessage->MBIndex].WORD0;   //∂¡»°Ω” ’µƒ ˝æ›
+	word[1] = CANx->MB[RxMessage->MBIndex].WORD1;   //∂¡»°Ω” ’µƒ ˝æ›
+	//≈–∂œ «±Í◊º÷°ªπ «Õÿ’π÷°
 	if(CANx->MB[RxMessage->MBIndex].CS & CAN_CS_IDE_MASK)
 	{
 		RxMessage->IDE = CAN_IDE_Extended;
@@ -384,35 +384,35 @@ uint8_t CAN_Receive(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage)
 		RxMessage->IDE = CAN_IDE_Standard;
 		RxMessage->Id =  CANx->MB[RxMessage->MBIndex].ID>>18;
 	}
-	//ËØªÂèñÂú∞ÂùÄ
+	//∂¡»°µÿ÷∑
 	for(i=0;i<len;i++)
   {  
 	 if(i < 4)
 	 (RxMessage->Data[0+i])=(word[0]>>((3-i)*8));
-	 else									 //Êï∞ÊçÆÂ≠òÂÇ®ËΩ¨Êç¢
+	 else									 // ˝æ›¥Ê¥¢◊™ªª
 	 (RxMessage->Data[0+i])=(word[1]>>((7-i)*8));
   }
 	return TRUE;
 }
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN ‰∏≠Êñ≠ÈÖçÁΩÆ
- ÂΩ¢ÂèÇÔºöCAN_Type: CANÁªìÊûÑ
-       @arg CAN0 : CAN0Ê®°Âùó
-			 @arg CAN1 : CAN1Ê®°Âùó
-			 CAN_IT   : ‰∏≠Êñ≠Ê∫ê
-       @arg CAN_IT_MB0 : ÈÇÆÁÆ±0‰∏≠Êñ≠
-       @arg CAN_IT_MB1 : ÈÇÆÁÆ±1‰∏≠Êñ≠
-       @arg CAN_IT_MB2 : ÈÇÆÁÆ±2‰∏≠Êñ≠
+ π¶ƒ‹£∫CAN ÷–∂œ≈‰÷√
+ –Œ≤Œ£∫CAN_Type: CANΩ·ππ
+       @arg CAN0 : CAN0ƒ£øÈ
+			 @arg CAN1 : CAN1ƒ£øÈ
+			 CAN_IT   : ÷–∂œ‘¥
+       @arg CAN_IT_MB0 : ” œ‰0÷–∂œ
+       @arg CAN_IT_MB1 : ” œ‰1÷–∂œ
+       @arg CAN_IT_MB2 : ” œ‰2÷–∂œ
        @arg ... 
-			 NewState : ÂºÄÂêØÊàñËÄÖÂÖ≥Èó≠ 
-			 @arg ENABLE:  ÂºÄÂêØ
-       @arg DISABLE: ÂÖ≥Èó≠
- ËøîÂõûÔºö0
- ËØ¶Ëß£Ôºö0
+			 NewState : ø™∆ÙªÚ’ﬂπÿ±’ 
+			 @arg ENABLE:  ø™∆Ù
+       @arg DISABLE: πÿ±’
+ ∑µªÿ£∫0
+ œÍΩ‚£∫0
 ************************************************************************************************/
 void CAN_ITConfig(CAN_Type* CANx, uint16_t CAN_IT, FunctionalState NewState)
 {
-  //ÂèÇÊï∞Ê£ÄÊü•
+  //≤Œ ˝ºÏ≤È
 	assert_param(IS_CAN_ALL_PERIPH(CANx));
 	assert_param(IS_CAN_IT_MB(CAN_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -423,17 +423,17 @@ void CAN_ITConfig(CAN_Type* CANx, uint16_t CAN_IT, FunctionalState NewState)
 	}
 }
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN Ëé∑ÂæóITÁä∂ÊÄÅ
- ÂΩ¢ÂèÇÔºöCAN_Type: CANÁªìÊûÑ
-       @arg CAN0 : CAN0Ê®°Âùó
-			 @arg CAN1 : CAN1Ê®°Âùó
-			 CAN_IT   : ‰∏≠Êñ≠Ê∫ê
-       @arg CAN_IT_MB0 : ÈÇÆÁÆ±0‰∏≠Êñ≠
-       @arg CAN_IT_MB1 : ÈÇÆÁÆ±1‰∏≠Êñ≠
-       @arg CAN_IT_MB2 : ÈÇÆÁÆ±2‰∏≠Êñ≠
+ π¶ƒ‹£∫CAN ªÒµ√IT◊¥Ã¨
+ –Œ≤Œ£∫CAN_Type: CANΩ·ππ
+       @arg CAN0 : CAN0ƒ£øÈ
+			 @arg CAN1 : CAN1ƒ£øÈ
+			 CAN_IT   : ÷–∂œ‘¥
+       @arg CAN_IT_MB0 : ” œ‰0÷–∂œ
+       @arg CAN_IT_MB1 : ” œ‰1÷–∂œ
+       @arg CAN_IT_MB2 : ” œ‰2÷–∂œ
        @arg ... 
- ËøîÂõûÔºöSET OR RESET
- ËØ¶Ëß£Ôºö0
+ ∑µªÿ£∫SET OR RESET
+ œÍΩ‚£∫0
 ************************************************************************************************/
 ITStatus CAN_GetITStatus(CAN_Type* CANx, uint16_t CAN_IT)
 {
@@ -446,21 +446,21 @@ ITStatus CAN_GetITStatus(CAN_Type* CANx, uint16_t CAN_IT)
 	return retval;
 }
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN Ê∏ÖÊ•ö‰∏≠Êñ≠Pending
- ÂΩ¢ÂèÇÔºöCAN_Type: CANÁªìÊûÑ
-       @arg CAN0 : CAN0Ê®°Âùó
-			 @arg CAN1 : CAN1Ê®°Âùó
-			 CAN_IT   : ‰∏≠Êñ≠Ê∫ê
-       @arg CAN_IT_MB0 : ÈÇÆÁÆ±0‰∏≠Êñ≠
-       @arg CAN_IT_MB1 : ÈÇÆÁÆ±1‰∏≠Êñ≠
-       @arg CAN_IT_MB2 : ÈÇÆÁÆ±2‰∏≠Êñ≠
+ π¶ƒ‹£∫CAN «Â≥˛÷–∂œPending
+ –Œ≤Œ£∫CAN_Type: CANΩ·ππ
+       @arg CAN0 : CAN0ƒ£øÈ
+			 @arg CAN1 : CAN1ƒ£øÈ
+			 CAN_IT   : ÷–∂œ‘¥
+       @arg CAN_IT_MB0 : ” œ‰0÷–∂œ
+       @arg CAN_IT_MB1 : ” œ‰1÷–∂œ
+       @arg CAN_IT_MB2 : ” œ‰2÷–∂œ
        @arg ... 
- ËøîÂõûÔºö0
- ËØ¶Ëß£Ôºö0
+ ∑µªÿ£∫0
+ œÍΩ‚£∫0
 ************************************************************************************************/
 void CAN_ClearITPendingBit(CAN_Type* CANx, uint16_t CAN_IT)
 {
-  //ÂèÇÊï∞Ê£ÄÊü•
+  //≤Œ ˝ºÏ≤È
 	assert_param(IS_CAN_ALL_PERIPH(CANx));
 	assert_param(IS_CAN_IT_MB(CAN_IT));
 	
@@ -470,16 +470,16 @@ void CAN_ClearITPendingBit(CAN_Type* CANx, uint16_t CAN_IT)
 	}
 }
 /***********************************************************************************************
- ÂäüËÉΩÔºöCAN Ê∏ÖÊ•öÊâÄÊúâ‰∏≠Êñ≠Pending
- ÂΩ¢ÂèÇÔºöCAN_Type: CANÁªìÊûÑ
-       @arg CAN0 : CAN0Ê®°Âùó
-			 @arg CAN1 : CAN1Ê®°Âùó
- ËøîÂõûÔºöSET OR RESET
- ËØ¶Ëß£Ôºö0
+ π¶ƒ‹£∫CAN «Â≥˛À˘”–÷–∂œPending
+ –Œ≤Œ£∫CAN_Type: CANΩ·ππ
+       @arg CAN0 : CAN0ƒ£øÈ
+			 @arg CAN1 : CAN1ƒ£øÈ
+ ∑µªÿ£∫SET OR RESET
+ œÍΩ‚£∫0
 ************************************************************************************************/
 void CAN_ClearAllITPendingBit(CAN_Type* CANx)
 {
-  //ÂèÇÊï∞Ê£ÄÊü•
+  //≤Œ ˝ºÏ≤È
 	assert_param(IS_CAN_ALL_PERIPH(CANx));
 	
 	CANx->IFLAG1 = 0xFFFF;

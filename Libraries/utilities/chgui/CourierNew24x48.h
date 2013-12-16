@@ -1,8 +1,8 @@
-﻿#ifndef __COURIERNEW24X48_H__
+#ifndef __COURIERNEW24X48_H__
 #define __COURIERNEW24X48_H__ 
 
 
-//字体制作: PCtoLCD2002完美版 选项里去掉 前缀和 后缀 选成 行列式扫描
+//��������: PCtoLCD2002������ ѡ����ȥ�� ǰ׺�� ��׺ ѡ�� ����ʽɨ��
 
 #define FONT_CourierNew24x48_XSize   (24)
 #define FONT_CourierNew24x48_YSize   (48)

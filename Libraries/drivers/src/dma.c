@@ -1,33 +1,33 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    dma.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ DMAé©±åŠ¨
+  * @brief   ³¬ºËK60¹Ì¼þ¿â DMAÇý¶¯
   ******************************************************************************
   */
 #include "dma.h"
-//PITè§¦å‘DMAæœ‰BUG å¯åŠ¨åŽå°±ä¼šä¸åœçš„ä¼ è¾“
+//PIT´¥·¢DMAÓÐBUG Æô¶¯ºó¾Í»á²»Í£µÄ´«Êä
 /***********************************************************************************************
- åŠŸèƒ½ï¼šåˆå§‹åŒ–ç»“æž„ä½“ å¡«å…¥é»˜è®¤å‚æ•°
- å½¢å‚ï¼šDMA_InitStruct: åˆå§‹åŒ–ç»“æž„
- è¿”å›žï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£º³õÊ¼»¯½á¹¹Ìå ÌîÈëÄ¬ÈÏ²ÎÊý
+ ÐÎ²Î£ºDMA_InitStruct: ³õÊ¼»¯½á¹¹
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void DMA_StructInit(DMA_InitTypeDef *DMA_InitStruct)
 {
-	//é…ç½®DMAé€šé“ å‚æ•°
+	//ÅäÖÃDMAÍ¨µÀ ²ÎÊý
 	DMA_InitStruct->Channelx = DMA_CH0;
 	DMA_InitStruct->DMAAutoClose = DISABLE;
 	DMA_InitStruct->EnableState = DISABLE;
 	DMA_InitStruct->PeripheralDMAReq  = 0;
-	//é…ç½®ç›®çš„åœ°å€ä¼ è¾“å‚æ•°
+	//ÅäÖÃÄ¿µÄµØÖ·´«Êä²ÎÊý
 	DMA_InitStruct->DestBaseAddr = (uint32_t)NULL;
 	DMA_InitStruct->DestDataSize = DMA_DST_8BIT;
 	DMA_InitStruct->DestMajorInc = 0;
 	DMA_InitStruct->DestMinorInc = 0;
-	//é…ç½®æºåœ°å€ä¼ è¾“å‚æ•°
+	//ÅäÖÃÔ´µØÖ·´«Êä²ÎÊý
 	DMA_InitStruct->SourceBaseAddr = (uint32_t)NULL;
 	DMA_InitStruct->SourceDataSize = DMA_SRC_8BIT;
 	DMA_InitStruct->SourceMajorInc = 0;
@@ -35,52 +35,52 @@ void DMA_StructInit(DMA_InitTypeDef *DMA_InitStruct)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šåˆå§‹åŒ–DMAæ¨¡å—
- å½¢å‚ï¼šDMA_InitStruct: åˆå§‹åŒ–ç»“æž„
- è¿”å›žï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£º³õÊ¼»¯DMAÄ£¿é
+ ÐÎ²Î£ºDMA_InitStruct: ³õÊ¼»¯½á¹¹
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void DMA_Init(DMA_InitTypeDef *DMA_InitStruct)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊý¼ì²é
 	assert_param(IS_DMA_REQ(DMA_InitStruct->PeripheralDMAReq));
 	assert_param(IS_DMA_ATTR_SSIZE(DMA_InitStruct->SourceDataSize));
 	assert_param(IS_DMA_ATTR_DSIZE(DMA_InitStruct->DestDataSize));
 	assert_param(IS_DMA_CH(DMA_InitStruct->Channelx));
 	assert_param(IS_DMA_MINOR_LOOP(DMA_InitStruct->MinorLoopLength));
 	
-	//æ‰“å¼€DMA0å’ŒDMAMUXæ—¶é’Ÿæº
+	//´ò¿ªDMA0ºÍDMAMUXÊ±ÖÓÔ´
 	SIM->SCGC6 |= SIM_SCGC6_DMAMUX_MASK;    
 	SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
-	//é…ç½®DMAè§¦å‘æº
+	//ÅäÖÃDMA´¥·¢Ô´
 	DMAMUX->CHCFG[DMA_InitStruct->Channelx] = DMAMUX_CHCFG_SOURCE(DMA_InitStruct->PeripheralDMAReq);
-	//è®¾ç½®æºåœ°å€ä¿¡æ¯	
+	//ÉèÖÃÔ´µØÖ·ÐÅÏ¢	
 	DMA0->TCD[DMA_InitStruct->Channelx].SADDR = DMA_InitStruct->SourceBaseAddr;
-	//æ‰§è¡Œå®Œæºåœ°å€æ“ä½œåŽï¼Œæ˜¯å¦åœ¨æºåœ°å€åŸºç¡€ä¸Šç´¯åŠ 
+	//Ö´ÐÐÍêÔ´µØÖ·²Ù×÷ºó£¬ÊÇ·ñÔÚÔ´µØÖ·»ù´¡ÉÏÀÛ¼Ó
 	DMA0->TCD[DMA_InitStruct->Channelx].SOFF = DMA_SOFF_SOFF(DMA_InitStruct->SourceMinorInc);
-	//è®¾ç½®æºåœ°å€ä¼ è¾“å®½åº¦
+	//ÉèÖÃÔ´µØÖ·´«Êä¿í¶È
 	DMA0->TCD[DMA_InitStruct->Channelx].ATTR  = 0;
 	DMA0->TCD[DMA_InitStruct->Channelx].ATTR |= DMA_ATTR_SSIZE(DMA_InitStruct->SourceDataSize);
-	//ä¸»å¾ªçŽ¯è¿›è¡Œå®ŒåŽ æ˜¯å¦æ›´æ”¹æºåœ°å€
+	//Ö÷Ñ­»·½øÐÐÍêºó ÊÇ·ñ¸ü¸ÄÔ´µØÖ·
 	DMA0->TCD[DMA_InitStruct->Channelx].SLAST = DMA_InitStruct->SourceMajorInc;
 	
-	//è®¾ç½®ç›®çš„åœ°å€ä¿¡æ¯
+	//ÉèÖÃÄ¿µÄµØÖ·ÐÅÏ¢
 	DMA0->TCD[DMA_InitStruct->Channelx].DADDR = DMA_InitStruct->DestBaseAddr;
-	//æ‰§è¡Œå®Œæºåœ°å€æ“ä½œåŽï¼Œæ˜¯å¦åœ¨æºåœ°å€åŸºç¡€ä¸Šç´¯åŠ 
+	//Ö´ÐÐÍêÔ´µØÖ·²Ù×÷ºó£¬ÊÇ·ñÔÚÔ´µØÖ·»ù´¡ÉÏÀÛ¼Ó
 	DMA0->TCD[DMA_InitStruct->Channelx].DOFF = DMA_DOFF_DOFF(DMA_InitStruct->DestMinorInc);
-	//è®¾ç½®ç›®çš„åœ°å€ä¼ è¾“å®½åº¦
+	//ÉèÖÃÄ¿µÄµØÖ·´«Êä¿í¶È
 	DMA0->TCD[DMA_InitStruct->Channelx].ATTR |= DMA_ATTR_DSIZE(DMA_InitStruct->DestDataSize);
-	//ä¸»å¾ªçŽ¯è¿›è¡Œå®ŒåŽ æ˜¯å¦æ›´æ”¹æºåœ°å€
+	//Ö÷Ñ­»·½øÐÐÍêºó ÊÇ·ñ¸ü¸ÄÔ´µØÖ·
 	DMA0->TCD[DMA_InitStruct->Channelx].DLAST_SGA = DMA_InitStruct->DestMajorInc;
 	
-	//è®¾ç½®è®¡æ•°å™¨é•¿åº¦ å¾ªçŽ¯æ¬¡æ•°
-	//è®¾ç½®æ•°æ®é•¿åº¦ é•¿åº¦æ¯æ¬¡é€’å‡ ä¹Ÿè¢«ç§°ä½œå½“å‰ä¸»å¾ªçŽ¯è®¡æ•° current major loop count
+	//ÉèÖÃ¼ÆÊýÆ÷³¤¶È Ñ­»·´ÎÊý
+	//ÉèÖÃÊý¾Ý³¤¶È ³¤¶ÈÃ¿´ÎµÝ¼õ Ò²±»³Æ×÷µ±Ç°Ö÷Ñ­»·¼ÆÊý current major loop count
 	DMA0->TCD[DMA_InitStruct->Channelx].CITER_ELINKNO = DMA_CITER_ELINKNO_CITER(DMA_InitStruct->MinorLoopLength );
-	//èµ·å§‹å¾ªçŽ¯è®¡æ•°å™¨ å½“ä¸»å¾ªçŽ¯è®¡æ•°å™¨ä¸º0 æ—¶å€™ å°†è£…è½½èµ·å§‹å¾ªçŽ¯è®¡æ•°å™¨çš„å€¼
+	//ÆðÊ¼Ñ­»·¼ÆÊýÆ÷ µ±Ö÷Ñ­»·¼ÆÊýÆ÷Îª0 Ê±ºò ½«×°ÔØÆðÊ¼Ñ­»·¼ÆÊýÆ÷µÄÖµ
 	DMA0->TCD[DMA_InitStruct->Channelx].BITER_ELINKNO = DMA_BITER_ELINKNO_BITER(DMA_InitStruct->MinorLoopLength);
-	//è®¾ç½®æ¯ä¸€æ¬¡ä¼ è¾“å­—èŠ‚çš„ä¸ªæ•°  ä¸ªæ•°åˆ°è¾¾ä¸Šé™æ—¶ DMAä¾¿å°†æ•°æ®å­˜å…¥RAM 
+	//ÉèÖÃÃ¿Ò»´Î´«Êä×Ö½ÚµÄ¸öÊý  ¸öÊýµ½´ïÉÏÏÞÊ± DMA±ã½«Êý¾Ý´æÈëRAM 
 	DMA0->TCD[DMA_InitStruct->Channelx].NBYTES_MLNO = DMA_NBYTES_MLNO_NBYTES(DMA_InitStruct->TransferBytes);
-//è®¾ç½®DMA TCDæŽ§åˆ¶å¯„å­˜å™¨
+//ÉèÖÃDMA TCD¿ØÖÆ¼Ä´æÆ÷
 	DMA0->TCD[DMA_InitStruct->Channelx].CSR = 0;
 	if(DMA_InitStruct->DMAAutoClose == ENABLE)
 	{
@@ -90,24 +90,24 @@ void DMA_Init(DMA_InitTypeDef *DMA_InitStruct)
 	{
 		 DMA0->TCD[DMA_InitStruct->Channelx].CSR  &=(~DMA_CSR_DREQ_MASK); 
 	}
-	//ä½¿èƒ½æ­¤å¯„å­˜å™¨DMAå¼€å§‹å·¥ä½œ
+	//Ê¹ÄÜ´Ë¼Ä´æÆ÷DMA¿ªÊ¼¹¤×÷
 	DMA_SetEnableReq(DMA_InitStruct->Channelx,DMA_InitStruct->EnableState);
-	//DMA é€šé“ä½¿èƒ½
+	//DMA Í¨µÀÊ¹ÄÜ
 	DMAMUX->CHCFG[DMA_InitStruct->Channelx] |= DMAMUX_CHCFG_ENBL_MASK;
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šå¯åŠ¨æˆ–è€…å…³é—­DMAä¼ è¾“
- å½¢å‚ï¼šDMAChl: DMA0_CH0 - DMA_CH15
-			 EnableState: æ˜¯å¦å¼€å¯ä¼ è¾“
-			 @arg ENABLE : å¼€å¯ä¼ è¾“
-			 @arg DISABLE: å…³é—­ä¼ è¾“
- è¿”å›žï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºÆô¶¯»òÕß¹Ø±ÕDMA´«Êä
+ ÐÎ²Î£ºDMAChl: DMA0_CH0 - DMA_CH15
+			 EnableState: ÊÇ·ñ¿ªÆô´«Êä
+			 @arg ENABLE : ¿ªÆô´«Êä
+			 @arg DISABLE: ¹Ø±Õ´«Êä
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void DMA_SetEnableReq(uint8_t DMAChl,FunctionalState EnableState)
 {
-	//æ£€æµ‹å‚æ•°
+	//¼ì²â²ÎÊý
 	assert_param(IS_DMA_CH(DMAChl));
 	assert_param(IS_FUNCTIONAL_STATE(EnableState));
 	
@@ -122,16 +122,16 @@ void DMA_SetEnableReq(uint8_t DMAChl,FunctionalState EnableState)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šåˆ¤æ–­DMAä¼ è¾“æ˜¯å¦å®Œæˆ
- å½¢å‚ï¼šDMAChl: DMA0_CH0 - DMA_CH15
- è¿”å›žï¼š
-			 @arg TRUE:  ä¼ è¾“å®Œæˆ
-			 @arg FLASE: ä¼ è¾“æœªå®Œæˆ
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºÅÐ¶ÏDMA´«ÊäÊÇ·ñÍê³É
+ ÐÎ²Î£ºDMAChl: DMA0_CH0 - DMA_CH15
+ ·µ»Ø£º
+			 @arg TRUE:  ´«ÊäÍê³É
+			 @arg FLASE: ´«ÊäÎ´Íê³É
+ Ïê½â£º0
 ************************************************************************************************/
 uint8_t DMA_IsComplete(uint8_t DMAChl)
 {
-	//æ£€æµ‹å‚æ•°
+	//¼ì²â²ÎÊý
 	assert_param(IS_DMA_CH(DMAChl));
 	
 	if((DMA0->TCD[DMAChl].CSR & DMA_CSR_DONE_MASK))
@@ -145,15 +145,15 @@ uint8_t DMA_IsComplete(uint8_t DMAChl)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè®¾ç½®DMA MINOR LOOP LENGTH
- å½¢å‚ï¼šDMAChl: DMA0_CH0 - DMA_CH15
-			 DataNumber: å¾ªçŽ¯é•¿åº¦
- è¿”å›žï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºÉèÖÃDMA MINOR LOOP LENGTH
+ ÐÎ²Î£ºDMAChl: DMA0_CH0 - DMA_CH15
+			 DataNumber: Ñ­»·³¤¶È
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void DMA_SetCurrDataCounter(uint8_t DMAChl,uint16_t DataNumber)
 {
-	//æ£€æµ‹å‚æ•°
+	//¼ì²â²ÎÊý
 	assert_param(IS_DMA_CH(DMAChl));
 	assert_param(IS_DMA_MINOR_LOOP(DataNumber));
 	
@@ -161,18 +161,18 @@ void DMA_SetCurrDataCounter(uint8_t DMAChl,uint16_t DataNumber)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šèŽ·å¾— DMA MINOR LOOP LENGTH
- å½¢å‚ï¼šDMAChl: DMA0_CH0 - DMA_CH15
- è¿”å›žï¼šå½“å‰å‰©ä½™çš„å¾ªçŽ¯æ¬¡æ•°
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£º»ñµÃ DMA MINOR LOOP LENGTH
+ ÐÎ²Î£ºDMAChl: DMA0_CH0 - DMA_CH15
+ ·µ»Ø£ºµ±Ç°Ê£ÓàµÄÑ­»·´ÎÊý
+ Ïê½â£º0
 ************************************************************************************************/
 uint16_t DMA_GetCurrDataCounter(uint8_t DMAChl)
 {
-	//æ£€æµ‹å‚æ•°
+	//¼ì²â²ÎÊý
 	assert_param(IS_DMA_CH(DMAChl));
 	return (DMA0->TCD[DMAChl].CITER_ELINKNO & DMA_CITER_ELINKNO_CITER_MASK);
 }
-//æ—¶èƒ½ä¸­æ–­
+//Ê±ÄÜÖÐ¶Ï
 void DMA_ITConfig(DMA_Type* DMAx, uint16_t DMA_IT, uint8_t DMA_CH, FunctionalState NewState)
 {
 	
@@ -188,7 +188,7 @@ void DMA_ITConfig(DMA_Type* DMAx, uint16_t DMA_IT, uint8_t DMA_CH, FunctionalSta
 	}
 }
 
-//èŽ·å¾—ä¸­æ–­æ ‡å¿—
+//»ñµÃÖÐ¶Ï±êÖ¾
 ITStatus DMA_GetITStatus(DMA_Type* DMAx, uint16_t DMA_IT, uint8_t DMA_CH)
 {
 	ITStatus retval = RESET;
@@ -202,7 +202,7 @@ ITStatus DMA_GetITStatus(DMA_Type* DMAx, uint16_t DMA_IT, uint8_t DMA_CH)
 	}
 	return retval;
 }
-//æ¸…é™¤ä¸­æ–­Pending
+//Çå³ýÖÐ¶ÏPending
 void DMA_ClearITPendingBit(DMA_Type* DMAx, uint16_t DMA_IT, uint8_t DMA_CH)
 {
 	switch(DMA_IT)

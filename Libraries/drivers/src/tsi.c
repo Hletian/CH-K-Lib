@@ -1,27 +1,27 @@
-﻿/**
+/**
   ******************************************************************************
   * @file    tsi.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   超核K60固件库 片内tsi 驱动文件
+  * @brief   ����K60�̼��� Ƭ��tsi �����ļ�
   ******************************************************************************
   */
 #include "tsi.h"
 /***********************************************************************************************
- 功能：TSI 初始化
- 形参：TSI_InitStruct: TSI 初始化结构
- 返回：0
- 详解：0
+ ���ܣ�TSI ��ʼ��
+ �βΣ�TSI_InitStruct: TSI ��ʼ���ṹ
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void TSI_Init(TSI_InitTypeDef* TSI_InitStruct)
 {
 	TSI_Type *TSIx = TSI0;
 	PORT_Type *TSI_PORT = NULL;
 	TSI_MapTypeDef *pTSI_Map = (TSI_MapTypeDef*)&(TSI_InitStruct->TSIxMAP);
-	//开启TSI时钟
+	//����TSIʱ��
 	SIM->SCGC5 |= (SIM_SCGC5_TSI_MASK); 	
-	//找出PORT端口
+	//�ҳ�PORT�˿�
 	switch(pTSI_Map->TSI_GPIO_Index)
 	{
 		case 0:
@@ -45,48 +45,48 @@ void TSI_Init(TSI_InitTypeDef* TSI_InitStruct)
 			SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;
 			break;
 	}
-	//设置对应的IO口为PWM模式
+	//���ö�Ӧ��IO��ΪPWMģʽ
 	TSI_PORT->PCR[pTSI_Map->TSI_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	TSI_PORT->PCR[pTSI_Map->TSI_Pin_Index] |= PORT_PCR_MUX(pTSI_Map->TSI_Alt_Index);
 	
-	//每个电极连续扫描11次，prescaler分频8，软件触发
+	//ÿ���缫����ɨ��11�Σ�prescaler��Ƶ8����������
 	TSIx->GENCS |= ((TSI_GENCS_NSCN(0x18))|(TSI_GENCS_PS(7))); 
-	//配置TSI扫描电流和模式
-	TSIx->SCANC &= ~TSI_SCANC_EXTCHRG_MASK; //外部振荡器充电电流 0-31
+	//����TSIɨ�������ģʽ
+	TSIx->SCANC &= ~TSI_SCANC_EXTCHRG_MASK; //�ⲿ���������� 0-31
 	TSIx->SCANC |=  TSI_SCANC_EXTCHRG(31);//
-	TSIx->SCANC &= ~TSI_SCANC_REFCHRG_MASK; //参考时钟充电电路   0-31
+	TSIx->SCANC &= ~TSI_SCANC_REFCHRG_MASK; //�ο�ʱ�ӳ���·   0-31
 	TSIx->SCANC |=  TSI_SCANC_REFCHRG(31);  //
-	TSIx->SCANC &= ~TSI_SCANC_DELVOL_MASK;  //增量电压设定选择
+	TSIx->SCANC &= ~TSI_SCANC_DELVOL_MASK;  //������ѹ�趨ѡ��
 	TSIx->SCANC |=  TSI_SCANC_DELVOL(7);
-	//间断扫描模式，输入时钟为Busclock/128
+	//���ɨ��ģʽ������ʱ��ΪBusclock/128
 	TSIx->SCANC |= (TSI_SCANC_SMOD(0))|(TSI_SCANC_AMPSC(0));
-	//时能对应的TSI 端口 使能时必须先禁止TSI
+	//ʱ�ܶ�Ӧ��TSI �˿� ʹ��ʱ�����Ƚ�ֹTSI
 	TSIx->GENCS &= ~TSI_GENCS_TSIEN_MASK; 
 	while((TSIx->GENCS & TSI_GENCS_SCNIP_MASK) == 0x01);
 	TSI0->PEN |= ((1<<pTSI_Map->TSI_CH_Index));				
 	TSIx->GENCS |= TSI_GENCS_TSIEN_MASK;  
-	//自校准
+	//��У׼
 	TSI_SelfCalibration(pTSI_Map->TSI_CH_Index); 
-	TSIx->GENCS |= TSI_GENCS_STM_MASK; //启动TSI硬件周期性扫描
-	TSIx->GENCS |= TSI_GENCS_TSIEN_MASK; //时能TSI
-	//中断模式选择
+	TSIx->GENCS |= TSI_GENCS_STM_MASK; //����TSIӲ��������ɨ��
+	TSIx->GENCS |= TSI_GENCS_TSIEN_MASK; //ʱ��TSI
+	//�ж�ģʽѡ��
 	(TSI_InitStruct->TSI_ITMode == TSI_IT_MODE_END_OF_SCAN)?(TSI0->GENCS |= TSI_GENCS_ESOR_MASK):(TSI0->GENCS &= ~TSI_GENCS_ESOR_MASK);
 }
 
 /***********************************************************************************************
- 功能：TSI 中断配置
- 形参：TSIx: TSI 模块号
-       @arg TSI0 : TSI0模块
-       TSI_IT : TSI 中断源
-			 @arg TSI_IT_EOSF    : 扫描完成中断
-			 @arg TSI_IT_OUTRGF  : 超出范围中断
-			 @arg TSI_IT_EXTERF  : 外部短路中断
-			 @arg TSI_IT_OVRF    : OVERRUN中断
-       NewState : 使能或者禁止
-       @arg ENABLE:使能
-       @arg DISALBE:禁止
- 返回：0
- 详解：0
+ ���ܣ�TSI �ж�����
+ �βΣ�TSIx: TSI ģ���
+       @arg TSI0 : TSI0ģ��
+       TSI_IT : TSI �ж�Դ
+			 @arg TSI_IT_EOSF    : ɨ������ж�
+			 @arg TSI_IT_OUTRGF  : ������Χ�ж�
+			 @arg TSI_IT_EXTERF  : �ⲿ��·�ж�
+			 @arg TSI_IT_OVRF    : OVERRUN�ж�
+       NewState : ʹ�ܻ��߽�ֹ
+       @arg ENABLE:ʹ��
+       @arg DISALBE:��ֹ
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void TSI_ITConfig(TSI_Type *TSIx,uint16_t TSI_IT,FunctionalState NewState)
 {
@@ -105,16 +105,16 @@ void TSI_ITConfig(TSI_Type *TSIx,uint16_t TSI_IT,FunctionalState NewState)
 }
 
 /***********************************************************************************************
- 功能：TSI 获得中断标志位
- 形参：TSIx: TSI 模块号
-       @arg TSI0 : TSI0模块
-       TSI_IT : TSI 中断源
-			 @arg TSI_IT_EOSF    : 扫描完成中断
-			 @arg TSI_IT_OUTRGF  : 超出范围中断
-			 @arg TSI_IT_EXTERF  : 外部短路中断
-			 @arg TSI_IT_OVRF    : OVERRUN中断
- 返回：SET OR RESET
- 详解：0
+ ���ܣ�TSI ����жϱ�־λ
+ �βΣ�TSIx: TSI ģ���
+       @arg TSI0 : TSI0ģ��
+       TSI_IT : TSI �ж�Դ
+			 @arg TSI_IT_EOSF    : ɨ������ж�
+			 @arg TSI_IT_OUTRGF  : ������Χ�ж�
+			 @arg TSI_IT_EXTERF  : �ⲿ��·�ж�
+			 @arg TSI_IT_OVRF    : OVERRUN�ж�
+ ���أ�SET OR RESET
+ ��⣺0
 ************************************************************************************************/
 ITStatus TSI_GetITStatus(TSI_Type* TSIx, uint16_t TSI_IT)
 {
@@ -139,16 +139,16 @@ ITStatus TSI_GetITStatus(TSI_Type* TSIx, uint16_t TSI_IT)
 }
 
 /***********************************************************************************************
- 功能：TSI清除中断状态
- 形参：TSIx: TSI 模块号
-       @arg TSI0 : TSI0模块
-       TSI_IT : TSI 中断源
-			 @arg TSI_IT_EOSF    : 扫描完成中断
-			 @arg TSI_IT_OUTRGF  : 超出范围中断
-			 @arg TSI_IT_EXTERF  : 外部短路中断
-			 @arg TSI_IT_OVRF    : OVERRUN中断
- 返回：0
- 详解：0
+ ���ܣ�TSI����ж�״̬
+ �βΣ�TSIx: TSI ģ���
+       @arg TSI0 : TSI0ģ��
+       TSI_IT : TSI �ж�Դ
+			 @arg TSI_IT_EOSF    : ɨ������ж�
+			 @arg TSI_IT_OUTRGF  : ������Χ�ж�
+			 @arg TSI_IT_EXTERF  : �ⲿ��·�ж�
+			 @arg TSI_IT_OVRF    : OVERRUN�ж�
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void TSI_ClearITPendingBit(TSI_Type* TSIx,uint16_t TSI_IT)
 {
@@ -171,12 +171,12 @@ void TSI_ClearITPendingBit(TSI_Type* TSIx,uint16_t TSI_IT)
 }
 
 /***********************************************************************************************
- 功能：TSI获得TSI CH计数值
- 形参：TSIx: TSI 模块号
-       @arg TSI0 : TSI0模块
-       TSI_Ch : TSI 中断源 TSI0_CH0-TSI0-CH15
- 返回：0
- 详解：0
+ ���ܣ�TSI���TSI CH����ֵ
+ �βΣ�TSIx: TSI ģ���
+       @arg TSI0 : TSI0ģ��
+       TSI_Ch : TSI �ж�Դ TSI0_CH0-TSI0-CH15
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 uint32_t TSI_GetCounter(uint8_t TSI_Ch)
 {
@@ -204,28 +204,28 @@ uint32_t TSI_GetCounter(uint8_t TSI_Ch)
 	return ret_value;
 }
 
-//TSI触摸按键上电自校准
+//TSI���������ϵ���У׼
 void TSI_SelfCalibration(uint8_t TSI_Ch)
 {
 	uint16_t counter_temp; 
 	uint16_t i;
-	TSI0->GENCS |= TSI_GENCS_TSIEN_MASK;  //开启TSI
-	TSI0->GENCS |= TSI_GENCS_SWTS_MASK;  /* 开启TSI周期扫描 */
-	while(!(TSI0->GENCS&TSI_GENCS_EOSF_MASK)){}; /* 等待扫描结束 */
-	for(i=0; i<5000;i++); /* 延时一段时间 */
-	///以下为具体校验过程（有哪些通道根据实际情况）
+	TSI0->GENCS |= TSI_GENCS_TSIEN_MASK;  //����TSI
+	TSI0->GENCS |= TSI_GENCS_SWTS_MASK;  /* ����TSI����ɨ�� */
+	while(!(TSI0->GENCS&TSI_GENCS_EOSF_MASK)){}; /* �ȴ�ɨ����� */
+	for(i=0; i<5000;i++); /* ��ʱһ��ʱ�� */
+	///����Ϊ����У����̣�����Щͨ������ʵ�������
 	counter_temp = 	TSI_GetCounter(TSI_Ch);
 	TSI0->THRESHLD[TSI_Ch] = TSI_THRESHLD_HTHH(counter_temp + ELECTRODE_SHAKE) | TSI_THRESHLD_LTHH(counter_temp - ELECTRODE_SHAKE);
-	TSI0->GENCS &= ~TSI_GENCS_TSIEN_MASK; //先禁止TSI
+	TSI0->GENCS &= ~TSI_GENCS_TSIEN_MASK; //�Ƚ�ֹTSI
 }
 
 /***********************************************************************************************
- 功能：TSI获得TSI_GetChannelOutOfRangle
- 形参：TSIx: TSI 模块号
-       @arg TSI0 : TSI0模块
-       TSI_Ch : TSI 中断源 TSI0_CH0-TSI0-CH15
- 返回：0
- 详解：0
+ ���ܣ�TSI���TSI_GetChannelOutOfRangle
+ �βΣ�TSIx: TSI ģ���
+       @arg TSI0 : TSI0ģ��
+       TSI_Ch : TSI �ж�Դ TSI0_CH0-TSI0-CH15
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 uint8_t TSI_GetChannelOutOfRangleFlag(TSI_Type *TSIx,uint8_t TSI_CH)
 {
@@ -240,14 +240,14 @@ uint8_t TSI_GetChannelOutOfRangleFlag(TSI_Type *TSIx,uint8_t TSI_CH)
 	}
 }
 /***********************************************************************************************
- 功能：TSI清所有标志位
- 形参：TSIx: TSI 模块号
- 返回：0
- 详解：0
+ ���ܣ�TSI�����б�־λ
+ �βΣ�TSIx: TSI ģ���
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void TSI_ClearAllITPendingFlag(TSI_Type *TSIx)
 {
-	//清除各种标志位
+	//������ֱ�־λ
 	TSIx->GENCS |= TSI_GENCS_OUTRGF_MASK;	  
 	TSIx->GENCS |= TSI_GENCS_EOSF_MASK;	 
 	TSIx->GENCS |= TSI_GENCS_EXTERF_MASK;

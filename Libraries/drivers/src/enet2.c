@@ -4,7 +4,7 @@
   * @author  YANDLD
   * @version V2.4
   * @date    2013.6.23
-  * @brief   超核K60固件库 以太网 驱动文件
+  * @brief   超核K60�ƺ件�?以太�?驱动文件
   ******************************************************************************
   */
 #include "enet2.h"
@@ -13,7 +13,7 @@
 #include "uart.h"
 #endif
 
-//定义以太网DMA缓冲区
+//��⹉以太网DMA��솲�?
 static  uint8_t xENETTxDescriptors_unaligned[ ( 1 * sizeof( NBUF ) ) + 16 ];
 static  uint8_t pxENETRxDescriptors_unaligned[ ( CFG_NUM_ENET_RX_BUFFERS * sizeof( NBUF ) ) + 16 ];
 static NBUF *pxENETTxDescriptor;
@@ -24,23 +24,23 @@ static uint8_t ucENETRxBuffers[ ( CFG_NUM_ENET_RX_BUFFERS * CFG_ENET_BUFFER_SIZE
 static uint32_t uxNextRxBuffer = 0;
 
 /***********************************************************************************************
- 功能：以太网缓冲区初始化
- 形参：0
- 返回：0
- 详解：以太网模块通过 缓冲区 描述符(类似USB) 来管理以太网
+ �ɟ能��⻥太网��솲区初��Ɍ�
+ 形参�?
+ 返回�?
+ 详解��⻥太网模块��뵱� ��솲�?描述�?类似USB) 来管理以太网
 ************************************************************************************************/
 static void ENET_BDInit(void)
 {
   unsigned long ux;
 	unsigned char *pcBufPointer;
-	//寻找16字节对齐空间
+	//寻���16字节对��空间
 	pcBufPointer = &( xENETTxDescriptors_unaligned[ 0 ] );
 	while( ( ( uint32_t ) pcBufPointer & 0x0fUL ) != 0 )
 	{
 		pcBufPointer++;
 	}
 	pxENETTxDescriptor = ( NBUF * ) pcBufPointer;	
-	//寻找16字节对齐空间
+	//寻���16字节对��空间
 	pcBufPointer = &( pxENETRxDescriptors_unaligned[ 0 ] );
 	while( ( ( uint32_t ) pcBufPointer & 0x0fUL ) != 0 )
 	{
@@ -51,7 +51,7 @@ static void ENET_BDInit(void)
 	pxENETTxDescriptor->length = 0;
 	pxENETTxDescriptor->status = 0;
 	pxENETTxDescriptor->ebd_status = TX_BD_IINS | TX_BD_PINS;
-	//寻找16字节对齐空间
+	//寻���16字节对��空间
 	pcBufPointer = &( ucENETRxBuffers[ 0 ] );
 	while((( uint32_t ) pcBufPointer & 0x0fUL ) != 0 )
 	{
@@ -67,17 +67,17 @@ static void ENET_BDInit(void)
 	    pxENETRxDescriptors[ ux ].bdu = 0x00000000;
 	    pxENETRxDescriptors[ ux ].ebd_status = RX_BD_INT;
 	}
-	//最后一个描述符设置为Warp
+	//���后一个描述符设置为Warp
 	pxENETRxDescriptors[ CFG_NUM_ENET_RX_BUFFERS - 1 ].status |= RX_BD_W;
-	//从0描述符开始
+	//�?描述符开�?
 	uxNextRxBuffer = 0;
 	
 }
 /***********************************************************************************************
- 功能：计算MAC地址
- 形参：0
- 返回：0
- 详解：0
+ �ɟ能�뵮�算MAC地址
+ 形参�?
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 uint8_t ENET_HashAddress(const uint8_t* addr)
 {
@@ -103,10 +103,10 @@ uint8_t ENET_HashAddress(const uint8_t* addr)
   return (uint8_t)(crc >> 26);
 }
 /***********************************************************************************************
- 功能：设置MAC地址
- 形参：0
- 返回：0
- 详解：0
+ �ɟ能�뵮�置MAC地址
+ 形参�?
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 void ENET_SetAddress(const uint8_t *pa)
 {
@@ -115,7 +115,7 @@ void ENET_SetAddress(const uint8_t *pa)
   ENET->PALR = (uint32_t)((pa[0]<<24) | (pa[1]<<16) | (pa[2]<<8) | pa[3]);
   ENET->PAUR = (uint32_t)((pa[4]<<24) | (pa[5]<<16));
   
-  //根据物理地址计算并设置独立地址哈希寄存器的值
+  //�ݹ据物理地址计算并设置独��ɜ�址�����寄存器的��?
   crc = ENET_HashAddress(pa);
   if(crc >= 32)
     ENET->IAUR |= (uint32_t)(1 << (crc - 32));
@@ -123,10 +123,10 @@ void ENET_SetAddress(const uint8_t *pa)
     ENET->IALR |= (uint32_t)(1 << crc);
 }
 /***********************************************************************************************
- 功能：初始化以太网模块
- 形参：0
- 返回：0成功 1失败
- 详解：0
+ �ɟ能�번���Ɍ�以太网模�?
+ 形参�?
+ 返回�?成功 1失败
+ 详解�?
 ************************************************************************************************/
 uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
 {
@@ -135,21 +135,21 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
 	//初始化结构体
 	//enetdev.recflag = 0;
 	//enetdev.linkstate = LINK_STATE_OFF; 
-  //使能ENET时钟
+  //使能ENET�߶钟
   SIM->SCGC2 |= SIM_SCGC2_ENET_MASK;
-  //允许并发访问MPU控制器
+  //允许并发访问MPU控制�?
   MPU->CESR = 0;         
-  //缓冲区描述符初始化
+  //��솲区描述符初始�?
   ENET_BDInit();
-	//开PORT时钟
+	//开PORT�߶钟
 	SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;
 	SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;
-	//很重要。。
+	//很��覲��ɡ�?
 	MCG->C2 &= ~MCG_C2_EREFS_MASK;
-	//复位以太网
+	//�ո��以太�?
 	ENET->ECR = ENET_ECR_RESET_MASK;
 	for( usData = 0; usData < 100; usData++ )
 	{
@@ -158,11 +158,11 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
   //初始化MII接口
   ENET_MiiInit();  
 
-	//开启中断
+	//开启中�?
 	NVIC_EnableIRQ(ENET_Transmit_IRQn);
 	NVIC_EnableIRQ(ENET_Receive_IRQn);
 	NVIC_EnableIRQ(ENET_Error_IRQn);
-  //使能GPIO引脚复用功能
+  //使能GPIO引脚�᫔��ɟ能
   PORTB->PCR[0]  = PORT_PCR_MUX(4); 
   PORTB->PCR[1]  = PORT_PCR_MUX(4); 
 	PORTA->PCR[12] =  PORT_PCR_MUX(4);  
@@ -171,7 +171,7 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
 	PORTA->PCR[15] =  PORT_PCR_MUX(4);  
 	PORTA->PCR[16] =  PORT_PCR_MUX(4);  
 	PORTA->PCR[17] =  PORT_PCR_MUX(4);  
-  //等待PHY收发器复位完成
+  //等待PHY收发器复位���?
   do
   {
     DelayMs(10);
@@ -197,14 +197,14 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
   ENET_MiiRead(CFG_PHY_ADDRESS, PHY_MISR, &usData );
   UART_printf("PHY_MISR=0x%X\r\n",usData);
 #endif 
-  //开始自动协商
+  //开始自�ɨ���?
   ENET_MiiWrite(CFG_PHY_ADDRESS, PHY_BMCR, ( PHY_BMCR_AN_RESTART | PHY_BMCR_AN_ENABLE ) );
 
 #ifdef DEBUG_PRINT
   ENET_MiiRead(CFG_PHY_ADDRESS, PHY_BMCR, &usData );
   UART_printf("PHY_BMCR=0x%X\r\n",usData);
 #endif 
-  //等待自动协商完成
+  //等待���动协商完成
   do
   {
     DelayMs(10);
@@ -213,26 +213,26 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
     ENET_MiiRead(CFG_PHY_ADDRESS, PHY_BMSR, &usData );
 
   } while( !( usData & PHY_BMSR_AN_COMPLETE ) );
-  //根据协商结果设置ENET模块
+  //�ݹ据协商结果设置ENET模块
 	usData = 0;
 	ENET_MiiRead(CFG_PHY_ADDRESS, PHY_STATUS, &usData );	
   
-  //清除单独和组地址哈希寄存器
+  //清除卿���和组地址�����寄存�?
   ENET->IALR = 0;
   ENET->IAUR = 0;
   ENET->GALR = 0;
   ENET->GAUR = 0;
   //设置ENET模块MAC地址
   ENET_SetAddress(ENET_InitStrut->pMacAddress);
-  //设置接收控制寄存器，最大长度、RMII模式、接收CRC校验等
+  //设置接收控制寄存器，���大���度、RMII模��、接收CRC�ݡ验�?
   ENET->RCR = ENET_RCR_MAX_FL(CFG_ENET_MAX_PACKET_SIZE) | ENET_RCR_MII_MODE_MASK | ENET_RCR_CRCFWD_MASK | ENET_RCR_RMII_MODE_MASK;
 
-  //清除发送接收控制
+  //清除发送接收���?
   ENET->TCR = 0;
-  //通讯方式设置
+  //��뵮�方��设置
   if( usData & PHY_DUPLEX_STATUS )
   {
-    //全双工
+    //全双�?
     ENET->RCR &= (unsigned long)~ENET_RCR_DRT_MASK;
     ENET->TCR |= ENET_TCR_FDEN_MASK;
 		#ifdef DEBUG_PRINT
@@ -241,33 +241,33 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
   }
   else
   {
-    //半双工
+    //半双�?
     ENET->RCR |= ENET_RCR_DRT_MASK;
     ENET->TCR &= (unsigned long)~ENET_TCR_FDEN_MASK;
 		#ifdef DEBUG_PRINT
 		UART_printf("半双工\r\n");
 		#endif 
   }
-  //通信速率设置
+  //���⿡�͟率设置
   if( usData & PHY_SPEED_STATUS )
   {
     //10Mbps
     ENET->RCR |= ENET_RCR_RMII_10T_MASK;
   }
 
-  //使用增强型缓冲区描述符
+  //使用增强型缓冲区描述�?
   ENET->ECR = ENET_ECR_EN1588_MASK;
 
-	//设置接收缓冲区大小
+	//设置接收��솲区大�?
 	ENET->MRBR = ENET_MRBR_R_BUF_SIZE(CFG_ENET_MAX_PACKET_SIZE);
 
-	//指向环形缓冲区描述符的首地址(RX)
+	//指向环形��솲区描述符�Є首地址(RX)
 	ENET->RDSR = (uint32_t)  pxENETRxDescriptors;
 
-	//指向环形缓冲区描述符的首地址(TX)
+	//指向环形��솲区描述符�Є首地址(TX)
 	ENET->TDSR = (uint32_t) pxENETTxDescriptor;
 
-	//清楚所有中断标志
+	//清楚�؀���中断标�?
 	ENET->EIR = ( uint32_t ) 0xFFFFFFFF;
 
 	//使能中断
@@ -275,17 +275,17 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
 
 	//使能MAC模块
 	ENET->ECR |= ENET_ECR_ETHEREN_MASK;
-  //表明接收缓冲区为空
+  //表明接收��솲区为�?
 	ENET->RDAR = ENET_RDAR_RDAR_MASK;
-	//检查连接状态
+	//检�ҥ连接状��?
 //	enetdev.linkstate =  ENET_MiiLinkState();
 	return 0;
 }
 /***********************************************************************************************
- 功能：配置物理层
- 形参：0
- 返回：0
- 详解：0
+ �ɟ能：配置物理层
+ 形参�?
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 void ENET_MiiInit(void)
 {
@@ -295,13 +295,13 @@ void ENET_MiiInit(void)
   ENET->MSCR = 0 | ENET_MSCR_MII_SPEED((2*i/5)+1);
 }
 
-//物理层写入数据
+//物理层写入数�?
 uint8_t ENET_MiiWrite(uint16_t phy_addr, uint16_t reg_addr, uint16_t data)
 {
 	uint32_t timeout;
   //清除MII中断事件
 	ENET->EIR = ENET_EIR_MII_MASK;
-  //初始化MII管理帧寄存器
+  //初始化MII管理帧寄��뙨
 	ENET->MMFR = 0
             | ENET_MMFR_ST(0x01)
             | ENET_MMFR_OP(0x01)
@@ -322,17 +322,17 @@ uint8_t ENET_MiiWrite(uint16_t phy_addr, uint16_t reg_addr, uint16_t data)
   return 0;
 }
 /***********************************************************************************************
- 功能：RMII层 读取数据
- 形参：phy_addr: 接口地址  reg_addr:要读取的寄存器  *data:数据
- 返回：0 成功  1失败
- 详解：0
+ �ɟ能：RMII�?读取数据
+ 形参：phy_addr: 接口地址  reg_addr:要读取的寄存�? *data:数据
+ 返回�? 成功  1失败
+ 详解�?
 ************************************************************************************************/
 uint8_t ENET_MiiRead(uint16_t phy_addr, uint16_t reg_addr, uint16_t *data)
 {
 	uint32_t timeout;
 	//清除MII中断事件
 	ENET->EIR = ENET_EIR_MII_MASK;
-	//初始化MII管理帧寄存器
+	//初始化MII管理帧寄��뙨
   ENET->MMFR = 0
             | ENET_MMFR_ST(0x01)
             | ENET_MMFR_OP(0x2)
@@ -354,12 +354,12 @@ uint8_t ENET_MiiRead(uint16_t phy_addr, uint16_t reg_addr, uint16_t *data)
   return 0;
 }
 /***********************************************************************************************
- 功能：查看网线连接状态
- 形参：0
+ �ɟ能：查看网线连接状��?
+ 形参�?
  返回：ENET_PHY_LINK_STATE
 					LINK_STATE_ON,
 					LINK_STATE_OFF,
- 详解：0
+ 详解�?
 ************************************************************************************************/
 uint8_t ENET_MiiLinkState(void)
 {
@@ -375,39 +375,39 @@ uint8_t ENET_MiiLinkState(void)
 	}
 }
 /***********************************************************************************************
- 功能：发送一个以太帧 
- 形参：*ch:数据指针   len:长度
- 返回：0
- 详解：0
+ �ɟ能�벏��́一个以太帧 
+ 形参�?ch:数据指针   len:长度
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 void ENET_MacSendData(uint8_t *ch, uint16_t len)
 {
-  //检查当前发送缓冲区描述符是否可用
+  //检�ҥ当前发�́缓冲区描述符是否可�?
 	while( pxENETTxDescriptor->status & TX_BD_R )
 	{
 		
 	}
-  //设置发送缓冲区描述符
+  //设置发送缓冲区描述�?
   pxENETTxDescriptor->data = (uint8_t *)__REV((uint32_t)ch);		
   pxENETTxDescriptor->length = __REVSH(len);
 	pxENETTxDescriptor->bdu = 0x00000000;
 	pxENETTxDescriptor->ebd_status = TX_BD_INT | TX_BD_TS;// | TX_BD_IINS | TX_BD_PINS;
 	pxENETTxDescriptor->status = ( TX_BD_R | TX_BD_L | TX_BD_TC | TX_BD_W );
-  //使能发送
+  //使能发�?
   ENET->TDAR = ENET_TDAR_TDAR_MASK;
 }
 
 /***********************************************************************************************
- 功能：接收一个以太帧
- 形参：*ch:数据指针 
- 返回：帧长度
- 详解：0
+ �ɟ能：接收一个以太帧
+ 形参�?ch:数据指针 
+ 返回�벸�长度
+ 详解�?
 ************************************************************************************************/
 uint16_t ENET_MacRecData(uint8_t *ch)
 {
 	uint16_t len = 0;
 	ch = ch;
-	//寻找非空的缓冲区描述符
+	//寻����Ǟ空�Є缓冲区描述�?
 	if((pxENETRxDescriptors[uxNextRxBuffer].status & RX_BD_E ) == 0)
 	{
 		//读取数据
@@ -426,20 +426,20 @@ uint16_t ENET_MacRecData(uint8_t *ch)
 	
 }
 /***********************************************************************************************
- 功能：以太网发送完成中断
- 形参：
- 返回：0
- 详解：0
+ �ɟ能��⻥太网发送��成中�?
+ 形参�?
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 void ENET_Transmit_IRQHandler(void)
 {
 	ENET->EIR |= ENET_EIMR_TXF_MASK; 
 }
 /***********************************************************************************************
- 功能：以太网接收中断
- 形参：
- 返回：0
- 详解：0
+ �ɟ能��⻥太网接收中断
+ 形参�?
+ 返回�?
+ 详解�?
 ************************************************************************************************/
 uint8_t gEnetFlag = 0;
 #if 0

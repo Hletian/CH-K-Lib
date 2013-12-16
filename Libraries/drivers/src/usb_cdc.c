@@ -1,9 +1,9 @@
-ï»¿#include "usb_cdc.h"
+#include "usb_cdc.h"
 #include "usb.h"
 #include "sys.h"
-CDC_Line_Coding LineCoding;  //å®ä¾‹åŒ–LINE_CODEING ç»“æ„ä½“
+CDC_Line_Coding LineCoding;  //ÊµÀı»¯LINE_CODEING ½á¹¹Ìå
 
-//CDCæ¥å£ å¤„ç†ä¸­æ–­
+//CDC½Ó¿Ú ´¦ÀíÖĞ¶Ï
 uint8_t USB_CDC_InterfaceReq_Handler(void)
 {
 	switch(Setup_Pkt->bRequest)
@@ -31,7 +31,7 @@ uint8_t USB_CDC_InterfaceReq_Handler(void)
     }
 }
 
-//USB CDCå‘é€æ•°æ®
+//USB CDC·¢ËÍÊı¾İ
 void USB_CDCComTx(uint8_t *tx_buf,uint8_t len)
 {
    USB_EP_IN_Transfer(EP2,tx_buf,len);
@@ -39,22 +39,22 @@ void USB_CDCComTx(uint8_t *tx_buf,uint8_t len)
 
 /*
 *  LPLD_USB_VirtualCom_Rx
-*    å°†USB CDCç±»æ¨¡å¼è™šæ‹Ÿæˆä¸²å£æ¨¡å¼ï¼Œè¯¥å‡½æ•°æ˜¯ä¸²å£æ¥æ”¶å‡½æ•°
-*    å‚æ•°
-*      |__*rx_buf æŒ‡å‘ç”¨æˆ·æ•°æ®å­˜å‚¨åŒºï¼Œç”¨äºå‚¨å­˜æ¥æ”¶åˆ°çš„æ•°æ®
-*    è¿”å›å€¼ï¼šæ¥æ”¶æ•°æ®çš„é•¿åº¦ï¼Œä»¥å­—èŠ‚ä¸ºå•ä½
+*    ½«USB CDCÀàÄ£Ê½ĞéÄâ³É´®¿ÚÄ£Ê½£¬¸Ãº¯ÊıÊÇ´®¿Ú½ÓÊÕº¯Êı
+*    ²ÎÊı
+*      |__*rx_buf Ö¸ÏòÓÃ»§Êı¾İ´æ´¢Çø£¬ÓÃÓÚ´¢´æ½ÓÊÕµ½µÄÊı¾İ
+*    ·µ»ØÖµ£º½ÓÊÕÊı¾İµÄ³¤¶È£¬ÒÔ×Ö½ÚÎªµ¥Î»
 */
 uint8_t USB_CDCComRx(uint8_t *rx_buf)
 {
   uint8_t len;
   uint8_t temp=0;
   uint8_t *puint8_tEPBuffer;
-  if(BIT_CHK(EP_OUT,guint8_tUSB_Flags))// å¦‚æœæœ‰æ•°æ®åˆ°æ¥
+  if(BIT_CHK(EP_OUT,guint8_tUSB_Flags))// Èç¹ûÓĞÊı¾İµ½À´
   {
 		len = USB_EP_OUT_SizeCheck(EP_OUT); 
 		temp = len;
-		puint8_tEPBuffer = CDC_OUTPointer; //æŒ‡å‘å¯¹åº”çš„ ç¼“å†²åŒº
-		//å¼€å§‹æ‹·è´
+		puint8_tEPBuffer = CDC_OUTPointer; //Ö¸Ïò¶ÔÓ¦µÄ »º³åÇø
+		//¿ªÊ¼¿½±´
 		while(len--) *rx_buf++=*puint8_tEPBuffer++;  
 	
     usbEP_Reset(EP_OUT);
@@ -76,11 +76,11 @@ static uint32_t LWordSwap(uint32_t uint32_tDataSwap)
 }
 void USB_CDC_Init(void)
 {
-  /*åˆå§‹åŒ–CDCç±»é€šè®¯çš„å‚æ•°*/
+  /*³õÊ¼»¯CDCÀàÍ¨Ñ¶µÄ²ÎÊı*/
   LineCoding.DTERate=LWordSwap(115200);
   LineCoding.CharFormat=0;
   LineCoding.ParityType=0;
   LineCoding.Databits=0x08;
-  /*åˆå§‹åŒ–CDCç±»æ•°æ®ç¼“å†²åŒº*/
+  /*³õÊ¼»¯CDCÀàÊı¾İ»º³åÇø*/
  // Buffer_Init(CDC_OUT_Data,CDC_BUFFER_SIZE);
 }

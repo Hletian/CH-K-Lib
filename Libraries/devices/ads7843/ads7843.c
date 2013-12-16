@@ -1,13 +1,13 @@
-ï»¿#include "ads7843.h"
+#include "ads7843.h"
 #include "spi.h"
 #include "gpio.h"
 #include "delay.h"
 #include "stdlib.h"
 /***********************************************************************************************
- åŠŸèƒ½ï¼šTP è§¦æ‘¸èŠ¯ç‰‡æ•°æ®å†™å…¥å‡½æ•°
- å½¢å‚ï¼šnum:å†™å…¥çš„æ•°æ®
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºTP ´¥ÃşĞ¾Æ¬Êı¾İĞ´Èëº¯Êı
+ ĞÎ²Î£ºnum:Ğ´ÈëµÄÊı¾İ
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 uint8_t ADS7843_ReadWrite_Byte(uint8_t num)    
 {
@@ -24,7 +24,7 @@ uint16_t TP_Read_AD(uint8_t CMD)
 	uint16_t Num=0; 
 	ADS7843_CS_LOW;
 	ADS7843_ReadWrite_Byte(CMD);
-	DelayUs(6);//ADS7846çš„è½¬æ¢æ—¶é—´æœ€é•¿ä¸º6us
+	DelayUs(6);//ADS7846µÄ×ª»»Ê±¼ä×î³¤Îª6us
 	Num  = ADS7843_ReadWrite_Byte(0xFF)<<8;
 	Num += ADS7843_ReadWrite_Byte(0xFF);
 	Num >>= 4;
@@ -81,7 +81,7 @@ void ADS7843_Init(void)
 {
     SPI_InitTypeDef SPI_InitStruct1;
     GPIO_InitTypeDef GPIO_InitStruct1;
-    //åˆå§‹åŒ–SPIä¸²è¡Œæ¥å£å¼•æ“
+    //³õÊ¼»¯SPI´®ĞĞ½Ó¿ÚÒıÇæ
     SPI_InitStruct1.SPIxDataMap = SPI_ADS7843_PORT;
     SPI_InitStruct1.SPIxPCSMap = SPI_ADS7843_CS_PORT;
     SPI_InitStruct1.SPI_DataSize = 8;

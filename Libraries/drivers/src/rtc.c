@@ -1,43 +1,43 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    rtc.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ å®žæ—¶æ—¶é’Ÿé©±åŠ¨
+  * @brief   ³¬ºËK60¹Ì¼þ¿â ÊµÊ±Ê±ÖÓÇý¶¯
   ******************************************************************************
   */
 #include "rtc.h"
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šRTCåˆå§‹åŒ–
- å½¢å‚ï¼š0
- è¿”å›žï¼š0
- è¯¦è§£ï¼šåˆå§‹åŒ–RTC
+ ¹¦ÄÜ£ºRTC³õÊ¼»¯
+ ÐÎ²Î£º0
+ ·µ»Ø£º0
+ Ïê½â£º³õÊ¼»¯RTC
 ************************************************************************************************/
 void RTC_Init(void)
 {
 	uint32_t i = 0;
-	//å¼€å¯RTCæ¨¡å—æ—¶é’Ÿ
+	//¿ªÆôRTCÄ£¿éÊ±ÖÓ
 	SIM->SCGC6 |= SIM_SCGC6_RTC_MASK;
-	//ç¦æ­¢ æ‰€æœ‰ä¸­æ–­
+	//½ûÖ¹ ËùÓÐÖÐ¶Ï
 	RTC->IER &= ~(RTC_IER_TIIE_MASK|RTC_IER_TOIE_MASK |RTC_IER_TAIE_MASK);
-	//é…ç½®16pfç”µå®¹ï¼Œä¸å‘å¤–ç•Œè¾“å‡ºï¼Œå¼€å¯æ™¶æŒ¯
+	//ÅäÖÃ16pfµçÈÝ£¬²»ÏòÍâ½çÊä³ö£¬¿ªÆô¾§Õñ
 	RTC->CR |= (0|RTC_CR_OSCE_MASK|RTC_CR_SC16P_MASK);
-  //æ˜¯æ™¶æŒ¯ç¨³å®šçš„å·¥ä½œå»¶æ—¶
+  //ÊÇ¾§ÕñÎÈ¶¨µÄ¹¤×÷ÑÓÊ±
 	for(i=0;i<0x600000;i++);
-	//ä½¿èƒ½RTCè®¡æ—¶
+	//Ê¹ÄÜRTC¼ÆÊ±
 	RTC->SR |= RTC_SR_TCE_MASK;  
 	RTC_ITConfig(RTC_IT_TAF,ENABLE);	
-	//å°†TARå®šä½åˆ°TSR äº§ç”Ÿä¸­æ–­
+	//½«TAR¶¨Î»µ½TSR ²úÉúÖÐ¶Ï
 	RTC->TAR = RTC->TSR;  
 }
 
 
-//ä¸­æ–­é…ç½®
+//ÖÐ¶ÏÅäÖÃ
 void RTC_ITConfig(uint16_t RTC_IT, FunctionalState NewState)
 {
-	//æ£€æŸ¥å‚æ•°
+	//¼ì²é²ÎÊý
 	assert_param(IS_RTC_IT(RTC_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
 	
@@ -57,11 +57,11 @@ void RTC_ITConfig(uint16_t RTC_IT, FunctionalState NewState)
 	
 }
 
-//èŽ·å¾—ä¸­æ–­çŠ¶æ€
+//»ñµÃÖÐ¶Ï×´Ì¬
 ITStatus RTC_GetITStatus(uint16_t RTC_IT)
 {
 	ITStatus retval;
-	//æ£€æŸ¥å‚æ•°
+	//¼ì²é²ÎÊý
 	assert_param(IS_RTC_IT(RTC_IT));
 	
 	switch(RTC_IT)
@@ -82,81 +82,81 @@ ITStatus RTC_GetITStatus(uint16_t RTC_IT)
 
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šåˆ¤æ–­æ˜¯å¦æ˜¯é—°å¹´
- å½¢å‚ï¼šå¹´ä»½
- è¿”å›žï¼š1 é—°å¹´ 0 å¹³å¹´
- è¯¦è§£ï¼šåˆ¤æ–­æ˜¯å¦æ˜¯é—°å¹´å‡½æ•°
-			æœˆä»½   1  2  3  4  5  6  7  8  9  10 11 12
-			é—°å¹´   31 29 31 30 31 30 31 31 30 31 30 31
-			éžé—°å¹´ 31 28 31 30 31 30 31 31 30 31 30 31
+ ¹¦ÄÜ£ºÅÐ¶ÏÊÇ·ñÊÇÈòÄê
+ ÐÎ²Î£ºÄê·Ý
+ ·µ»Ø£º1 ÈòÄê 0 Æ½Äê
+ Ïê½â£ºÅÐ¶ÏÊÇ·ñÊÇÈòÄêº¯Êý
+			ÔÂ·Ý   1  2  3  4  5  6  7  8  9  10 11 12
+			ÈòÄê   31 29 31 30 31 30 31 31 30 31 30 31
+			·ÇÈòÄê 31 28 31 30 31 30 31 31 30 31 30 31
 ************************************************************************************************/
 static uint8_t RTC_IsLeapYear(uint16_t year)
 {
-	if(year % 4 == 0) //å¿…é¡»èƒ½è¢«4æ•´é™¤
+	if(year % 4 == 0) //±ØÐëÄÜ±»4Õû³ý
 	{ 
 		if(year % 100 == 0) 
 		{ 
-			if(year % 400 == 0)return 1;//å¦‚æžœä»¥00ç»“å°¾,è¿˜è¦èƒ½è¢«400æ•´é™¤ 	   
+			if(year % 400 == 0)return 1;//Èç¹ûÒÔ00½áÎ²,»¹ÒªÄÜ±»400Õû³ý 	   
 			else return 0;   
 		}else return 1;   
 	}else return 0;	
 }
-//è®¾ç½®æ—¶é’Ÿ
-//æŠŠè¾“å…¥çš„æ—¶é’Ÿè½¬æ¢ä¸ºç§’é’Ÿ
-//ä»¥1970å¹´1æœˆ1æ—¥ä¸ºåŸºå‡†
-//1970~2099å¹´ä¸ºåˆæ³•å¹´ä»½
-//è¿”å›žå€¼:0,æˆåŠŸ;å…¶ä»–:é”™è¯¯ä»£ç .
-//æœˆä»½æ•°æ®è¡¨			
-static uint8_t const table_week[12]={0,3,3,6,1,4,6,2,5,0,3,5}; //æœˆä¿®æ­£æ•°æ®è¡¨	  
-//å¹³å¹´çš„æœˆä»½æ—¥æœŸè¡¨
+//ÉèÖÃÊ±ÖÓ
+//°ÑÊäÈëµÄÊ±ÖÓ×ª»»ÎªÃëÖÓ
+//ÒÔ1970Äê1ÔÂ1ÈÕÎª»ù×¼
+//1970~2099ÄêÎªºÏ·¨Äê·Ý
+//·µ»ØÖµ:0,³É¹¦;ÆäËû:´íÎó´úÂë.
+//ÔÂ·ÝÊý¾Ý±í			
+static uint8_t const table_week[12]={0,3,3,6,1,4,6,2,5,0,3,5}; //ÔÂÐÞÕýÊý¾Ý±í	  
+//Æ½ÄêµÄÔÂ·ÝÈÕÆÚ±í
 static const uint8_t mon_table[12]={31,28,31,30,31,30,31,31,30,31,30,31};
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè®¾ç½®RTCæ—¶é—´
- å½¢å‚ï¼šRTC æ•°æ®
- è¿”å›žï¼šæ— æ„ä¹‰
- è¯¦è§£ï¼š
+ ¹¦ÄÜ£ºÉèÖÃRTCÊ±¼ä
+ ÐÎ²Î£ºRTC Êý¾Ý
+ ·µ»Ø£ºÎÞÒâÒå
+ Ïê½â£º
 ************************************************************************************************/
 uint8_t RTC_SetCalander(RTC_CalanderTypeDef * RTC_CalanderStruct)
 {
 	uint16_t t;
 	uint32_t seccount=0;
 	if(RTC_CalanderStruct->Year < 1970||RTC_CalanderStruct->Year > 2099)return 1;	   
-	for(t=1970;t<RTC_CalanderStruct->Year;t++)	//æŠŠæ‰€æœ‰å¹´ä»½çš„ç§’é’Ÿç›¸åŠ 
+	for(t=1970;t<RTC_CalanderStruct->Year;t++)	//°ÑËùÓÐÄê·ÝµÄÃëÖÓÏà¼Ó
 	{
-		if(RTC_IsLeapYear(t))seccount+=31622400;//é—°å¹´çš„ç§’é’Ÿæ•°
-		else seccount+=31536000;			  //å¹³å¹´çš„ç§’é’Ÿæ•°
+		if(RTC_IsLeapYear(t))seccount+=31622400;//ÈòÄêµÄÃëÖÓÊý
+		else seccount+=31536000;			  //Æ½ÄêµÄÃëÖÓÊý
 	}
 	RTC_CalanderStruct->Month-=1;
-	for(t=0;t<RTC_CalanderStruct->Month;t++)	   //æŠŠå‰é¢æœˆä»½çš„ç§’é’Ÿæ•°ç›¸åŠ 
+	for(t=0;t<RTC_CalanderStruct->Month;t++)	   //°ÑÇ°ÃæÔÂ·ÝµÄÃëÖÓÊýÏà¼Ó
 	{
-		seccount+=(uint32_t)mon_table[t]*86400;//æœˆä»½ç§’é’Ÿæ•°ç›¸åŠ 
-		if(RTC_IsLeapYear(RTC_CalanderStruct->Year)&& t == 1)seccount+=86400;//é—°å¹´2æœˆä»½å¢žåŠ ä¸€å¤©çš„ç§’é’Ÿæ•°	   
+		seccount+=(uint32_t)mon_table[t]*86400;//ÔÂ·ÝÃëÖÓÊýÏà¼Ó
+		if(RTC_IsLeapYear(RTC_CalanderStruct->Year)&& t == 1)seccount+=86400;//ÈòÄê2ÔÂ·ÝÔö¼ÓÒ»ÌìµÄÃëÖÓÊý	   
 	}
-	seccount += (uint32_t)((RTC_CalanderStruct->Date)-1)*86400;//æŠŠå‰é¢æ—¥æœŸçš„ç§’é’Ÿæ•°ç›¸åŠ  
-	seccount += (uint32_t)(RTC_CalanderStruct->Hour)*3600;//å°æ—¶ç§’é’Ÿæ•°
-	seccount += (uint32_t)(RTC_CalanderStruct->Minute)*60;	 //åˆ†é’Ÿç§’é’Ÿæ•°
-	seccount += RTC_CalanderStruct->Second ;//æœ€åŽçš„ç§’é’ŸåŠ ä¸ŠåŽ»
-	RTC->SR &= ~RTC_SR_TCE_MASK;//å…³é—­è®¡æ•°å™¨ï¼Œè§å‚è€ƒæ‰‹å†Œk10 1024é¡µ
+	seccount += (uint32_t)((RTC_CalanderStruct->Date)-1)*86400;//°ÑÇ°ÃæÈÕÆÚµÄÃëÖÓÊýÏà¼Ó 
+	seccount += (uint32_t)(RTC_CalanderStruct->Hour)*3600;//Ð¡Ê±ÃëÖÓÊý
+	seccount += (uint32_t)(RTC_CalanderStruct->Minute)*60;	 //·ÖÖÓÃëÖÓÊý
+	seccount += RTC_CalanderStruct->Second ;//×îºóµÄÃëÖÓ¼ÓÉÏÈ¥
+	RTC->SR &= ~RTC_SR_TCE_MASK;//¹Ø±Õ¼ÆÊýÆ÷£¬¼û²Î¿¼ÊÖ²ák10 1024Ò³
 	RTC->TSR = RTC_TSR_TSR(seccount);	
 	RTC->TAR = RTC->TSR+1;
-	RTC->SR |= RTC_SR_TCE_MASK;//å¼€å¯è®¡æ•°å™¨ï¼Œè§å‚è€ƒæ‰‹å†Œk10 1024é¡µ
+	RTC->SR |= RTC_SR_TCE_MASK;//¿ªÆô¼ÆÊýÆ÷£¬¼û²Î¿¼ÊÖ²ák10 1024Ò³
 	return 0;
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šä»Žå¹´æœˆæ—¥è®¡ç®—æ—¶åˆ†ç§’
- å½¢å‚ï¼šå¹´æœˆæ—¥
- è¿”å›žï¼šæ˜ŸæœŸä»£ç 
- è¯¦è§£ï¼šè¾“å…¥å…¬åŽ†æ—¥æœŸå¾—åˆ°æ˜ŸæœŸ(åªå…è®¸1901-2099å¹´)
+ ¹¦ÄÜ£º´ÓÄêÔÂÈÕ¼ÆËãÊ±·ÖÃë
+ ÐÎ²Î£ºÄêÔÂÈÕ
+ ·µ»Ø£ºÐÇÆÚ´úÂë
+ Ïê½â£ºÊäÈë¹«ÀúÈÕÆÚµÃµ½ÐÇÆÚ(Ö»ÔÊÐí1901-2099Äê)
 ************************************************************************************************/
 static uint8_t RTC_GetWeek(uint16_t year,uint8_t month,uint8_t day)
 {	
 	uint16_t temp2;
 	uint8_t yearH,yearL;
 	yearH=year/100;	yearL=year%100; 
-	// å¦‚æžœä¸º21ä¸–çºª,å¹´ä»½æ•°åŠ 100  
+	// Èç¹ûÎª21ÊÀ¼Í,Äê·ÝÊý¼Ó100  
 	if (yearH>19)yearL+=100;
-	// æ‰€è¿‡é—°å¹´æ•°åªç®—1900å¹´ä¹‹åŽçš„  
+	// Ëù¹ýÈòÄêÊýÖ»Ëã1900ÄêÖ®ºóµÄ  
 	temp2 = yearL+yearL/4;
 	temp2 = temp2%7; 
 	temp2 = temp2+day+table_week[month-1];
@@ -165,10 +165,10 @@ static uint8_t RTC_GetWeek(uint16_t year,uint8_t month,uint8_t day)
 }			
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šèŽ·å¾—RTCæ•°æ®
- å½¢å‚ï¼š0
- è¿”å›žï¼šæ— æ„ä¹‰
- è¯¦è§£ï¼šå¾—åˆ°å½“å‰çš„æ—¶é—´ï¼Œç»“æžœä¿å­˜åœ¨calendarç»“æž„ä½“é‡Œé¢
+ ¹¦ÄÜ£º»ñµÃRTCÊý¾Ý
+ ÐÎ²Î£º0
+ ·µ»Ø£ºÎÞÒâÒå
+ Ïê½â£ºµÃµ½µ±Ç°µÄÊ±¼ä£¬½á¹û±£´æÔÚcalendar½á¹¹ÌåÀïÃæ
 ************************************************************************************************/
 #define SEC_IN_DAY  86400
 void RTC_GetCalander(RTC_CalanderTypeDef * RTC_CalanderStruct)
@@ -180,56 +180,56 @@ void RTC_GetCalander(RTC_CalanderTypeDef * RTC_CalanderStruct)
 	uint16_t temp1 = 0;	  
 	timecount = RTC->TSR;	 
 	RTC_CalanderStruct->TSRValue = RTC->TSR;
- 	temp = timecount/SEC_IN_DAY;   //å¾—åˆ°å¤©æ•°(ç§’é’Ÿæ•°å¯¹åº”çš„)
-	if(daycnt != temp)//è¶…è¿‡ä¸€å¤©äº†
+ 	temp = timecount/SEC_IN_DAY;   //µÃµ½ÌìÊý(ÃëÖÓÊý¶ÔÓ¦µÄ)
+	if(daycnt != temp)//³¬¹ýÒ»ÌìÁË
 	{	  
 		daycnt = temp;
-		temp1 = 1970;	//ä»Ž1970å¹´å¼€å§‹
+		temp1 = 1970;	//´Ó1970Äê¿ªÊ¼
 		while(temp >= 365)
 		{				 
-			if(RTC_IsLeapYear(temp1))//æ˜¯é—°å¹´
+			if(RTC_IsLeapYear(temp1))//ÊÇÈòÄê
 			{
-				if(temp>=366)temp-=366;//é—°å¹´çš„ç§’é’Ÿæ•°
+				if(temp>=366)temp-=366;//ÈòÄêµÄÃëÖÓÊý
 				else {temp1++;break;}  
 			}
-			else temp-=365;	  //å¹³å¹´ 
+			else temp-=365;	  //Æ½Äê 
 			temp1++;  
 		}   
-		RTC_CalanderStruct->Year=temp1;//å¾—åˆ°å¹´ä»½
+		RTC_CalanderStruct->Year=temp1;//µÃµ½Äê·Ý
 		temp1=0;
-		while(temp>=28)//è¶…è¿‡äº†ä¸€ä¸ªæœˆ
+		while(temp>=28)//³¬¹ýÁËÒ»¸öÔÂ
 		{
-			if(RTC_IsLeapYear(RTC_CalanderStruct->Year) && temp1 == 1)//å½“å¹´æ˜¯ä¸æ˜¯é—°å¹´/2æœˆä»½
+			if(RTC_IsLeapYear(RTC_CalanderStruct->Year) && temp1 == 1)//µ±ÄêÊÇ²»ÊÇÈòÄê/2ÔÂ·Ý
 			{
-				if(temp >= 29)temp-=29;//é—°å¹´çš„ç§’é’Ÿæ•°
+				if(temp >= 29)temp-=29;//ÈòÄêµÄÃëÖÓÊý
 				else break; 
 			}
 			else 
 			{
-				if(temp >= mon_table[temp1])temp-= mon_table[temp1];//å¹³å¹´
+				if(temp >= mon_table[temp1])temp-= mon_table[temp1];//Æ½Äê
 				else break;
 			}
 			temp1++;  
 		}
-		RTC_CalanderStruct->Month = temp1+1;	//å¾—åˆ°æœˆä»½
-		RTC_CalanderStruct->Date = temp+1;  	//å¾—åˆ°æ—¥æœŸ 
+		RTC_CalanderStruct->Month = temp1+1;	//µÃµ½ÔÂ·Ý
+		RTC_CalanderStruct->Date = temp+1;  	//µÃµ½ÈÕÆÚ 
 	}
-	temp = timecount%86400;     		//å¾—åˆ°ç§’é’Ÿæ•°   	   
-	RTC_CalanderStruct->Hour = temp/3600;     	//å°æ—¶
-	RTC_CalanderStruct->Minute = (temp%3600)/60; 	//åˆ†é’Ÿ	
-	RTC_CalanderStruct->Second = (temp%3600)%60; 	//ç§’é’Ÿ
-	RTC_CalanderStruct->Week = RTC_GetWeek(RTC_CalanderStruct->Year,RTC_CalanderStruct->Month,RTC_CalanderStruct->Date);//èŽ·å–æ˜ŸæœŸ   
+	temp = timecount%86400;     		//µÃµ½ÃëÖÓÊý   	   
+	RTC_CalanderStruct->Hour = temp/3600;     	//Ð¡Ê±
+	RTC_CalanderStruct->Minute = (temp%3600)/60; 	//·ÖÖÓ	
+	RTC_CalanderStruct->Second = (temp%3600)%60; 	//ÃëÖÓ
+	RTC_CalanderStruct->Week = RTC_GetWeek(RTC_CalanderStruct->Year,RTC_CalanderStruct->Month,RTC_CalanderStruct->Date);//»ñÈ¡ÐÇÆÚ   
 }	
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šRTCç§’ä¸­æ–­è°ƒç”¨å‡½æ•°
- å½¢å‚ï¼šRTCxç”¨æˆ·ç»“æž„ä½“
- è¿”å›žï¼š0
- è¯¦è§£ï¼šåœ¨RTXç§’ä¸­æ–­ä¸­è°ƒç”¨æ­¤å‡½æ•°ï¼Œæ›´æ–°RTCç”¨æˆ·æŽ¥å£
+ ¹¦ÄÜ£ºRTCÃëÖÐ¶Ïµ÷ÓÃº¯Êý
+ ÐÎ²Î£ºRTCxÓÃ»§½á¹¹Ìå
+ ·µ»Ø£º0
+ Ïê½â£ºÔÚRTXÃëÖÐ¶ÏÖÐµ÷ÓÃ´Ëº¯Êý£¬¸üÐÂRTCÓÃ»§½Ó¿Ú
 ************************************************************************************************/
 void RTC_SecondIntProcess(void)
 {
-	RTC->SR &= ~RTC_SR_TCE_MASK; //å…³é—­è®¡æ—¶å™¨
+	RTC->SR &= ~RTC_SR_TCE_MASK; //¹Ø±Õ¼ÆÊ±Æ÷
 	RTC->TAR++;
-	RTC->SR |= RTC_SR_TCE_MASK; //å¼€å¯è®¡æ•°å™¨
+	RTC->SR |= RTC_SR_TCE_MASK; //¿ªÆô¼ÆÊýÆ÷
 }

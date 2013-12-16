@@ -1,18 +1,18 @@
-﻿/**
+/**
   ******************************************************************************
   * @file    dac.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   超核K60固件库 DAC模块驱动
+  * @brief   ����K60�̼��� DACģ������
   ******************************************************************************
   */
 #include "DAC.h"
 /***********************************************************************************************
- 功能：初始化结构体 填入默认参数
- 形参：DAC_InitStruct: 初始化结构
- 返回：0
- 详解：0
+ ���ܣ���ʼ���ṹ�� ����Ĭ�ϲ���
+ �βΣ�DAC_InitStruct: ��ʼ���ṹ
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
 {
@@ -23,21 +23,21 @@ void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
 	DAC_InitStruct->DAC_WaterMarkMode = WATER_MODE_4WORD;
 }
 /***********************************************************************************************
- 功能：DAC初始化
- 形参：DAC_InitStruct: DAC初始化结构
- 返回：0
- 详解：0
+ ���ܣ�DAC��ʼ��
+ �βΣ�DAC_InitStruct: DAC��ʼ���ṹ
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void DAC_Init(DAC_InitTypeDef* DAC_InitStruct)
 {
-	//参数检查
+	//�������
 	assert_param(IS_DAC_TRIGGER_MODE(DAC_InitStruct->DAC_TrigerMode));
 	assert_param(IS_DAC_BUFFER_MODE(DAC_InitStruct->DAC_BufferMode));
 	assert_param(IS_DAC_WATERMARK_MODE(DAC_InitStruct->DAC_WaterMarkMode));
 	
-	//开启DAC模块时钟
+	//����DACģ��ʱ��
 	SIM->SCGC2|=SIM_SCGC2_DAC0_MASK;  
-	//配置BUFFER模式
+	//����BUFFERģʽ
 	switch(DAC_InitStruct->DAC_BufferMode)
 	{
 		case DAC_TRIGER_MODE_NONE:
@@ -54,12 +54,12 @@ void DAC_Init(DAC_InitTypeDef* DAC_InitStruct)
 			break;
 		default:break;
 	}
-	//选择参考源2
+	//ѡ��ο�Դ2
 	DAC0->C0 |= DAC_C0_DACRFS_MASK;  
-	//开启DAC模块
+	//����DACģ��
 	DAC0->C0 |= DAC_C0_DACEN_MASK ;
 	
-	//配置DAC_C1寄存器 配置BUFFER模式
+	//����DAC_C1�Ĵ��� ����BUFFERģʽ
 	switch(DAC_InitStruct->DAC_BufferMode)
 	{
 		case BUFFER_MODE_NORMAL:
@@ -78,7 +78,7 @@ void DAC_Init(DAC_InitTypeDef* DAC_InitStruct)
 			DAC0->C1 &= ~DAC_C1_DACBFEN_MASK;
 			break;
 	}
-	//设置水位
+	//����ˮλ
 	switch(DAC_InitStruct->DAC_WaterMarkMode)
 	{
 		case WATER_MODE_1WORD:
@@ -96,26 +96,26 @@ void DAC_Init(DAC_InitTypeDef* DAC_InitStruct)
 		default:break;
 	}
 
-  //配置C2寄存器 设置上限和下线
+  //����C2�Ĵ��� �������޺�����
 	DAC0->C2 =  DAC_C2_DACBFUP(DAC_InitStruct->DAC_BufferUpperLimit);
 	DAC0->C2 |= DAC_C2_DACBFRP(DAC_InitStruct->DAC_BufferStartPostion);
 }
 
 /***********************************************************************************************
- 功能：使能DAC的DMA模块
- 形参：DACx: DAC模块
-       @arg DAC0 : DAC0模块
-       DAC_DMAReq : DAC DMA触发源
-       @arg DAC_DMAReq_DAC: DAC缓冲区标志置位
-       NewState : 使能或者关闭
-       @arg ENABLE : 使能
-       @arg DISABLE: 关闭
- 返回：0
- 详解：0
+ ���ܣ�ʹ��DAC��DMAģ��
+ �βΣ�DACx: DACģ��
+       @arg DAC0 : DAC0ģ��
+       DAC_DMAReq : DAC DMA����Դ
+       @arg DAC_DMAReq_DAC: DAC��������־��λ
+       NewState : ʹ�ܻ��߹ر�
+       @arg ENABLE : ʹ��
+       @arg DISABLE: �ر�
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void DAC_DMACmd(DAC_Type* DACx, uint16_t DAC_DMAReq, FunctionalState NewState)
 {
-	//参数检查
+	//�������
 	assert_param(IS_DAC_ALL_PERIPH(DACx));
 	assert_param(IS_DAC_DMAREQ(DAC_DMAReq));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -129,22 +129,22 @@ void DAC_DMACmd(DAC_Type* DACx, uint16_t DAC_DMAReq, FunctionalState NewState)
 }
 
 /***********************************************************************************************
- 功能：DAC 中断配置
- 形参：DACx: DAC模块
-       @arg DAC0 : DAC0模块
-       DAC_IT : DAC中断源
-			 @arg DAC_IT_POINTER_BUTTOM: POINTER到达底部时触发
-			 @arg DAC_IT_POINTER_TOP:    POINTER到达顶部时触发 
-			 @arg DAC_IT_WATER_MARK:     POINTER到达水位时触发
-       NewState : 使能或者关闭
-       @arg ENABLE : 使能
-       @arg DISABLE: 关闭
- 返回：0
- 详解：0
+ ���ܣ�DAC �ж�����
+ �βΣ�DACx: DACģ��
+       @arg DAC0 : DAC0ģ��
+       DAC_IT : DAC�ж�Դ
+			 @arg DAC_IT_POINTER_BUTTOM: POINTER����ײ�ʱ����
+			 @arg DAC_IT_POINTER_TOP:    POINTER���ﶥ��ʱ���� 
+			 @arg DAC_IT_WATER_MARK:     POINTER����ˮλʱ����
+       NewState : ʹ�ܻ��߹ر�
+       @arg ENABLE : ʹ��
+       @arg DISABLE: �ر�
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void DAC_ITConfig(DAC_Type* DACx, uint16_t DAC_IT, FunctionalState NewState)
 {
-	//参数检查
+	//�������
 	assert_param(IS_DAC_ALL_PERIPH(DACx));
 	assert_param(IS_DAC_IT(DAC_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -163,20 +163,20 @@ void DAC_ITConfig(DAC_Type* DACx, uint16_t DAC_IT, FunctionalState NewState)
 	}
 }
 /***********************************************************************************************
- 功能：DAC 获得中断标志状态
- 形参：DACx: DAC模块
-       @arg DAC0 : DAC0模块
-       DAC_IT : DAC中断源
-			 @arg DAC_IT_POINTER_BUTTOM: POINTER到达底部时触发
-			 @arg DAC_IT_POINTER_TOP:    POINTER到达顶部时触发 
-			 @arg DAC_IT_WATER_MARK:     POINTER到达水位时触发
- 返回：SET or RESET
- 详解：0
+ ���ܣ�DAC ����жϱ�־״̬
+ �βΣ�DACx: DACģ��
+       @arg DAC0 : DAC0ģ��
+       DAC_IT : DAC�ж�Դ
+			 @arg DAC_IT_POINTER_BUTTOM: POINTER����ײ�ʱ����
+			 @arg DAC_IT_POINTER_TOP:    POINTER���ﶥ��ʱ���� 
+			 @arg DAC_IT_WATER_MARK:     POINTER����ˮλʱ����
+ ���أ�SET or RESET
+ ��⣺0
 ************************************************************************************************/
 ITStatus DAC_GetITStatus(DAC_Type* DACx, uint16_t DAC_IT)
 {
 	ITStatus retval;
-	//参数检查
+	//�������
 	assert_param(IS_DAC_ALL_PERIPH(DACx));
 	assert_param(IS_DAC_IT(DAC_IT));
 	
@@ -197,33 +197,33 @@ ITStatus DAC_GetITStatus(DAC_Type* DACx, uint16_t DAC_IT)
 }
 
 /***********************************************************************************************
- 功能：DAC 软件触发一次
- 形参：DACx: DAC模块
-       @arg DAC0 : DAC0模块
- 返回：0
- 详解：0
+ ���ܣ�DAC ��������һ��
+ �βΣ�DACx: DACģ��
+       @arg DAC0 : DAC0ģ��
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void DAC_SoftwareTrigger(DAC_Type *DACx)
 {
-	//参数检查
+	//�������
 	assert_param(IS_DAC_ALL_PERIPH(DACx));
 	
-  DAC0->C0 |= DAC_C0_DACSWTRG_MASK;//软件触发一次
+  DAC0->C0 |= DAC_C0_DACSWTRG_MASK;//��������һ��
 }
 
 /***********************************************************************************************
- 功能：DAC 设置DAC缓冲区
- 形参：DACx: DAC模块
-       @arg DAC0 : DAC0模块
-			 pDACBuffer : 缓冲区指针
-       NumberOfBuffer : 缓冲区大小 <=15
- 返回：0
- 详解：0
+ ���ܣ�DAC ����DAC������
+ �βΣ�DACx: DACģ��
+       @arg DAC0 : DAC0ģ��
+			 pDACBuffer : ������ָ��
+       NumberOfBuffer : ��������С <=15
+ ���أ�0
+ ��⣺0
 ************************************************************************************************/
 void DAC_SetBuffer(DAC_Type *DACx, uint16_t* pDACBuffer,uint8_t NumberOfBuffer)
 {
 	uint8_t i;
-	//参数检查
+	//�������
 	assert_param(IS_DAC_ALL_PERIPH(DACx));
 	assert_param(IS_DAC_BUFFER_CNT(NumberOfBuffer));
 	
@@ -234,16 +234,16 @@ void DAC_SetBuffer(DAC_Type *DACx, uint16_t* pDACBuffer,uint8_t NumberOfBuffer)
 	}                       
 }
 /***********************************************************************************************
- 功能：当 DAC禁止BUFFER模式时 设置DAC输出值
- 形参：DACx: DAC模块
-       @arg DAC0 : DAC0模块
-			 DAC_Value : 输出值 0-4095
- 返回：0
- 详解：实际上 设置DACBuffer[0] 的值 
+ ���ܣ��� DAC��ֹBUFFERģʽʱ ����DAC���ֵ
+ �βΣ�DACx: DACģ��
+       @arg DAC0 : DAC0ģ��
+			 DAC_Value : ���ֵ 0-4095
+ ���أ�0
+ ��⣺ʵ���� ����DACBuffer[0] ��ֵ 
 ************************************************************************************************/
 void DAC_SetValue(DAC_Type *DACx,uint16_t DAC_Value)
 {
-	//参数检查
+	//�������
 	assert_param(IS_DAC_ALL_PERIPH(DACx));
 	assert_param(IS_DAC_BUFFER_VALUE(DAC_Value));
 	

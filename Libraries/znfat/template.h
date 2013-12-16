@@ -1,7 +1,7 @@
-ï»¿#ifdef ZNFAT_MAKE_FS
+#ifdef ZNFAT_MAKE_FS
 
 /*============================================================================================
-  æ­¤æ–‡ä»¶ç”¨äºŽä¸‹å®šä¹‰znFATæ ¼å¼åŒ–è¿‡ç¨‹ä¸­è¦ä½¿ç”¨çš„ä¸€äº›åŠŸèƒ½æ‰‡åŒºæ•°æ®æ¨¡æ¿ æ¶‰åŠ DBR FSINFO FAT åŠDAé¦–æ‰‡åŒº
+  ´ËÎÄ¼þÓÃÓÚÏÂ¶¨ÒåznFAT¸ñÊ½»¯¹ý³ÌÖÐÒªÊ¹ÓÃµÄÒ»Ð©¹¦ÄÜÉÈÇøÊý¾ÝÄ£°å Éæ¼° DBR FSINFO FAT ¼°DAÊ×ÉÈÇø
 =============================================================================================*/
 
 ROM_TYPE_UINT8 _dbr[512] = 
@@ -40,24 +40,24 @@ ROM_TYPE_UINT8 _dbr[512] =
  0x72, 0x74, 0x0D, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0xAC, 0xCB, 0xD8, 0x00, 0x00, 0x55, 0xAA
 };
 
-ROM_TYPE_UINT8 _fsinfo_1[4] = //4~479 is all 0 FSINFOæ‰‡åŒºæ•°æ®çš„ç¬¬ä¸€éƒ¨åˆ† ä»¥RRaAå¼€å§‹
+ROM_TYPE_UINT8 _fsinfo_1[4] = //4~479 is all 0 FSINFOÉÈÇøÊý¾ÝµÄµÚÒ»²¿·Ö ÒÔRRaA¿ªÊ¼
 {
  0x52, 0x52, 0x61, 0x41 
 };
 
-ROM_TYPE_UINT8 _fsinfo_2[28] = //484~511 is all 0 FSINFOæ‰‡åŒºæ•°æ®çš„ç¬¬äºŒéƒ¨åˆ† ä»¥rrAaå¼€å§‹ï¼Œä»¥0X55AAç»“æŸ
+ROM_TYPE_UINT8 _fsinfo_2[28] = //484~511 is all 0 FSINFOÉÈÇøÊý¾ÝµÄµÚ¶þ²¿·Ö ÒÔrrAa¿ªÊ¼£¬ÒÔ0X55AA½áÊø
 {
  0x72, 0x72, 0x41, 0x61, 0xB6, 0xF9, 0x03, 0x00, 0x03, 0x00, 0x00, 0x00, 
  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0xAA 
 };
 
-ROM_TYPE_UINT8 _1stsec[26] = //26~511 is all 0 é¦–ç›®å½•çš„ç¬¬ä¸€ä¸ªæ‰‡åŒºæ•°æ®
+ROM_TYPE_UINT8 _1stsec[26] = //26~511 is all 0 Ê×Ä¿Â¼µÄµÚÒ»¸öÉÈÇøÊý¾Ý
 { 
  'Z', 'N', '\'', 'Z', 'N', 'F', 'A', 'T', 'O', 'K', '!', 0x08, 0x00, 0x6A, 0x50, 0x78, 
  0x7B, 0x40, 0x7B, 0x40, 0x00, 0x00, 0x50, 0x78, 0x7B, 0x40
 };
 
-ROM_TYPE_UINT8 _fatsec[12] = //12~511 is all 0 FATè¡¨çš„ç¬¬ä¸€ä¸ªæ‰‡åŒºæ•°æ®
+ROM_TYPE_UINT8 _fatsec[12] = //12~511 is all 0 FAT±íµÄµÚÒ»¸öÉÈÇøÊý¾Ý
 { 
  0xF8, 0xFF, 0xFF, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x0F
 };

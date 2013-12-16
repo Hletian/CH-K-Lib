@@ -1,4 +1,4 @@
-ï»¿#include "lcd_chk60evb_ucGUI.h"
+#include "lcd_chk60evb_ucGUI.h"
 #include "delay.h"
 
 static void LCD_WriteRegister(uint16_t RegisterIndex, uint16_t Data)
@@ -30,7 +30,7 @@ void LCD_SetCursor(uint16_t Xpos, uint16_t Ypos)
 
 __INLINE void LCD_DrawPoint(uint16_t XPos, uint16_t YPos, uint16_t Color)
 {
-  LCD_SetCursor(XPos, YPos);//è®¾ç½®å…‰æ ‡ä½ç½® 
+  LCD_SetCursor(XPos, YPos);//ÉèÖÃ¹â±êÎ»ÖÃ 
 	LCD_WriteRegister(0x22, Color);
 }
 
@@ -47,8 +47,8 @@ static uint16_t LCD_BGR2RGB(uint16_t c)
 
 uint16_t LCD_ReadPoint(uint16_t x,uint16_t y)
 {
-    LCD_SetCursor(x,y);       //è®¾ç½®å…‰æ ‡ä½ç½® 
-    LCD_ReadRegister(0x22);   //è¯»ç¬¬äºŒæ¬¡æ‰èƒ½è¯»åˆ°æ­£ç¡®çš„å€¼
+    LCD_SetCursor(x,y);       //ÉèÖÃ¹â±êÎ»ÖÃ 
+    LCD_ReadRegister(0x22);   //¶ÁµÚ¶ş´Î²ÅÄÜ¶Áµ½ÕıÈ·µÄÖµ
     return LCD_BGR2RGB(LCD_ReadRegister(0x22));
 }
 
@@ -61,8 +61,8 @@ void LCD_Clear(uint16_t color)
 {
 	uint32_t index=0;      
 	uint32_t totalpoint = LCD_X_MAX*LCD_Y_MAX;
-	LCD_SetCursor(0,0);	//è®¾ç½®å…‰æ ‡ä½ç½® 
-	WMLCDCOM(0x22);     //å¼€å§‹å†™å…¥GRAM	 	  
+	LCD_SetCursor(0,0);	//ÉèÖÃ¹â±êÎ»ÖÃ 
+	WMLCDCOM(0x22);     //¿ªÊ¼Ğ´ÈëGRAM	 	  
 	for(index = 0; index < totalpoint; index++)
 	{
 		WMLCDDATA(color);	   
@@ -128,7 +128,7 @@ static void LCD_FlexBusInit(void)
   
     SIM->SOPT2 |= SIM_SOPT2_FBSL(3);
     SIM->SCGC7 |= SIM_SCGC7_FLEXBUS_MASK;
-    //å®æµ‹LCDæ•°æ®é¢‘ç‡ä¸èƒ½è¶…è¿‡12M
+    //Êµ²âLCDÊı¾İÆµÂÊ²»ÄÜ³¬¹ı12M
     div = (CPUInfo.CoreClock/12000000)-1;
     SIM->CLKDIV1 |= SIM_CLKDIV1_OUTDIV3(div);
   
@@ -160,19 +160,19 @@ static void LCD_FlexBusInit(void)
     FB->CS[0].CSAR=FLEXBUS_BASE_ADDRESS;
  
     FB->CS[0].CSMR  =  FB_CSMR_BAM(0x0800) | FB_CSMR_V_MASK; 
-    FB->CS[0].CSCR  = FB_CSCR_BLS_MASK   //å³å¯¹é½
-            | FB_CSCR_PS(2)     //16Byteæ•°æ®  
+    FB->CS[0].CSCR  = FB_CSCR_BLS_MASK   //ÓÒ¶ÔÆë
+            | FB_CSCR_PS(2)     //16ByteÊı¾İ  
             | FB_CSCR_AA_MASK;             
   
-    FB->CSPMCR = FB_CSPMCR_GROUP3(2); //16-23ä½è¾“å‡º BE é€‰æ‹©
+    FB->CSPMCR = FB_CSPMCR_GROUP3(2); //16-23Î»Êä³ö BE Ñ¡Ôñ
 }
 
 void MLCD_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct1;
-    LCD_FlexBusInit();//åˆå§‹åŒ–FlexBusæ€»çº¿
+    LCD_FlexBusInit();//³õÊ¼»¯FlexBus×ÜÏß
     
-    //RSTåŠèƒŒå…‰
+    //RST¼°±³¹â
     GPIO_InitStruct1.GPIOx = LCD_RST_PORT;
     GPIO_InitStruct1.GPIO_InitState = Bit_RESET;
     GPIO_InitStruct1.GPIO_IRQMode = GPIO_IT_DISABLE;
@@ -199,7 +199,7 @@ void MLCD_Init(void)
     LCD_WriteRegister(0x02,0x0700);  //set the line inversion    
     //LCD_WR_REG(0x03,0x1018);  //65536 colors     
     LCD_WriteRegister(0x03,0x1030);    
-    //æ¨ªå±
+    //ºáÆÁ
     #ifdef LCD_USE_HORIZONTAL
     LCD_WriteRegister(0x03,(0<<5)|(0<<4)|(1<<3)|(1<<12));
     #else
@@ -263,9 +263,9 @@ void MLCD_Init(void)
     LCD_WriteRegister(0x3c,0x0500);   
     LCD_WriteRegister(0x3d,0x0503);   
 
-    //å¼€å¯æ˜¾ç¤º   
+    //¿ªÆôÏÔÊ¾   
     LCD_WriteRegister(0x07,0x0173);
-    //æ¸…å±
+    //ÇåÆÁ
     //LCD_Clear(lcddev.bcolor);
 }
 

@@ -1,4 +1,4 @@
-ï»¿#ifndef _CHGUI_H_
+#ifndef _CHGUI_H_
 #define _CHGUI_H_
 
 #include <stdint.h>
@@ -9,7 +9,7 @@
 
 #define GUI_COLOR uint16_t
 
-//ç”»ç¬”é¢œè‰²
+//»­±ÊÑÕÉ«
 #define WHITE         	 0xFFFF
 #define BLACK         	 0x0000	  
 #define BLUE         	 0x001F  
@@ -21,19 +21,19 @@
 #define GREEN         	 0x07E0
 #define CYAN          	 0x7FFF
 #define YELLOW        	 0xFFE0
-#define BROWN 			 0XBC40 //æ£•è‰²
-#define BRRED 			 0XFC07 //æ£•çº¢è‰²
-#define GRAY  			 0X8430 //ç°è‰²
-//GUIé¢œè‰²
-#define DARKBLUE      	 0X01CF	//æ·±è“è‰²
-#define LIGHTBLUE      	 0X7D7C	//æµ…è“è‰²  
-#define GRAYBLUE       	 0X5458 //ç°è“è‰²
-//ä»¥ä¸Šä¸‰è‰²ä¸ºPANELçš„é¢œè‰² 
-#define LIGHTGREEN     	 0X841F //æµ…ç»¿è‰²
-#define LIGHTGRAY        0XEF5B //æµ…ç°è‰²(PANNEL)
-#define LGRAY 			 0XC618 //æµ…ç°è‰²(PANNEL),çª—ä½“èƒŒæ™¯è‰²
-#define LGRAYBLUE        0XA651 //æµ…ç°è“è‰²(ä¸­é—´å±‚é¢œè‰²)
-#define LBBLUE           0X2B12 //æµ…æ£•è“è‰²(é€‰æ‹©æ¡ç›®çš„åè‰²)
+#define BROWN 			 0XBC40 //×ØÉ«
+#define BRRED 			 0XFC07 //×ØºìÉ«
+#define GRAY  			 0X8430 //»ÒÉ«
+//GUIÑÕÉ«
+#define DARKBLUE      	 0X01CF	//ÉîÀ¶É«
+#define LIGHTBLUE      	 0X7D7C	//Ç³À¶É«  
+#define GRAYBLUE       	 0X5458 //»ÒÀ¶É«
+//ÒÔÉÏÈıÉ«ÎªPANELµÄÑÕÉ« 
+#define LIGHTGREEN     	 0X841F //Ç³ÂÌÉ«
+#define LIGHTGRAY        0XEF5B //Ç³»ÒÉ«(PANNEL)
+#define LGRAY 			 0XC618 //Ç³»ÒÉ«(PANNEL),´°Ìå±³¾°É«
+#define LGRAYBLUE        0XA651 //Ç³»ÒÀ¶É«(ÖĞ¼ä²ãÑÕÉ«)
+#define LBBLUE           0X2B12 //Ç³×ØÀ¶É«(Ñ¡ÔñÌõÄ¿µÄ·´É«)
 
 
 
@@ -48,7 +48,7 @@ typedef struct
     const char* pFontDataAdress;
 }CHGUI_FontSetup_TypeDef;
 
-//LCDæ“ä½œè¿æ¥å™¨
+//LCD²Ù×÷Á¬½ÓÆ÷
 typedef struct
 {
     void (*ctrl_init)(void);
@@ -63,7 +63,7 @@ typedef struct
 
 } CHGUI_CtrlOperation_TypeDef;
 
-//è§¦æ‘¸æ“ä½œè¿æ¥å™¨
+//´¥Ãş²Ù×÷Á¬½ÓÆ÷
 typedef struct
 {
     void (*ctrl_init)(void);

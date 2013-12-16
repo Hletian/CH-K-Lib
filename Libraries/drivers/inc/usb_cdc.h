@@ -1,10 +1,10 @@
-ï»¿#ifndef __USB_CDC_H__
+#ifndef __USB_CDC_H__
 #define __USB_CDC_H__
 #include "sys.h"
 
-//USB_CDCè®¾å¤‡çŠ¶æ€
+//USB_CDCÉè±¸×´Ì¬
 #define WAITING_FOR_ENUMERATION  0x00
-//USB setupæ¥å£è¯·æ±‚å‚æ•°
+//USB setup½Ó¿ÚÇëÇó²ÎÊı
 #define SET_LINE_CODING          0x20
 #define GET_LINE_CODING          0x21
 #define SET_CONTROL_LINE_STATE   0x22
@@ -19,7 +19,7 @@
 
 #define CDC_INPointer   BufferPointer[bEP02IN_ODD]
 #define CDC_OUTPointer  BufferPointer[bEP3OUT_ODD]
-//å®šä¹‰CDCç›´çº¿é€šä¿¡ç»“æ„ä½“
+//¶¨ÒåCDCÖ±ÏßÍ¨ĞÅ½á¹¹Ìå
 typedef struct
 {
     uint32_t  DTERate;
@@ -31,7 +31,7 @@ typedef struct
 
 
 
-//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
+//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
 void USB_CDC_Init(void);
 #endif
 

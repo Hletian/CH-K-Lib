@@ -1,8 +1,8 @@
-﻿#ifndef __SIMSUN6X12_H__
+#ifndef __SIMSUN6X12_H__
 #define __SIMSUN6X12_H__ 
 
 
-//字体制作: PCtoLCD2002完美版 选项里去掉 前缀和 后缀 选成 行列式扫描
+//��������: PCtoLCD2002������ ѡ����ȥ�� ǰ׺�� ��׺ ѡ�� ����ʽɨ��
 
 #define FONT_SimSun6x12_XSize   (6)
 #define FONT_SimSun6x12_YSize   (12)

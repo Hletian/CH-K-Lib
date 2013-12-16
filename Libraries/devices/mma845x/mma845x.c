@@ -1,59 +1,59 @@
-Ôªø/**
+/**
   ******************************************************************************
   * @file    mma845x.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   Ë∂ÖÊ†∏ÂéüÂ≠êÊ†∏Ê†∏ÂøÉÊùø BSPÊûÑ‰ª∂ MMA845xÂä†ÈÄüÂ∫¶‰º†ÊÑüÂô®È©±Âä®
+  * @brief   ≥¨∫À‘≠◊”∫À∫À–ƒ∞Â BSPππº˛ MMA845xº”ÀŸ∂»¥´∏–∆˜«˝∂Ø
   ******************************************************************************
   */
 #include "mma845x.h"
-//MMA845x_ÂÜôÂØÑÂ≠òÂô®
+//MMA845x_–¥ºƒ¥Ê∆˜
  void MMA845x_WriteRegister(I2C_Type* I2Cx, unsigned char u8RegisterAddress, unsigned char u8Data)
 {
-    //ÂèëÈÄÅÂú∞ÂùÄ
+    //∑¢ÀÕµÿ÷∑
     I2C_GenerateSTART(MMA845x_I2C_PORT);
     I2C_Send7bitAddress(MMA845x_I2C_PORT,MMA845x_IIC_ADDRESS,I2C_MASTER_WRITE);
     I2C_WaitAck(MMA845x_I2C_PORT);
-    //ÂèëÈÄÅÈúÄË¶ÅÂÜôÂÖ•ÁöÑÂØÑÂ≠òÂô®Âú∞ÂùÄ
+    //∑¢ÀÕ–Ë“™–¥»Îµƒºƒ¥Ê∆˜µÿ÷∑
     I2C_SendData(MMA845x_I2C_PORT,u8RegisterAddress);
     I2C_WaitAck(MMA845x_I2C_PORT);
-    //ÂèëÈÄÅÊï∞ÊçÆ
+    //∑¢ÀÕ ˝æ›
     I2C_SendData(MMA845x_I2C_PORT,u8Data);
     I2C_WaitAck(MMA845x_I2C_PORT);
-    //ÁªìÊùü
+    //Ω· ¯
     I2C_GenerateSTOP(MMA845x_I2C_PORT);
     while(I2C_IsLineBusy(MMA845x_I2C_PORT) == TRUE);
 }
-//MMA85xËØªÂØÑÂ≠òÂô®
+//MMA85x∂¡ºƒ¥Ê∆˜
 uint8_t MMA845x_ReadRegister(I2C_Type* I2Cx, uint8_t Addr)
 {
     uint8_t result;
-    //ÂèëÈÄÅ‰ªéÊú∫Âú∞ÂùÄ
+    //∑¢ÀÕ¥”ª˙µÿ÷∑
     I2C_GenerateSTART(I2Cx);
     I2C_Send7bitAddress(I2Cx,0x38,I2C_MASTER_WRITE);
     I2C_WaitAck(I2Cx);
-    //ÈúÄË¶ÅËØªÂèñÁöÑÂØÑÂ≠òÂô®
+    //–Ë“™∂¡»°µƒºƒ¥Ê∆˜
     I2C_SendData(I2Cx, Addr);
     I2C_WaitAck(I2Cx);
-    //ÈáçÊñ∞ÂºÄÂßã
+    //÷ÿ–¬ø™ º
     I2C_GenerateRESTART(I2Cx);
-    //‰∏ªÊú∫ËØª
+    //÷˜ª˙∂¡
     I2C_Send7bitAddress(I2Cx,0x38,I2C_MASTER_READ);
     I2C_WaitAck(I2Cx);
-    //ËÆæÁΩÆKinetis‰∏∫Êé•Êî∂Ê®°Âºè
+    //…Ë÷√KinetisŒ™Ω” ’ƒ£ Ω
     I2C_SetMasterMode(I2Cx,I2C_MASTER_READ);
     I2C_GenerateAck(I2Cx);
     result = I2Cx->D;
     I2C_WaitAck(I2Cx);
-    //ÂèëÈÄÅÂÅúÊ≠¢‰ø°Âè∑
+    //∑¢ÀÕÕ£÷π–≈∫≈
     I2C_GenerateSTOP(I2Cx);
-    //ËØªÂèñÊï∞ÊçÆ
+    //∂¡»° ˝æ›
     result =  I2Cx->D;
     return result;
 }
 
-//ÂàùÂßãÂåñMMA745x
+//≥ı ºªØMMA745x
 void MMA845x_Init(void)
 {	
 	I2C_InitTypeDef I2C_InitStruct1;
@@ -63,8 +63,8 @@ void MMA845x_Init(void)
 	
 	MMA845x_WriteRegister(MMA845x_I2C_PORT,CTRL_REG1,ASLP_RATE_20MS+DATA_RATE_1250US);
 	MMA845x_WriteRegister(MMA845x_I2C_PORT,XYZ_DATA_CFG_REG, FULL_SCALE_2G); //2G
-	MMA845x_WriteRegister(MMA845x_I2C_PORT,HP_FILTER_CUTOFF_REG, PULSE_LPF_EN_MASK ); //‰ΩéÈÄöÊª§Ê≥¢
-	MMA845x_WriteRegister(MMA845x_I2C_PORT,CTRL_REG1, ACTIVE_MASK);          //ÊøÄÊ¥ªÁä∂ÊÄÅ
+	MMA845x_WriteRegister(MMA845x_I2C_PORT,HP_FILTER_CUTOFF_REG, PULSE_LPF_EN_MASK ); //µÕÕ®¬À≤®
+	MMA845x_WriteRegister(MMA845x_I2C_PORT,CTRL_REG1, ACTIVE_MASK);          //º§ªÓ◊¥Ã¨
 }
  
 uint16_t MMA845x_GetData(uint8_t REG_Address)

@@ -1,4 +1,4 @@
-﻿#ifndef __MAG3110_H
+#ifndef __MAG3110_H
 #define __MAG3110_H
 
 #include "sys.h"

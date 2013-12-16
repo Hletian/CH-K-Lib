@@ -1,4 +1,4 @@
-﻿#include "chgui.h"
+#include "chgui.h"
 #include "chgui_char.h"
 #include "string.h"
 #include "stdarg.h"

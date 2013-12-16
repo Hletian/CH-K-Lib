@@ -1,4 +1,4 @@
-﻿#ifndef __LED_CHKATOM_H__
+#ifndef __LED_CHKATOM_H__
 #define __LED_CHKATOM_H__
 #include "led.h"
 

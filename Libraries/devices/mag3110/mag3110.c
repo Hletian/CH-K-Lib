@@ -1,4 +1,4 @@
-﻿#include "mag3110.h"
+#include "mag3110.h"
 #include "math.h"
 /*  Max Min Value in each axis  */
 int16_t MAG3110_XMax = -1024;

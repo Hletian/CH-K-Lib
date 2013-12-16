@@ -1,4 +1,4 @@
-﻿#ifndef _CHGUI_CHAR_H_
+#ifndef _CHGUI_CHAR_H_
 #define _CHGUI_CHAR_H_
 
 #include "stdint.h"

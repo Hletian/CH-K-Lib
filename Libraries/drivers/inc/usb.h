@@ -1,99 +1,99 @@
-ï»¿#ifndef __USB_H_
+#ifndef __USB_H_
 #define	__USB_H_
 #include "sys.h"
 #include "message_manage.h"
 #include "stdio.h"
 /***********************************************************************************************
-//CH_Kinetisé©±åŠ¨åº“  V2.3   
-//ä½œè€…    :YANDLD 
+//CH_KinetisÇı¶¯¿â  V2.3   
+//×÷Õß    :YANDLD 
 //E-MAIL  :yandld@126.com
-//ä¿®æ”¹æ—¥æœŸ:2013/2/14
-//ç‰ˆæœ¬ï¼šV2.3
-//æ·˜å®ï¼šhttp://upcmcu.taobao.com
+//ĞŞ¸ÄÈÕÆÚ:2013/2/14
+//°æ±¾£ºV2.3
+//ÌÔ±¦£ºhttp://upcmcu.taobao.com
 //QQ    1453363089
 //Copyright(C) YANDLD 2012-2022
 //All rights reserved
 ************************************************************************************************/
-/*é€‰æ‹©å½“å‰USBè®¾å¤‡çš„ç±»å‹*/
+/*Ñ¡Ôñµ±Ç°USBÉè±¸µÄÀàĞÍ*/
 #define USB_DEVICE_CLASS USB_DEVICE_CLASS_HID
 
-//å¸¸ç”¨æ“ä½œå®å®šä¹‰
+//³£ÓÃ²Ù×÷ºê¶¨Òå
 #define BIT_SET(BitNumber, Register)        (Register |=(1<<BitNumber))
 #define BIT_CLR(BitNumber, Register)        (Register &=~(1<<BitNumber))
 #define BIT_CHK(BitNumber, Register)        (Register & (1<<BitNumber))
 
-//æœ¬æ„ä»¶ä½¿ç”¨çš„è¾“å‡ºè¾“å…¥èŠ‚ç‚¹
-//è¾“å‡ºä½¿ç”¨ç«¯ç‚¹3
+//±¾¹¹¼şÊ¹ÓÃµÄÊä³öÊäÈë½Úµã
+//Êä³öÊ¹ÓÃ¶Ëµã3
 #define EP_OUT          (3)
-//è¾“å…¥ä½¿ç”¨ç«¯ç‚¹2
+//ÊäÈëÊ¹ÓÃ¶Ëµã2
 #define EP_IN           (2)
 
-//USBåˆ†é¢‘å› å­
+//USB·ÖÆµÒò×Ó
 #define USB_FARCTIONAL_VALUE    0x02
 
-//EP0ç¼“å†²åŒºè®¾ç½®
+//EP0»º³åÇøÉèÖÃ
 #define EP0_SIZE            32
 
-//EP1è®¾ç½®
+//EP1ÉèÖÃ
 #define EP1_VALUE           _EP_IN
 #define EP1_TYPE            INTERRUPT
 #define EP1_SIZE            32
 #define EP1_BUFF_OFFSET     0x18
 
-//EP2è®¾ç½®
+//EP2ÉèÖÃ
 #define EP2_VALUE           _EP_IN
 #define EP2_TYPE            BULK
 #define EP2_SIZE            32
 #define EP2_BUFF_OFFSET     0x20
 
-//EP3è®¾ç½®
+//EP3ÉèÖÃ
 #define EP3_VALUE           _EP_OUT
 #define EP3_TYPE            BULK
 #define EP3_SIZE            32
 #define EP3_BUFF_OFFSET     0x28
 
-//EP4è®¾ç½®
+//EP4ÉèÖÃ
 #define EP4_VALUE           DISABLE
 #define EP4_SIZE            1
 #define EP4_BUFF_OFFSET     0x08
 
-//EP5è®¾ç½®
+//EP5ÉèÖÃ
 #define EP5_VALUE           DISABLE
 #define EP5_SIZE            1
 #define EP5_BUFF_OFFSET     0x08
 
-//EP6è®¾ç½®
+//EP6ÉèÖÃ
 #define EP6_VALUE           DISABLE
 #define EP6_SIZE            1
 #define EP6_BUFF_OFFSET     0x08
 
 
-//è®¾ç½®ä½¿ç”¨çš„è¾“å…¥ è¾“å‡º ç«¯ç‚¹
-#define _EP_IN      USB_ENDPT_EPTXEN_MASK //æ—¶èƒ½è¯¥ç«¯ç‚¹çš„è¾“å…¥ä¼ è¾“ //USBæ‰€æœ‰çš„è¾“å…¥è¾“å‡ºé’ˆå¯¹äºä¸»æœºæ¥è¯´
-#define _EP_OUT     USB_ENDPT_EPRXEN_MASK //æ—¶èƒ½è¯¥ç«¯ç‚¹çš„è¾“å‡ºä¼ è¾“ //USBæ‰€æœ‰çš„è¾“å…¥è¾“å‡ºé’ˆå¯¹äºä¸»æœºæ¥è¯´
+//ÉèÖÃÊ¹ÓÃµÄÊäÈë Êä³ö ¶Ëµã
+#define _EP_IN      USB_ENDPT_EPTXEN_MASK //Ê±ÄÜ¸Ã¶ËµãµÄÊäÈë´«Êä //USBËùÓĞµÄÊäÈëÊä³öÕë¶ÔÓÚÖ÷»úÀ´Ëµ
+#define _EP_OUT     USB_ENDPT_EPRXEN_MASK //Ê±ÄÜ¸Ã¶ËµãµÄÊä³ö´«Êä //USBËùÓĞµÄÊäÈëÊä³öÕë¶ÔÓÚÖ÷»úÀ´Ëµ
 
 #define DISABLE 0
 
 
-// BDTçŠ¶æ€
-//DBTç”±MCUæ§åˆ¶
+// BDT×´Ì¬
+//DBTÓÉMCU¿ØÖÆ
 #define kMCU      0x00
-//DBTç”±SIE(USB)æ¨¡å—æ§åˆ¶
+//DBTÓÉSIE(USB)Ä£¿é¿ØÖÆ
 #define kSIE      0x80
 
-//BDTç¼“å†²åŒºDATA0æ ¼å¼
+//BDT»º³åÇøDATA0¸ñÊ½
 #define kUDATA0   0x88
-//BDTç¼“å†²åŒºDATA1æ ¼å¼
+//BDT»º³åÇøDATA1¸ñÊ½
 #define kUDATA1   0xC8
 
-//USBäº‹åŠ¡ä¸­ï¼ŒåŒ…çš„PIDç±»å‹
+//USBÊÂÎñÖĞ£¬°üµÄPIDÀàĞÍ
 #define mSETUP_TOKEN    0x0D
 #define mOUT_TOKEN      0x01
 #define mIN_TOKEN       0x09
 
 
 /***********************************************************************************************
-//æ ‡å‡†çš„SETUPè¯·æ±‚å‘½ä»¤  åœ¨æ ‡å‡†è¯·æ±‚çš„8ä¸ªå­—èŠ‚ä¸­çš„ç¬¬äºŒä¸ª
+//±ê×¼µÄSETUPÇëÇóÃüÁî  ÔÚ±ê×¼ÇëÇóµÄ8¸ö×Ö½ÚÖĞµÄµÚ¶ş¸ö
 ************************************************************************************************/
 #define mGET_STATUS           0
 #define mCLR_FEATURE          1
@@ -108,7 +108,7 @@
 #define mSYNC_FRAME           12
 #define	mGET_MAXLUN	          0xFE
 
-//è·å–æè¿°ç¬¦
+//»ñÈ¡ÃèÊö·û
 #define DEVICE_DESCRIPTOR         1
 #define CONFIGURATION_DESCRIPTOR  2
 #define STRING_DESCRIPTOR         3
@@ -116,8 +116,8 @@
 #define ENDPOINT_DESCRIPTOR       5
 #define REPORT_DESCRIPTOR         0x22
 
-/*æ ¹æ®USB2.0æ ‡å‡†*/
-/*å®šä¹‰USBè®¾å¤‡çš„ç±»å‹*/
+/*¸ù¾İUSB2.0±ê×¼*/
+/*¶¨ÒåUSBÉè±¸µÄÀàĞÍ*/
 #define USB_DEVICE_CLASS_AUDIO        1
 #define USB_DEVICE_CLASS_CDC          2
 #define USB_DEVICE_CLASS_HID          3
@@ -129,7 +129,7 @@
 #define USB_DEVICE_CLASS_SMARTCARD    9
 //.......
 /***********************************************************************************************
-// SETUPè¯·æ±‚ç±»å‹ åœ¨USBæ ‡å‡†è¯·æ±‚ç»“æ„çš„ bmRequestType ä¸­
+// SETUPÇëÇóÀàĞÍ ÔÚUSB±ê×¼ÇëÇó½á¹¹µÄ bmRequestType ÖĞ
 ************************************************************************************************/
 enum
 {
@@ -184,58 +184,58 @@ enum
     bEP3IN_EVEN
 };
 /***********************************************************************************************
- ç¼“å†²åŒºæè¿°ç¬¦è¡¨(BDT)ç»“æ„ä½“
- æ¯ä¸ªç«¯ç‚¹2ä¸ªBDT(ä¸€ä¸ªç”¨äºå¾®æ§åˆ¶å™¨ï¼Œä¸€ä¸ªç”¨äºUSBæ¨¡å—) æ¯ä¸ª BDT 8å­—èŠ‚
+ »º³åÇøÃèÊö·û±í(BDT)½á¹¹Ìå
+ Ã¿¸ö¶Ëµã2¸öBDT(Ò»¸öÓÃÓÚÎ¢¿ØÖÆÆ÷£¬Ò»¸öÓÃÓÚUSBÄ£¿é) Ã¿¸ö BDT 8×Ö½Ú
 ************************************************************************************************/
 typedef union _tBDT_STAT
 {
     uint8_t _byte;
-	//å‘é€çš„MCUæ§åˆ¶å­—æ®µ
+	//·¢ËÍµÄMCU¿ØÖÆ×Ö¶Î
     struct{
         uint8_t :1;
         uint8_t :1;
-        uint8_t BSTALL:1;              //OTGæ¨¡å—å‘å‡ºä¸€ä¸ªæ¡æ‰‹åè®®
+        uint8_t BSTALL:1;              //OTGÄ£¿é·¢³öÒ»¸öÎÕÊÖĞ­Òé
         uint8_t DTS:1;                 //
-        uint8_t NINC:1;                //è®¿é—®æ•°æ®ç¼“å†²åŒºæ—¶ï¼ŒDMAå¼•æ“ä¸ä¼šå¢åŠ å®ƒçš„åœ°å€
+        uint8_t NINC:1;                //·ÃÎÊÊı¾İ»º³åÇøÊ±£¬DMAÒıÇæ²»»áÔö¼ÓËüµÄµØÖ·
         uint8_t KEEP:1;                //
-        uint8_t DATA:1;                //å‘é€æˆ–æ¥å—äº†DATA0/DATA1åŒ…ï¼ŒUSBæ¨¡å—ä¸æ”¹å˜è¯¥ä½
-        uint8_t UOWN:1;                //BDTæ‰€æœ‰æƒ UOWN=1 USBæ¨¡å—æ‹¥æœ‰ï¼ŒUOWN=0 å¾®å¤„ç†å™¨æ‹¥æœ‰
+        uint8_t DATA:1;                //·¢ËÍ»ò½ÓÊÜÁËDATA0/DATA1°ü£¬USBÄ£¿é²»¸Ä±ä¸ÃÎ»
+        uint8_t UOWN:1;                //BDTËùÓĞÈ¨ UOWN=1 USBÄ£¿éÓµÓĞ£¬UOWN=0 Î¢´¦ÀíÆ÷ÓµÓĞ
     }McuCtlBit;
-    //æ¥å—æ§åˆ¶å­—æ®µ 
+    //½ÓÊÜ¿ØÖÆ×Ö¶Î 
     struct{
         uint8_t    :2;
-        uint8_t PID:4;                 //åŒ…æ ‡å¿—
+        uint8_t PID:4;                 //°ü±êÖ¾
         uint8_t    :2;
     }RecPid;
-} tBDT_STAT,*ptBDT_STAT;                            //ç¼“å†²åŒºæè¿°ç¬¦è¡¨ç»“æ„ä½“
-//BDTï¼šç¼“å†²åŒºæè¿°ç¬¦è¡¨
+} tBDT_STAT,*ptBDT_STAT;                            //»º³åÇøÃèÊö·û±í½á¹¹Ìå
+//BDT£º»º³åÇøÃèÊö·û±í
 typedef struct _tBDT
 {
     tBDT_STAT Stat;
     uint8_t  dummy;
-    uint16_t Cnt;     //æ¥å—åˆ°çš„å­—èŠ‚æ•°
-    uint32_t Addr;    //ç¼“å†²åŒºåœ°å€         
+    uint16_t Cnt;     //½ÓÊÜµ½µÄ×Ö½ÚÊı
+    uint32_t Addr;    //»º³åÇøµØÖ·         
   } tBDT,*ptBDT;
 
 /***********************************************************************************************
- SETUPåŒ…ç»“æ„ä½“
+ SETUP°ü½á¹¹Ìå
 ************************************************************************************************/
 typedef struct _tUSB_Setup 
 {
-       uint8_t bmRequestType; //D7:ä¼ è¾“æ–¹å‘ D[6:5]ç±»å‹ D[4:0]æ¥æ”¶ç«¯ 
-       uint8_t bRequest;      //ç‰¹å®šè¯·æ±‚
-       uint8_t wValue_l;      //å­—å¤§å°å­—æ®µ,æ ¹æ®è¯·æ±‚çš„ä¸åŒè€Œä¸åŒ
+       uint8_t bmRequestType; //D7:´«Êä·½Ïò D[6:5]ÀàĞÍ D[4:0]½ÓÊÕ¶Ë 
+       uint8_t bRequest;      //ÌØ¶¨ÇëÇó
+       uint8_t wValue_l;      //×Ö´óĞ¡×Ö¶Î,¸ù¾İÇëÇóµÄ²»Í¬¶ø²»Í¬
        uint8_t wValue_h;      
-       uint8_t wIndex_l;      //å­—å¤§å°å­—æ®µ,æ ¹æ®è¯·æ±‚çš„ä¸åŒè€Œä¸åŒ,é€šå¸¸æ˜¯ä¼ é€’ç´¢å¼•å’Œä½ç§»é‡
+       uint8_t wIndex_l;      //×Ö´óĞ¡×Ö¶Î,¸ù¾İÇëÇóµÄ²»Í¬¶ø²»Í¬,Í¨³£ÊÇ´«µİË÷ÒıºÍÎ»ÒÆÁ¿
        uint8_t wIndex_h;
-       uint8_t wLength_l;     //å¦‚æœæœ‰æ•°æ®é˜¶æ®µï¼Œè¯¥åŸŸè¡¨ç¤ºæ‰€è¦ä¼ è¾“çš„å­—èŠ‚å¤§å°
+       uint8_t wLength_l;     //Èç¹ûÓĞÊı¾İ½×¶Î£¬¸ÃÓò±íÊ¾ËùÒª´«ÊäµÄ×Ö½Ú´óĞ¡
        uint8_t wLength_h;
 }tUSB_Setup;
 
-//BDT ç¼“å­˜æè¿°ç¬¦
-extern tBDT tBDTtable[16];													//å†…éƒ¨SRAMå†…å­˜æ± 
+//BDT »º´æÃèÊö·û
+extern tBDT tBDTtable[16];													//ÄÚ²¿SRAMÄÚ´æ³Ø
 
-//æœ¬æ„ä»¶å®ç°çš„æ¥å£å‡½æ•°
+//±¾¹¹¼şÊµÏÖµÄ½Ó¿Úº¯Êı
 void USB_WaitDeviceEnumed(void);
 uint8_t USB_IsDeviceEnumed(void);
 void USB_EP_IN_Transfer(uint8_t uint8_tEP,uint8_t *puint8_tDataPointer,uint8_t uint8_tDataSize);

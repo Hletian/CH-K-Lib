@@ -1,18 +1,18 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    spi.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ SPIæ¨¡å—é©±åŠ¨
+  * @brief   ³¬ºËK60¹Ì¼ş¿â SPIÄ£¿éÇı¶¯
   ******************************************************************************
   */
 #include "spi.h"
 /***********************************************************************************************
- åŠŸèƒ½ï¼šSPI ç»“æ„ä½“åˆå§‹åŒ– å¡«å…¥é»˜è®¤çš„å‚æ•°
- å½¢å‚ï¼šSPI_InitStruct SPI åˆå§‹åŒ–ç»“æ„
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºSPI ½á¹¹Ìå³õÊ¼»¯ ÌîÈëÄ¬ÈÏµÄ²ÎÊı
+ ĞÎ²Î£ºSPI_InitStruct SPI ³õÊ¼»¯½á¹¹
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void SPI_StructInit(SPI_InitTypeDef* SPI_InitStruct)
 {
@@ -24,10 +24,10 @@ void SPI_StructInit(SPI_InitTypeDef* SPI_InitStruct)
 	SPI_InitStruct->SPI_FirstBit = SPI_FirstBit_MSB;
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šSPI åˆå§‹åŒ–
- å½¢å‚ï¼šSPI_InitStruct SPI åˆå§‹åŒ–ç»“æ„
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºSPI ³õÊ¼»¯
+ ĞÎ²Î£ºSPI_InitStruct SPI ³õÊ¼»¯½á¹¹
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void SPI_Init(SPI_InitTypeDef* SPI_InitStruct)
 {
@@ -36,7 +36,7 @@ void SPI_Init(SPI_InitTypeDef* SPI_InitStruct)
 	SPI_DataMapTypeDef *pSPI_DataMap = (SPI_DataMapTypeDef*)&(SPI_InitStruct->SPIxDataMap);
 	SPI_CSMapTypeDef *pSPI_CSMap = (SPI_CSMapTypeDef*)&(SPI_InitStruct->SPIxPCSMap);
 	
-	//å‚æ•°æ£€æµ‹
+	//²ÎÊı¼ì²â
 	assert_param(IS_SPI_DATA_CHL(SPI_InitStruct->SPIxDataMap));
 	assert_param(IS_SPI_PCS_CHL(SPI_InitStruct->SPIxPCSMap));
 	assert_param(IS_SPI_BAUDRATE(SPI_InitStruct->SPI_BaudRatePrescaler));
@@ -45,7 +45,7 @@ void SPI_Init(SPI_InitTypeDef* SPI_InitStruct)
 	assert_param(IS_SPI_CPOL(SPI_InitStruct->SPI_CPOL));
 	assert_param(IS_SPI_FIRSTBIT(SPI_InitStruct->SPI_FirstBit));
 	
-	//æ‰¾å‡ºSPIæ¨¡å— å¼€SPIæ¨¡å—æ—¶é’Ÿ
+	//ÕÒ³öSPIÄ£¿é ¿ªSPIÄ£¿éÊ±ÖÓ
 	switch(pSPI_DataMap->SPI_Index)
 	{
 		case 0:
@@ -62,7 +62,7 @@ void SPI_Init(SPI_InitTypeDef* SPI_InitStruct)
 			break;
 		default:break;     
 	}
-	//æ‰¾å‡ºå¯¹åº”çš„PORT
+	//ÕÒ³ö¶ÔÓ¦µÄPORT
 	switch(pSPI_DataMap->SPI_GPIO_Index)
 	{
 		case 0:
@@ -87,15 +87,15 @@ void SPI_Init(SPI_InitTypeDef* SPI_InitStruct)
 			break;
 		default:break;
 	}
-	//å¼€å¯å¯¹åº”çš„å¼•è„š SCK SOUT SIN
+	//¿ªÆô¶ÔÓ¦µÄÒı½Å SCK SOUT SIN
 	SPI_PORT->PCR[pSPI_DataMap->SPI_SCK_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	SPI_PORT->PCR[pSPI_DataMap->SPI_SIN_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	SPI_PORT->PCR[pSPI_DataMap->SPI_SOUT_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	SPI_PORT->PCR[pSPI_DataMap->SPI_SCK_Pin_Index] |= PORT_PCR_MUX(pSPI_DataMap->SPI_Alt_Index);
 	SPI_PORT->PCR[pSPI_DataMap->SPI_SIN_Pin_Index] |= PORT_PCR_MUX(pSPI_DataMap->SPI_Alt_Index);
 	SPI_PORT->PCR[pSPI_DataMap->SPI_SOUT_Pin_Index] |= PORT_PCR_MUX(pSPI_DataMap->SPI_Alt_Index);
-	//é…ç½®PCS
-	//æ‰¾å‡ºå¯¹åº”çš„PORT
+	//ÅäÖÃPCS
+	//ÕÒ³ö¶ÔÓ¦µÄPORT
 	switch(pSPI_CSMap->SPI_GPIO_Index)
 	{
 		case 0:
@@ -122,65 +122,65 @@ void SPI_Init(SPI_InitTypeDef* SPI_InitStruct)
 	}
 	SPI_PORT->PCR[pSPI_CSMap->SPI_PCS_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	SPI_PORT->PCR[pSPI_CSMap->SPI_PCS_Pin_Index] |= PORT_PCR_MUX(pSPI_CSMap->SPI_Alt_Index);
-	//è®¾ç½®ä¸»ä»æ¨¡å¼
+	//ÉèÖÃÖ÷´ÓÄ£Ê½
 	(SPI_InitStruct->SPI_Mode == SPI_Mode_Master)?(SPIx->MCR  |= SPI_MCR_MSTR_MASK):(SPIx->MCR  &= ~SPI_MCR_MSTR_MASK);
-	//é…ç½®SPIä¸»æ¨¡å¼å¯„å­˜å™¨
+	//ÅäÖÃSPIÖ÷Ä£Ê½¼Ä´æÆ÷
 	SPIx->MCR  = 0 & (~SPI_MCR_MDIS_MASK) 
-									|SPI_MCR_HALT_MASK        //è®©SPIè¿›å…¥åœæ­¢æ¨¡å¼
-									|SPI_MCR_MSTR_MASK        //é…ç½®SPIä¸ºä¸»æœºæ¨¡å¼
-									|SPI_MCR_PCSIS_MASK       //PCSä¸ºé«˜ç”µå¹³å½“åœ¨SPIä¸å·¥ä½œçš„æ—¶å€™
-									|SPI_MCR_CLR_TXF_MASK     //é¦–å…ˆè¦æ¸…é™¤MDISï¼Œæ¸…é™¤TXF_MASKå’ŒRXF_MASK
+									|SPI_MCR_HALT_MASK        //ÈÃSPI½øÈëÍ£Ö¹Ä£Ê½
+									|SPI_MCR_MSTR_MASK        //ÅäÖÃSPIÎªÖ÷»úÄ£Ê½
+									|SPI_MCR_PCSIS_MASK       //PCSÎª¸ßµçÆ½µ±ÔÚSPI²»¹¤×÷µÄÊ±ºò
+									|SPI_MCR_CLR_TXF_MASK     //Ê×ÏÈÒªÇå³ıMDIS£¬Çå³ıTXF_MASKºÍRXF_MASK
 									|SPI_MCR_CLR_RXF_MASK  
-									|SPI_MCR_DIS_TXF_MASK     //ç„¶åå†ç¦æ­¢TXDå’ŒRXD FIFO æ¨¡å¼ ï¼Œå°†SPIé…ç½®æˆæ­£å¸¸æ¨¡å¼
+									|SPI_MCR_DIS_TXF_MASK     //È»ºóÔÙ½ûÖ¹TXDºÍRXD FIFO Ä£Ê½ £¬½«SPIÅäÖÃ³ÉÕı³£Ä£Ê½
 									|SPI_MCR_DIS_RXF_MASK; 
-	//é…ç½®åˆ†é¢‘åŠæ³¢ç‰¹ç‡
-	SPIx->CTAR[1] = 0| SPI_CTAR_DBR_MASK	 //è®¾ç½®é€šä¿¡çš„
+	//ÅäÖÃ·ÖÆµ¼°²¨ÌØÂÊ
+	SPIx->CTAR[1] = 0| SPI_CTAR_DBR_MASK	 //ÉèÖÃÍ¨ĞÅµÄ
 									| SPI_CTAR_PCSSCK(0)
 									| SPI_CTAR_PASC(0)
 									| SPI_CTAR_PBR(0)
 									| SPI_CTAR_CSSCK(0)
-									| SPI_CTAR_FMSZ(SPI_InitStruct->SPI_DataSize -1) //è®¾ç½®æ•°æ®ä¼ è¾“çš„ä½æ•°
-									| SPI_CTAR_PDT(0);                                //è®¾ç½®ç‰‡é€‰ä¿¡å·åœ¨æ•°æ®å®Œæˆåçš„å»¶æ—¶å€¼ 
-	//åˆ†é¢‘è®¾ç½®
+									| SPI_CTAR_FMSZ(SPI_InitStruct->SPI_DataSize -1) //ÉèÖÃÊı¾İ´«ÊäµÄÎ»Êı
+									| SPI_CTAR_PDT(0);                                //ÉèÖÃÆ¬Ñ¡ĞÅºÅÔÚÊı¾İÍê³ÉºóµÄÑÓÊ±Öµ 
+	//·ÖÆµÉèÖÃ
 	SPIx->CTAR[1] |=SPI_CTAR_BR(SPI_InitStruct->SPI_BaudRatePrescaler);							 
-	//æ—¶é’Ÿç›¸ä½è®¾ç½®
+	//Ê±ÖÓÏàÎ»ÉèÖÃ
 	(SPI_InitStruct->SPI_CPHA == SPI_CPHA_1Edge)?(SPIx->CTAR[1] &= ~SPI_CTAR_CPHA_MASK):(SPIx->CTAR[1] |= SPI_CTAR_CPHA_MASK);
-	//æ—¶é’Ÿææ€§
+	//Ê±ÖÓ¼«ĞÔ
 	(SPI_InitStruct->SPI_CPOL == SPI_CPOL_Low)?(SPIx->CTAR[1] &= ~SPI_CTAR_CPOL_MASK):(SPIx->CTAR[1] |= SPI_CTAR_CPOL_MASK);
-	//é…ç½®MSBæˆ–è€…LSD
+	//ÅäÖÃMSB»òÕßLSD
 	(SPI_InitStruct->SPI_FirstBit == SPI_FirstBit_MSB)?(SPIx->CTAR[1] &= ~SPI_CTAR_LSBFE_MASK):(SPIx->CTAR[1] |= SPI_CTAR_LSBFE_MASK);
-	//æ¸…ç©ºçŠ¶æ€
-  SPIx->SR = SPI_SR_EOQF_MASK   //é˜Ÿåˆ—ç»“æŸæ ‡å¿— w1c  (write 1 to clear)     
+	//Çå¿Õ×´Ì¬
+  SPIx->SR = SPI_SR_EOQF_MASK   //¶ÓÁĞ½áÊø±êÖ¾ w1c  (write 1 to clear)     
             | SPI_SR_TFUF_MASK    //TX FIFO underflow flag  w1c
             | SPI_SR_TFFF_MASK    //TX FIFO fill      flag  w1c
             | SPI_SR_RFOF_MASK    //RX FIFO overflow  flag  w1c
-            | SPI_SR_RFDF_MASK    //RX FIFO fill      flasg w1c (0æ—¶ä¸ºç©º)
+            | SPI_SR_RFDF_MASK    //RX FIFO fill      flasg w1c (0Ê±Îª¿Õ)
 					  | SPI_SR_TCF_MASK;
-	//å¼€å§‹ä¼ è¾“
-	 SPIx->MCR &= ~SPI_MCR_HALT_MASK;    //å¼€å§‹ä¼ è¾“ï¼Œè§å‚è€ƒæ‰‹å†Œ1129é¡µ
+	//¿ªÊ¼´«Êä
+	 SPIx->MCR &= ~SPI_MCR_HALT_MASK;    //¿ªÊ¼´«Êä£¬¼û²Î¿¼ÊÖ²á1129Ò³
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šSPI è¯»å†™ä¸€æ¬¡æ•°æ®
- å½¢å‚ï¼šSPICSMap SPI ç‰‡é€‰é€šé“å®šä¹‰
-       @arg SPI0_PCS0_PA14: SPI0é€šé“ PCS0 PA14å¼•è„š
+ ¹¦ÄÜ£ºSPI ¶ÁĞ´Ò»´ÎÊı¾İ
+ ĞÎ²Î£ºSPICSMap SPI Æ¬Ñ¡Í¨µÀ¶¨Òå
+       @arg SPI0_PCS0_PA14: SPI0Í¨µÀ PCS0 PA14Òı½Å
 			 @arg ...
-			 Data: éœ€è¦å‘é€çš„æ•°æ®
-			 PCS_State: ç‰‡é€‰ä¿¡å·çŠ¶æ€
-			 @arg SPI_PCS_Asserted: å‘é€å®Œæ•°æ®å ç‰‡é€‰ä¿¡å·æ‹‰é«˜
-			 @arg SPI_PCS_Inactive: å‘é€å®Œæ•°æ®å ç‰‡é€‰ä¿¡å·ä¿æŒä½ç”µå¹³
- è¿”å›ï¼šæ¥æ”¶åˆ°çš„æ•°æ®
- è¯¦è§£ï¼š0
+			 Data: ĞèÒª·¢ËÍµÄÊı¾İ
+			 PCS_State: Æ¬Ñ¡ĞÅºÅ×´Ì¬
+			 @arg SPI_PCS_Asserted: ·¢ËÍÍêÊı¾İºó Æ¬Ñ¡ĞÅºÅÀ­¸ß
+			 @arg SPI_PCS_Inactive: ·¢ËÍÍêÊı¾İºó Æ¬Ñ¡ĞÅºÅ±£³ÖµÍµçÆ½
+ ·µ»Ø£º½ÓÊÕµ½µÄÊı¾İ
+ Ïê½â£º0
 ************************************************************************************************/
 uint16_t SPI_ReadWriteByte(uint32_t SPICSMap,uint16_t Data,uint16_t PCS_State)
 {
 	uint16_t temp = 0;
 	SPI_Type *SPIx = NULL;
 	SPI_CSMapTypeDef *pSPI_CSMap = (SPI_CSMapTypeDef*)&(SPICSMap);
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_SPI_PCS_STATE(PCS_State));
 	assert_param(IS_SPI_PCS_CHL(SPICSMap));
-	//æ‰¾å‡ºSPIç«¯å£
+	//ÕÒ³öSPI¶Ë¿Ú
 	switch(pSPI_CSMap->SPI_Index)
 	{
 		case 0:
@@ -194,37 +194,37 @@ uint16_t SPI_ReadWriteByte(uint32_t SPICSMap,uint16_t Data,uint16_t PCS_State)
 			break;
 		default:break;
 	}
-	while((SPIx->SR & SPI_SR_TFFF_MASK) == 0){};  //ç­‰å¾…å‘é€ç¼“å†²åŒºæœ‰ç©ºä½
-	SPIx->PUSHR = (((uint32_t)(((uint32_t)(PCS_State))<<SPI_PUSHR_CONT_SHIFT))&SPI_PUSHR_CONT_MASK) //æ˜¯å¦æ‹‰èµ·CS
+	while((SPIx->SR & SPI_SR_TFFF_MASK) == 0){};  //µÈ´ı·¢ËÍ»º³åÇøÓĞ¿ÕÎ»
+	SPIx->PUSHR = (((uint32_t)(((uint32_t)(PCS_State))<<SPI_PUSHR_CONT_SHIFT))&SPI_PUSHR_CONT_MASK) //ÊÇ·ñÀ­ÆğCS
 							 | SPI_PUSHR_CTAS(1)      
-						   | SPI_PUSHR_PCS(1<<(pSPI_CSMap->SPI_PCS_CH_Index))//ä½¿èƒ½ä¿¡å·
-						 	 | SPI_PUSHR_TXDATA(Data); //å†™æ•°æ®
-	while(!(SPIx->SR & SPI_SR_TCF_MASK)){};     //ç­‰å¾…å‘é€å®Œæˆ
-  SPIx->SR |= SPI_SR_TCF_MASK ;               //æ¸…é™¤å‘é€ç¼“å†²æ ‡å¿—ä½
-  //ä½¿æ¥æ”¶ç¼“å†²å™¨ä¸ºç©º
-  while((SPIx->SR & SPI_SR_RFDF_MASK) == 0){};   //RX FIFO æœªæ¥æ”¶åˆ°æ•°æ®åˆ™ä¸€ç›´ç­‰å¾…
-  temp = (uint8_t)(SPIx->POPR & 0xFF);           //æ•°æ®ä»¥32ä½å½¢å¼å­˜åœ¨POPRä¸­ï¼Œè½¬åŒ–æ ¼å¼ 
-  SPIx->SR |= SPI_SR_RFDF_MASK;                  //æ¸…é™¤æ ‡å¿—ä½
+						   | SPI_PUSHR_PCS(1<<(pSPI_CSMap->SPI_PCS_CH_Index))//Ê¹ÄÜĞÅºÅ
+						 	 | SPI_PUSHR_TXDATA(Data); //Ğ´Êı¾İ
+	while(!(SPIx->SR & SPI_SR_TCF_MASK)){};     //µÈ´ı·¢ËÍÍê³É
+  SPIx->SR |= SPI_SR_TCF_MASK ;               //Çå³ı·¢ËÍ»º³å±êÖ¾Î»
+  //Ê¹½ÓÊÕ»º³åÆ÷Îª¿Õ
+  while((SPIx->SR & SPI_SR_RFDF_MASK) == 0){};   //RX FIFO Î´½ÓÊÕµ½Êı¾İÔòÒ»Ö±µÈ´ı
+  temp = (uint8_t)(SPIx->POPR & 0xFF);           //Êı¾İÒÔ32Î»ĞÎÊ½´æÔÚPOPRÖĞ£¬×ª»¯¸ñÊ½ 
+  SPIx->SR |= SPI_SR_RFDF_MASK;                  //Çå³ı±êÖ¾Î»
   return temp;
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šSPI ä¸­æ–­é…ç½®
- å½¢å‚ï¼šSPIx SPI æ¨¡å—å·
-       @arg: SPI0 æ¨¡å—
-			 @arg: SPI1 æ¨¡å—
-       @arg: SPI2 æ¨¡å—
-			 SPI_IT: ä¸­æ–­æ ‡å¿—
-			 @arg  SPI_IT_EOQF: é˜Ÿåˆ—ç»“æŸæ ‡å¿—
-       NewState : å¼€å¯æˆ–è€…å…³é—­
-       @arg ENABLE : å¼€å¯
-       @arg DISABLE: å…³é—­
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºSPI ÖĞ¶ÏÅäÖÃ
+ ĞÎ²Î£ºSPIx SPI Ä£¿éºÅ
+       @arg: SPI0 Ä£¿é
+			 @arg: SPI1 Ä£¿é
+       @arg: SPI2 Ä£¿é
+			 SPI_IT: ÖĞ¶Ï±êÖ¾
+			 @arg  SPI_IT_EOQF: ¶ÓÁĞ½áÊø±êÖ¾
+       NewState : ¿ªÆô»òÕß¹Ø±Õ
+       @arg ENABLE : ¿ªÆô
+       @arg DISABLE: ¹Ø±Õ
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void SPI_ITConfig(SPI_Type* SPIx, uint16_t SPI_IT, FunctionalState NewState)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_SPI_ALL_PERIPH(SPIx));
 	assert_param(IS_SPI_IT(SPI_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -253,20 +253,20 @@ void SPI_ITConfig(SPI_Type* SPIx, uint16_t SPI_IT, FunctionalState NewState)
 	}
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šSPI è·å¾—ä¸­æ–­æ ‡å¿—
- å½¢å‚ï¼šSPIx SPI æ¨¡å—å·
-       @arg: SPI0 æ¨¡å—
-			 @arg: SPI1 æ¨¡å—
-       @arg: SPI2 æ¨¡å—
-			 SPI_IT: ä¸­æ–­æ ‡å¿—
-			 @arg  SPI_IT_EOQF: é˜Ÿåˆ—ç»“æŸæ ‡å¿—
- è¿”å›ï¼šSET OR RESET
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºSPI »ñµÃÖĞ¶Ï±êÖ¾
+ ĞÎ²Î£ºSPIx SPI Ä£¿éºÅ
+       @arg: SPI0 Ä£¿é
+			 @arg: SPI1 Ä£¿é
+       @arg: SPI2 Ä£¿é
+			 SPI_IT: ÖĞ¶Ï±êÖ¾
+			 @arg  SPI_IT_EOQF: ¶ÓÁĞ½áÊø±êÖ¾
+ ·µ»Ø£ºSET OR RESET
+ Ïê½â£º0
 ************************************************************************************************/
 ITStatus SPI_GetITStatus(SPI_Type* SPIx, uint16_t SPI_IT)
 {
 	ITStatus retval;
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_SPI_ALL_PERIPH(SPIx));
 	assert_param(IS_SPI_IT(SPI_IT));
 	
@@ -296,19 +296,19 @@ ITStatus SPI_GetITStatus(SPI_Type* SPIx, uint16_t SPI_IT)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šSPI æ¸…æ¥šä¸­æ–­æ ‡å¿—ä½
- å½¢å‚ï¼šSPIx SPI æ¨¡å—å·
-       @arg: SPI0 æ¨¡å—
-			 @arg: SPI1 æ¨¡å—
-       @arg: SPI2 æ¨¡å—
-			 SPI_IT: ä¸­æ–­æ ‡å¿—
-			 @arg  SPI_IT_EOQF: é˜Ÿåˆ—ç»“æŸæ ‡å¿—
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºSPI Çå³şÖĞ¶Ï±êÖ¾Î»
+ ĞÎ²Î£ºSPIx SPI Ä£¿éºÅ
+       @arg: SPI0 Ä£¿é
+			 @arg: SPI1 Ä£¿é
+       @arg: SPI2 Ä£¿é
+			 SPI_IT: ÖĞ¶Ï±êÖ¾
+			 @arg  SPI_IT_EOQF: ¶ÓÁĞ½áÊø±êÖ¾
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void SPI_ClearITPendingBit(SPI_Type *SPIx,uint16_t SPI_IT)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_SPI_ALL_PERIPH(SPIx));
 	assert_param(IS_SPI_IT(SPI_IT));
 	
@@ -337,20 +337,20 @@ void SPI_ClearITPendingBit(SPI_Type *SPIx,uint16_t SPI_IT)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šSPI DMAå‘½ä»¤
- å½¢å‚ï¼šSPIx SPI æ¨¡å—å·
-       @arg: SPI0 æ¨¡å—
-			 @arg: SPI1 æ¨¡å—
-       @arg: SPI2 æ¨¡å—
-			 SPI_IT: ä¸­æ–­æ ‡å¿—
-			 @arg  SPI_DMAReq_TFFF: å‘é€é˜Ÿåˆ—ç»“æŸæ ‡å¿—
-       @arg  SPI_DMAReq_RFDF: æ¥æ”¶ç¼“å†²åŒºæ»¡
- è¿”å›ï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºSPI DMAÃüÁî
+ ĞÎ²Î£ºSPIx SPI Ä£¿éºÅ
+       @arg: SPI0 Ä£¿é
+			 @arg: SPI1 Ä£¿é
+       @arg: SPI2 Ä£¿é
+			 SPI_IT: ÖĞ¶Ï±êÖ¾
+			 @arg  SPI_DMAReq_TFFF: ·¢ËÍ¶ÓÁĞ½áÊø±êÖ¾
+       @arg  SPI_DMAReq_RFDF: ½ÓÊÕ»º³åÇøÂú
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void SPI_DMACmd(SPI_Type* SPIx, uint16_t SPI_DMAReq, FunctionalState NewState)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊı¼ì²é
 	assert_param(IS_SPI_ALL_PERIPH(SPIx));
 	assert_param(SPI_DMAREQ(SPI_DMAReq));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
