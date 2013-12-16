@@ -95,6 +95,7 @@ int LED_Control(int argc, char *argv[])
 
 uint8_t  gCfgLoca_MAC[] = {0x22, 0x22, 0x22, 0x00, 0x00, 0x01};
 extern MINISHELL_CommandTableTypeDef Command_FunEnet;
+extern MINISHELL_CommandTableTypeDef Command_FunADC;
 //以太帧发送缓冲区
 uint8_t  gBuffer[1520]; 
 //注册 MiniShell函数安装结构
@@ -125,14 +126,14 @@ int main(void)
     UART_DebugPortInit(UART4_RX_C14_TX_C15, 115200);
 	  DisplayCPUInfo();
 		
-	  //ENET_InitStruct1.pMacAddress = gCfgLoca_MAC;
-	  //ENET_Init(&ENET_InitStruct1);
-    init_ethernet();
-	  if(ENET_MiiLinkState() == TRUE)
+	//  ENET_InitStruct1.pMacAddress = gCfgLoca_MAC;
+	 // ENET_Init(&ENET_InitStruct1);
+    //init_ethernet();
+	//  if(ENET_MiiLinkState() == TRUE)
 		{
         UART_printf("ENET Phy Connected succ.\r\n");
 		}
-		else
+//		else
 		{
 			  UART_printf("ENET Phy Connected failed.\r\n");
 		}
@@ -141,7 +142,7 @@ int main(void)
     //注册接口函数
 		MINISHELL_Register(&MyCommand1, 1);
 		MINISHELL_Register(&Command_FunEnet, 1);
-		
+		MINISHELL_Register(&Command_FunADC, 1);
 	  //初始化SHELL
 	  MINISHELL_Init();
 	  //启动SHELL

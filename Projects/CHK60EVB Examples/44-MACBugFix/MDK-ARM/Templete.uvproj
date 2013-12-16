@@ -608,6 +608,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\shell_cmdenet.c</FilePath>
             </File>
+            <File>
+              <FileName>shell_cmdadc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\shell_cmdadc.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

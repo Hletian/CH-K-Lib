@@ -1,4 +1,4 @@
-﻿/**
+/**
   ******************************************************************************
   * @file    adc.h
   * @author  YANDLD
@@ -27,12 +27,19 @@
 	                               ((VALUE) == ADC_PRECISION_10BIT) || \
 	                               ((VALUE) == ADC_PRECISION_12BIT) || \
 	                               ((VALUE) == ADC_PRECISION_16BIT))
+																 
+#define ADC_CLKDIV_1          (0x00U)
+#define ADC_CLKDIV_2          (0x01U)
+#define ADC_CLKDIV_4          (0x02U)
+#define ADC_CLKDIV_8          (0x03U)		 
+																 
 //ADC初始化结构
 typedef struct
 {
-  uint32_t ADCxMap;              
-	uint32_t ADC_Precision;
-	uint16_t ADC_TriggerSelect; //触发源选择
+  uint32_t ADCxMap;             //ADC 通道选择
+	uint32_t ADC_Precision;       //ADC 精度选择
+	uint16_t ADC_TriggerSelect;   //ADC 触发源选择
+	uint16_t ADC_ClkDiv;          //ADC 转换分屏选择
 }ADC_InitTypeDef;
 
 #define IS_ADC_ALL_PERIPH(PERIPH)  (((PERIPH) == ADC0) || \

@@ -46,10 +46,10 @@ int DoEnet(int argc, char *argv[])
 		memcpy(enet_frame.data, gTxBuffer,100);
 		enet_frame.index = 0;
 		enet_frame.length = 100;
-	 send_frame (&enet_frame);
-	 int_enable_eth();
-  //  ENET_MacSendData(gTxBuffer,100);	
-		return 0;
+    // send_frame (&enet_frame);
+    // int_enable_eth();
+    ENET_MacSendData(gTxBuffer,100);	
+    return 0;
 }
 
 //用户函数注册结构

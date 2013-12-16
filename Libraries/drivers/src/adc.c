@@ -1,4 +1,4 @@
-﻿/**
+/**
   ******************************************************************************
   * @file    adc.c
   * @author  YANDLD
@@ -81,7 +81,7 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 	ADCx->CFG1 &= ~ADC_CFG1_ADLSMP_MASK;
 	//配置ADC分频 最低分频
 	ADCx->CFG1 &= ~ADC_CFG1_ADIV_MASK;
-	ADCx->CFG1 |= ADC_CFG1_ADIV(3); 
+	ADCx->CFG1 |= ADC_CFG1_ADIV(ADC_InitStruct->ADC_ClkDiv); 
 	//设置 A或者B通道
 	ADCx->CFG2 = 0;
 	if(pADC_Map->ADC_IsChlAB == 0)
