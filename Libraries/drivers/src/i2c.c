@@ -379,7 +379,7 @@ void I2C_ClearITPendingBit(I2C_Type* I2Cx, uint16_t I2C_IT)
 	assert_param(IS_I2C_IT(I2C_IT));
 	
 	//清中断标志位
-	I2Cx->C1 |= I2C_C1_IICEN_MASK;
+	I2Cx->C1 |= I2C_S_IICIF_MASK;
 	switch(I2C_IT)
 	{
 		case I2C_IT_TCF:
