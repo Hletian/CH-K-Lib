@@ -1,9 +1,9 @@
 ;/*****************************************************************************
-; * @file:    startup_MK40D7.s
+; * @file:    startup_MK60D10.s
 ; * @purpose: CMSIS Cortex-M4 Core Device Startup File for the
-; *           MK40D7
-; * @version: 1.0
-; * @date:    2012-1-15
+; *           MK60D10
+; * @version: 1.3
+; * @date:    2012-10-29
 ; *
 ; * Copyright: 1997 - 2012 Freescale Semiconductor, Inc. All Rights Reserved.
 ;*
@@ -81,32 +81,32 @@ __Vectors       DCD     __initial_sp  ; Top of Stack
                 DCD     DMA14_IRQHandler  ; DMA Channel 14 Transfer Complete
                 DCD     DMA15_IRQHandler  ; DMA Channel 15 Transfer Complete
                 DCD     DMA_Error_IRQHandler  ; DMA Error Interrupt
-                DCD     MCM_IRQHandler  ; Normal interrupt
+                DCD     MCM_IRQHandler  ; Normal Interrupt
                 DCD     FTFL_IRQHandler  ; FTFL Interrupt
                 DCD     Read_Collision_IRQHandler  ; Read Collision Interrupt
                 DCD     LVD_LVW_IRQHandler  ; Low Voltage Detect, Low Voltage Warning
                 DCD     LLW_IRQHandler  ; Low Leakage Wakeup
                 DCD     Watchdog_IRQHandler  ; WDOG Interrupt
-                DCD     Reserved39_IRQHandler  ; Reserved Interrupt 39
+                DCD     RNG_IRQHandler  ; RNGB Interrupt
                 DCD     I2C0_IRQHandler  ; I2C0 interrupt
                 DCD     I2C1_IRQHandler  ; I2C1 interrupt
                 DCD     SPI0_IRQHandler  ; SPI0 Interrupt
                 DCD     SPI1_IRQHandler  ; SPI1 Interrupt
-                DCD     Reserved44_IRQHandler  ; Reserved interrupt 44
-                DCD     CAN0_ORed_Message_buffer_IRQHandler  ; CAN0 OR'd Message Buffers Interrupt
-                DCD     CAN0_Bus_Off_IRQHandler  ; CAN0 Bus Off Interrupt
-                DCD     CAN0_Error_IRQHandler  ; CAN0 Error Interrupt
-                DCD     CAN0_Tx_Warning_IRQHandler  ; CAN0 Tx Warning Interrupt
-                DCD     CAN0_Rx_Warning_IRQHandler  ; CAN0 Rx Warning Interrupt
-                DCD     CAN0_Wake_Up_IRQHandler  ; CAN0 Wake Up Interrupt
+                DCD     SPI2_IRQHandler  ; SPI2 Interrupt
+                DCD     CAN0_ORed_Message_buffer_IRQHandler  ; CAN0 OR'd message buffers interrupt
+                DCD     CAN0_Bus_Off_IRQHandler  ; CAN0 bus off interrupt
+                DCD     CAN0_Error_IRQHandler  ; CAN0 error interrupt
+                DCD     CAN0_Tx_Warning_IRQHandler  ; CAN0 Tx warning interrupt
+                DCD     CAN0_Rx_Warning_IRQHandler  ; CAN0 Rx warning interrupt
+                DCD     CAN0_Wake_Up_IRQHandler  ; CAN0 wake up interrupt
                 DCD     I2S0_Tx_IRQHandler  ; I2S0 transmit interrupt
                 DCD     I2S0_Rx_IRQHandler  ; I2S0 receive interrupt
-                DCD     Reserved53_IRQHandler  ; Reserved interrupt 53
-                DCD     Reserved54_IRQHandler  ; Reserved interrupt 54
-                DCD     Reserved55_IRQHandler  ; Reserved interrupt 55
-                DCD     Reserved56_IRQHandler  ; Reserved interrupt 56
-                DCD     Reserved57_IRQHandler  ; Reserved interrupt 57
-                DCD     Reserved58_IRQHandler  ; Reserved interrupt 58
+                DCD     CAN1_ORed_Message_buffer_IRQHandler  ; CAN1 OR'd message buffers interrupt
+                DCD     CAN1_Bus_Off_IRQHandler  ; CAN1 bus off interrupt
+                DCD     CAN1_Error_IRQHandler  ; CAN1 error interrupt
+                DCD     CAN1_Tx_Warning_IRQHandler  ; CAN1 Tx warning interrupt
+                DCD     CAN1_Rx_Warning_IRQHandler  ; CAN1 Rx warning interrupt
+                DCD     CAN1_Wake_Up_IRQHandler  ; CAN1 wake up interrupt
                 DCD     Reserved59_IRQHandler  ; Reserved interrupt 59
                 DCD     UART0_LON_IRQHandler  ; UART0 LON interrupt
                 DCD     UART0_RX_TX_IRQHandler  ; UART0 Receive/Transmit interrupt
@@ -119,8 +119,8 @@ __Vectors       DCD     __initial_sp  ; Top of Stack
                 DCD     UART3_ERR_IRQHandler  ; UART3 Error interrupt
                 DCD     UART4_RX_TX_IRQHandler  ; UART4 Receive/Transmit interrupt
                 DCD     UART4_ERR_IRQHandler  ; UART4 Error interrupt
-                DCD     Reserved71_IRQHandler  ; Reserved interrupt 71
-                DCD     Reserved72_IRQHandler  ; Reserved interrupt 72
+                DCD     UART5_RX_TX_IRQHandler  ; UART5 Receive/Transmit interrupt
+                DCD     UART5_ERR_IRQHandler  ; UART5 Error interrupt
                 DCD     ADC0_IRQHandler  ; ADC0 interrupt
                 DCD     ADC1_IRQHandler  ; ADC1 interrupt
                 DCD     CMP0_IRQHandler  ; CMP0 interrupt
@@ -139,18 +139,18 @@ __Vectors       DCD     __initial_sp  ; Top of Stack
                 DCD     PDB0_IRQHandler  ; PDB0 Interrupt
                 DCD     USB0_IRQHandler  ; USB0 interrupt
                 DCD     USBDCD_IRQHandler  ; USBDCD Interrupt
-                DCD     Reserved91_IRQHandler  ; Reserved interrupt 91
-                DCD     Reserved92_IRQHandler  ; Reserved interrupt 92
-                DCD     Reserved93_IRQHandler  ; Reserved interrupt 93
-                DCD     Reserved94_IRQHandler  ; Reserved interrupt 94
+                DCD     ENET_1588_Timer_IRQHandler  ; Ethernet MAC IEEE 1588 Timer Interrupt
+                DCD     ENET_Transmit_IRQHandler  ; Ethernet MAC Transmit Interrupt
+                DCD     ENET_Receive_IRQHandler  ; Ethernet MAC Receive Interrupt
+                DCD     ENET_Error_IRQHandler  ; Ethernet MAC Error and miscelaneous Interrupt
                 DCD     Reserved95_IRQHandler  ; Reserved interrupt 95
-                DCD     Reserved96_IRQHandler  ; Reserved interrupt 96
+                DCD     SDHC_IRQHandler  ; SDHC Interrupt
                 DCD     DAC0_IRQHandler  ; DAC0 interrupt
-                DCD     Reserved98_IRQHandler  ; Reserved interrupt 98
+                DCD     DAC1_IRQHandler  ; DAC1 interrupt
                 DCD     TSI0_IRQHandler  ; TSI0 Interrupt
                 DCD     MCG_IRQHandler  ; MCG Interrupt
                 DCD     LPTimer_IRQHandler  ; LPTimer interrupt
-                DCD     LCD_IRQHandler  ; Segment LCD Interrupt
+                DCD     Reserved102_IRQHandler  ; Reserved interrupt 102
                 DCD     PORTA_IRQHandler  ; Port A interrupt
                 DCD     PORTB_IRQHandler  ; Port B interrupt
                 DCD     PORTC_IRQHandler  ; Port C interrupt
@@ -159,15 +159,15 @@ __Vectors       DCD     __initial_sp  ; Top of Stack
                 DCD     Reserved108_IRQHandler  ; Reserved interrupt 108
                 DCD     Reserved109_IRQHandler  ; Reserved interrupt 109
                 DCD     SWI_IRQHandler  ; Software interrupt
-                DCD     DefaultISR  ; 111
-                DCD     DefaultISR  ; 112
-                DCD     DefaultISR  ; 113
-                DCD     DefaultISR  ; 114
-                DCD     DefaultISR  ; 115
-                DCD     DefaultISR  ; 116
-                DCD     DefaultISR  ; 117
-                DCD     DefaultISR  ; 118
-                DCD     DefaultISR  ; 119
+                DCD     Reserved111_IRQHandler  ; Reserved interrupt 111
+                DCD     Reserved112_IRQHandler  ; Reserved interrupt 112
+                DCD     Reserved113_IRQHandler  ; Reserved interrupt 113
+                DCD     Reserved114_IRQHandler  ; Reserved interrupt 114
+                DCD     Reserved115_IRQHandler  ; Reserved interrupt 115
+                DCD     Reserved116_IRQHandler  ; Reserved interrupt 116
+                DCD     Reserved117_IRQHandler  ; Reserved interrupt 117
+                DCD     Reserved118_IRQHandler  ; Reserved interrupt 118
+                DCD     Reserved119_IRQHandler  ; Reserved interrupt 119
                 DCD     DefaultISR  ; 120
                 DCD     DefaultISR  ; 121
                 DCD     DefaultISR  ; 122
@@ -545,12 +545,12 @@ Default_Handler PROC
                 EXPORT  LVD_LVW_IRQHandler     [WEAK]
                 EXPORT  LLW_IRQHandler     [WEAK]
                 EXPORT  Watchdog_IRQHandler     [WEAK]
-                EXPORT  Reserved39_IRQHandler     [WEAK]
+                EXPORT  RNG_IRQHandler     [WEAK]
                 EXPORT  I2C0_IRQHandler     [WEAK]
                 EXPORT  I2C1_IRQHandler     [WEAK]
                 EXPORT  SPI0_IRQHandler     [WEAK]
                 EXPORT  SPI1_IRQHandler     [WEAK]
-                EXPORT  Reserved44_IRQHandler     [WEAK]
+                EXPORT  SPI2_IRQHandler     [WEAK]
                 EXPORT  CAN0_ORed_Message_buffer_IRQHandler     [WEAK]
                 EXPORT  CAN0_Bus_Off_IRQHandler     [WEAK]
                 EXPORT  CAN0_Error_IRQHandler     [WEAK]
@@ -559,12 +559,12 @@ Default_Handler PROC
                 EXPORT  CAN0_Wake_Up_IRQHandler     [WEAK]
                 EXPORT  I2S0_Tx_IRQHandler     [WEAK]
                 EXPORT  I2S0_Rx_IRQHandler     [WEAK]
-                EXPORT  Reserved53_IRQHandler     [WEAK]
-                EXPORT  Reserved54_IRQHandler     [WEAK]
-                EXPORT  Reserved55_IRQHandler     [WEAK]
-                EXPORT  Reserved56_IRQHandler     [WEAK]
-                EXPORT  Reserved57_IRQHandler     [WEAK]
-                EXPORT  Reserved58_IRQHandler     [WEAK]
+                EXPORT  CAN1_ORed_Message_buffer_IRQHandler     [WEAK]
+                EXPORT  CAN1_Bus_Off_IRQHandler     [WEAK]
+                EXPORT  CAN1_Error_IRQHandler     [WEAK]
+                EXPORT  CAN1_Tx_Warning_IRQHandler     [WEAK]
+                EXPORT  CAN1_Rx_Warning_IRQHandler     [WEAK]
+                EXPORT  CAN1_Wake_Up_IRQHandler     [WEAK]
                 EXPORT  Reserved59_IRQHandler     [WEAK]
                 EXPORT  UART0_LON_IRQHandler     [WEAK]
                 EXPORT  UART0_RX_TX_IRQHandler     [WEAK]
@@ -577,8 +577,8 @@ Default_Handler PROC
                 EXPORT  UART3_ERR_IRQHandler     [WEAK]
                 EXPORT  UART4_RX_TX_IRQHandler     [WEAK]
                 EXPORT  UART4_ERR_IRQHandler     [WEAK]
-                EXPORT  Reserved71_IRQHandler     [WEAK]
-                EXPORT  Reserved72_IRQHandler     [WEAK]
+                EXPORT  UART5_RX_TX_IRQHandler     [WEAK]
+                EXPORT  UART5_ERR_IRQHandler     [WEAK]
                 EXPORT  ADC0_IRQHandler     [WEAK]
                 EXPORT  ADC1_IRQHandler     [WEAK]
                 EXPORT  CMP0_IRQHandler     [WEAK]
@@ -597,18 +597,18 @@ Default_Handler PROC
                 EXPORT  PDB0_IRQHandler     [WEAK]
                 EXPORT  USB0_IRQHandler     [WEAK]
                 EXPORT  USBDCD_IRQHandler     [WEAK]
-                EXPORT  Reserved91_IRQHandler     [WEAK]
-                EXPORT  Reserved92_IRQHandler     [WEAK]
-                EXPORT  Reserved93_IRQHandler     [WEAK]
-                EXPORT  Reserved94_IRQHandler     [WEAK]
+                EXPORT  ENET_1588_Timer_IRQHandler     [WEAK]
+                EXPORT  ENET_Transmit_IRQHandler     [WEAK]
+                EXPORT  ENET_Receive_IRQHandler     [WEAK]
+                EXPORT  ENET_Error_IRQHandler     [WEAK]
                 EXPORT  Reserved95_IRQHandler     [WEAK]
-                EXPORT  Reserved96_IRQHandler     [WEAK]
+                EXPORT  SDHC_IRQHandler     [WEAK]
                 EXPORT  DAC0_IRQHandler     [WEAK]
-                EXPORT  Reserved98_IRQHandler     [WEAK]
+                EXPORT  DAC1_IRQHandler     [WEAK]
                 EXPORT  TSI0_IRQHandler     [WEAK]
                 EXPORT  MCG_IRQHandler     [WEAK]
                 EXPORT  LPTimer_IRQHandler     [WEAK]
-                EXPORT  LCD_IRQHandler     [WEAK]
+                EXPORT  Reserved102_IRQHandler     [WEAK]
                 EXPORT  PORTA_IRQHandler     [WEAK]
                 EXPORT  PORTB_IRQHandler     [WEAK]
                 EXPORT  PORTC_IRQHandler     [WEAK]
@@ -617,6 +617,15 @@ Default_Handler PROC
                 EXPORT  Reserved108_IRQHandler     [WEAK]
                 EXPORT  Reserved109_IRQHandler     [WEAK]
                 EXPORT  SWI_IRQHandler     [WEAK]
+                EXPORT  Reserved111_IRQHandler     [WEAK]
+                EXPORT  Reserved112_IRQHandler     [WEAK]
+                EXPORT  Reserved113_IRQHandler     [WEAK]
+                EXPORT  Reserved114_IRQHandler     [WEAK]
+                EXPORT  Reserved115_IRQHandler     [WEAK]
+                EXPORT  Reserved116_IRQHandler     [WEAK]
+                EXPORT  Reserved117_IRQHandler     [WEAK]
+                EXPORT  Reserved118_IRQHandler     [WEAK]
+                EXPORT  Reserved119_IRQHandler     [WEAK]
                 EXPORT  DefaultISR                      [WEAK]
 
 DMA0_IRQHandler
@@ -642,12 +651,12 @@ Read_Collision_IRQHandler
 LVD_LVW_IRQHandler
 LLW_IRQHandler
 Watchdog_IRQHandler
-Reserved39_IRQHandler
+RNG_IRQHandler
 I2C0_IRQHandler
 I2C1_IRQHandler
 SPI0_IRQHandler
 SPI1_IRQHandler
-Reserved44_IRQHandler
+SPI2_IRQHandler
 CAN0_ORed_Message_buffer_IRQHandler
 CAN0_Bus_Off_IRQHandler
 CAN0_Error_IRQHandler
@@ -656,12 +665,12 @@ CAN0_Rx_Warning_IRQHandler
 CAN0_Wake_Up_IRQHandler
 I2S0_Tx_IRQHandler
 I2S0_Rx_IRQHandler
-Reserved53_IRQHandler
-Reserved54_IRQHandler
-Reserved55_IRQHandler
-Reserved56_IRQHandler
-Reserved57_IRQHandler
-Reserved58_IRQHandler
+CAN1_ORed_Message_buffer_IRQHandler
+CAN1_Bus_Off_IRQHandler
+CAN1_Error_IRQHandler
+CAN1_Tx_Warning_IRQHandler
+CAN1_Rx_Warning_IRQHandler
+CAN1_Wake_Up_IRQHandler
 Reserved59_IRQHandler
 UART0_LON_IRQHandler
 UART0_RX_TX_IRQHandler
@@ -674,8 +683,8 @@ UART3_RX_TX_IRQHandler
 UART3_ERR_IRQHandler
 UART4_RX_TX_IRQHandler
 UART4_ERR_IRQHandler
-Reserved71_IRQHandler
-Reserved72_IRQHandler
+UART5_RX_TX_IRQHandler
+UART5_ERR_IRQHandler
 ADC0_IRQHandler
 ADC1_IRQHandler
 CMP0_IRQHandler
@@ -694,18 +703,18 @@ PIT3_IRQHandler
 PDB0_IRQHandler
 USB0_IRQHandler
 USBDCD_IRQHandler
-Reserved91_IRQHandler
-Reserved92_IRQHandler
-Reserved93_IRQHandler
-Reserved94_IRQHandler
+ENET_1588_Timer_IRQHandler
+ENET_Transmit_IRQHandler
+ENET_Receive_IRQHandler
+ENET_Error_IRQHandler
 Reserved95_IRQHandler
-Reserved96_IRQHandler
+SDHC_IRQHandler
 DAC0_IRQHandler
-Reserved98_IRQHandler
+DAC1_IRQHandler
 TSI0_IRQHandler
 MCG_IRQHandler
 LPTimer_IRQHandler
-LCD_IRQHandler
+Reserved102_IRQHandler
 PORTA_IRQHandler
 PORTB_IRQHandler
 PORTC_IRQHandler
@@ -714,6 +723,15 @@ PORTE_IRQHandler
 Reserved108_IRQHandler
 Reserved109_IRQHandler
 SWI_IRQHandler
+Reserved111_IRQHandler
+Reserved112_IRQHandler
+Reserved113_IRQHandler
+Reserved114_IRQHandler
+Reserved115_IRQHandler
+Reserved116_IRQHandler
+Reserved117_IRQHandler
+Reserved118_IRQHandler
+Reserved119_IRQHandler
 DefaultISR
 
                 B       .
