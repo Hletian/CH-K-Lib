@@ -313,23 +313,24 @@ void FTM_Init(FTM_InitTypeDef *FTM_InitStruct)
   //计算分频和MODE参数 
 	prescaler = (CPUInfo.BusClock/(FTM_InitStruct->Frequency))/65535;
  //PS>4时总会出错
-	if(prescaler >= 4 ) prescaler = 4;
+	if(prescaler >= 7 ) prescaler = 7;
 	//计算MODE装载参数
 	mod = (CPUInfo.BusClock/((FTM_InitStruct->Frequency)*(1<<prescaler)));
-  //时钟源及分频选择
+    //时钟源及分频选择
 	FTMx->SC &=~ FTM_SC_CLKS_MASK;
 	FTMx->SC &= ~FTM_SC_PS_MASK;
-	FTMx->SC |= (FTM_SC_CLKS(1)| FTM_SC_PS(prescaler));         
-	
-  //设置PWM周期及占空比
+	      
+    //设置PWM周期及占空比
 	FTMx->MOD = mod;                     //计数器最大值
 	FTMx->CNTIN = 0x0000u;	             //计数器初始化时的计数值
 	FTMx->CNT = 0x0000u;                 //计数器开始的值
 	//适当延时
 	for(mod=0;mod < 400000;mod++){}; //做适当延时 等待硬件模块启动操作
+    //使用BusClock 设置分频比
+    FTMx->SC |= (FTM_SC_CLKS(1)| FTM_SC_PS(prescaler));   
 	//设置各个通道的模式
 	 FTM_PWM_SetMode(FTM_InitStruct);
-  //设置初始占空比	
+    //设置初始占空比	
 	FTM_PWM_ChangeDuty(FTM_InitStruct->FTMxMAP,FTM_InitStruct->InitalDuty);
 }
 
