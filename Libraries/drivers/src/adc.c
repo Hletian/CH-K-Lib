@@ -1,30 +1,30 @@
-ï»¿/**
+/**
   ******************************************************************************
   * @file    adc.c
   * @author  YANDLD
   * @version V2.4
   * @date    2013.5.23
-  * @brief   è¶…æ ¸K60å›ºä»¶åº“ ADCæ¨¡å—é©±åŠ¨
+  * @brief   ADCÇý¶¯¿â
   ******************************************************************************
   */
 #include "adc.h"
 static uint8_t ADC_Cal(ADC_Type *ADCx);
 /***********************************************************************************************
- åŠŸèƒ½ï¼šåˆå§‹åŒ–ADCæ¨¡å—
- å½¢å‚ï¼šADC_InitStruct: ADCåˆå§‹åŒ–ç»“æž„
- è¿”å›žï¼š0
- è¯¦è§£ï¼š0
-************************************************************************************************/
+ ¹¦ÄÜ£ºADC³õÊ¼»¯
+ ÐÎ²Î£ºADC_InitStruct: ³õÊ¼»¯½á¹¹
+ ·µ»Ø£º0
+ Ïê½â£º0
+/******************************************************************************/
 void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 {
 	ADC_MapTypeDef *pADC_Map = (ADC_MapTypeDef*)&ADC_InitStruct->ADCxMap;
 	PORT_Type *ADC_PORT = NULL;
 	ADC_Type *ADCx = NULL;
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊý¼ì²é
 	assert_param(IS_ADC_PRECISION(IS_ADC_PRECISION(ADC_InitStruct->ADC_Precision)));
 	
-	//æ‰¾åˆ°å¯¹åº”çš„GPIO å¹¶é…ç½®ä¸ºADCæ¨¡å¼
-	if(pADC_Map->ADC_IsAnalogChl == 0) //å¦‚æžœæ˜¯æ™®é€šGPIO çš„ADCé€šé“
+	//ÕÒµ½¶ÔÓ¦µÄGPIO ²¢ÅäÖÃÎªADCÄ£Ê½
+	if(pADC_Map->ADC_IsAnalogChl == 0) //Èç¹ûÊÇÆÕÍ¨GPIO µÄADCÍ¨µÀ
 	{
 		switch(pADC_Map->ADC_GPIO_Index)
 		{
@@ -50,11 +50,11 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 				break;
 			default:break;
 		}
-		//é…ç½®å¯¹åº”å¼•è„šä¸ºADCæ¨¡å¼
+		//ÅäÖÃ¶ÔÓ¦Òý½ÅÎªADCÄ£Ê½
 		ADC_PORT->PCR[pADC_Map->ADC_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 		ADC_PORT->PCR[pADC_Map->ADC_Pin_Index] |= PORT_PCR_MUX(pADC_Map->ADC_Alt_Index);
 	}
-	//æ‰¾å‡ºADCç«¯å£
+	//ÕÒ³öADC¶Ë¿Ú
 	switch(pADC_Map->ADC_Index)
 	{
 		case 0:
@@ -71,18 +71,18 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 			break;
 		default:break;
 	}
-	//é…ç½®è½¬æ¢ç²¾åº¦
+	//ÅäÖÃ×ª»»¾«¶È
 	ADCx->CFG1 &= ~(ADC_CFG1_MODE_MASK); 
 	ADCx->CFG1 |= ADC_CFG1_MODE(ADC_InitStruct->ADC_Precision);
-	//è¾“å…¥æ—¶é’Ÿæºä½BusClock
+	//ÊäÈëÊ±ÖÓÔ´Î»BusClock
 	ADCx->CFG1 &= ~ADC_CFG1_ADICLK_MASK;
 	ADCx->CFG1 |=  ADC_CFG1_ADICLK(0); 
-	//å¿«é€Ÿé‡‡æ ·
+	//¿ìËÙ²ÉÑù
 	ADCx->CFG1 &= ~ADC_CFG1_ADLSMP_MASK;
-	//é…ç½®ADCåˆ†é¢‘ æœ€ä½Žåˆ†é¢‘
+	//ÅäÖÃADC·ÖÆµ ×îµÍ·ÖÆµ
 	ADCx->CFG1 &= ~ADC_CFG1_ADIV_MASK;
 	ADCx->CFG1 |= ADC_CFG1_ADIV(ADC_InitStruct->ADC_ClkDiv); 
-	//è®¾ç½® Aæˆ–è€…Bé€šé“
+	//ÉèÖÃ A»òÕßBÍ¨µÀ
 	ADCx->CFG2 = 0;
 	if(pADC_Map->ADC_IsChlAB == 0)
 	{
@@ -92,7 +92,7 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 	{
 		ADCx->CFG2 |= ADC_CFG2_MUXSEL_MASK;
 	}
-	//å…¶ä»–æ‚é¡¹é…ç½®
+	//ÆäËûÔÓÏîÅäÖÃ
 	ADCx->CFG2 |= (ADACKEN_DISABLED|ADHSC_HISPEED|ADC_CFG2_ADLSTS(ADLSTS_20));
   ADCx->CV1 = 0x1234u; 
 	ADCx->CV2 = 0x5678u;
@@ -100,7 +100,7 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 	ADCx->SC3 = (CAL_OFF|ADCO_SINGLE|AVGE_ENABLED|ADC_SC3_AVGS(AVGS_32));
 	ADCx->PGA = (PGAEN_DISABLED|PGACHP_NOCHOP|PGALP_NORMAL|ADC_PGA_PGAG(PGAG_64));
 
-	//å•ç«¯æˆ–è€…å·®åˆ†é…ç½®
+	//µ¥¶Ë»òÕß²î·ÖÅäÖÃ
 	if(pADC_Map->ADC_SingleDifferential == 0)
 	{
 		ADCx->SC1[pADC_Map->ADC_IsChlAB] &= ~ADC_SC1_DIFF_MASK; 
@@ -109,24 +109,24 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 	{
 		ADCx->SC1[pADC_Map->ADC_IsChlAB] |= ADC_SC1_DIFF_MASK; 
 	}
-	//æ ¡å‡†
+	//Ð£×¼
   ADC_Cal(ADCx);
-	//é…ç½®è§¦å‘æº
+	//ÅäÖÃ´¥·¢Ô´
 	(ADC_TRIGGER_HW == ADC_InitStruct->ADC_TriggerSelect)?(ADCx->SC2 |= ADC_SC2_ADTRG_MASK):(ADCx->SC2 &= ~ADC_SC2_ADTRG_MASK);
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šè½¯ä»¶è§¦å‘ é‡‡æ ·ä¸€ä¸ªé€šé“
- å½¢å‚ï¼šADCxMap: ADCé€šé“å®šä¹‰
-			 @arg  ADC0_SE6B_PD5: ADC0æ¨¡å— 6é€šé“ PD5å¼•è„š
+ ¹¦ÄÜ£ºÈí¼þ´¥·¢ ²ÉÑùÒ»¸öÍ¨µÀ
+ ÐÎ²Î£ºADCxMap: ADCÍ¨µÀ¶¨Òå
+			 @arg  ADC0_SE6B_PD5: ADC0Ä£¿é 6Í¨µÀ PD5Òý½Å
        @arg ...
- è¿”å›žï¼š0
- è¯¦è§£ï¼š0
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 uint16_t ADC_GetConversionValue(uint32_t ADCxMap)
 {
 	ADC_Type *ADCx = NULL;
 	ADC_MapTypeDef *pADC_Map = (ADC_MapTypeDef*)&ADCxMap;
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊý¼ì²é
 	
 	switch(pADC_Map->ADC_Index)
 	{
@@ -138,34 +138,34 @@ uint16_t ADC_GetConversionValue(uint32_t ADCxMap)
 			break;
 		default:break;
 	}
-	//é…ç½®é€šé“
+	//ÅäÖÃÍ¨µÀ
 	ADCx->SC1[pADC_Map->ADC_IsChlAB] &= ~(ADC_SC1_ADCH_MASK);	
 	ADCx->SC1[pADC_Map->ADC_IsChlAB] |= pADC_Map->ADC_Chl;
-	//ç­‰å¾…è½¬æ¢å®Œæˆ
+	//µÈ´ý×ª»»Íê³É
 	while((ADCx->SC1[pADC_Map->ADC_IsChlAB] & ADC_SC1_COCO_MASK) == 0);
-	//è¿”å›žADCè¾“å‡ºè¿”å›žç»“æžœ
+	//·µ»ØADCÊä³ö·µ»Ø½á¹û
 	return ADCx->R[pADC_Map->ADC_IsChlAB];
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šADCæ¨¡å—ä¸­æ–­é…ç½®
- å½¢å‚ï¼šADCx: ADCæ¨¡å—å·
-       @arg ADC0 : ADCæ¨¡å—0
-       @arg ADC1 : ADCæ¨¡å—1
-       ADC_Mux : å¤ç”¨é€‰æ‹©
-       @arg A : å¤ç”¨A 
-       @arg B : å¤ç”¨B
-       ADC_IT : ADCä¸­æ–­
-       @arg ADC_IT_AI : ADCè½¬æ¢å®Œæˆä¸­æ–­
-			 NewState : ä½¿èƒ½æˆ–è€…å…³é—­
-       @arg ENABLE : ä½¿èƒ½
-       @arg DISABLE: å…³é—­
- è¿”å›žï¼š0
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºADCÄ£¿éÖÐ¶ÏÅäÖÃ
+ ÐÎ²Î£ºADCx: ADCÄ£¿éºÅ
+       @arg ADC0 : ADCÄ£¿é0
+       @arg ADC1 : ADCÄ£¿é1
+       ADC_Mux : ¸´ÓÃÑ¡Ôñ
+       @arg A : ¸´ÓÃA 
+       @arg B : ¸´ÓÃB
+       ADC_IT : ADCÖÐ¶Ï
+       @arg ADC_IT_AI : ADC×ª»»Íê³ÉÖÐ¶Ï
+			 NewState : Ê¹ÄÜ»òÕß¹Ø±Õ
+       @arg ENABLE : Ê¹ÄÜ
+       @arg DISABLE: ¹Ø±Õ
+ ·µ»Ø£º0
+ Ïê½â£º0
 ************************************************************************************************/
 void ADC_ITConfig(ADC_Type* ADCx,uint8_t ADC_Mux, uint16_t ADC_IT, FunctionalState NewState)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊý¼ì²é
 	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 	assert_param(IS_ADC_IT(ADC_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -179,22 +179,22 @@ void ADC_ITConfig(ADC_Type* ADCx,uint8_t ADC_Mux, uint16_t ADC_IT, FunctionalSta
 	}
 }
 /***********************************************************************************************
- åŠŸèƒ½ï¼šADCæ¨¡å—ä¸­æ–­é…ç½®
- å½¢å‚ï¼šADCx: ADCæ¨¡å—å·
-       @arg ADC0 : ADCæ¨¡å—0
-       @arg ADC1 : ADCæ¨¡å—1
-       ADC_Mux : å¤ç”¨é€‰æ‹©
-       @arg A : å¤ç”¨A 
-       @arg B : å¤ç”¨B
-       ADC_IT : ADCä¸­æ–­
-       @arg ADC_IT_AI : ADCè½¬æ¢å®Œæˆä¸­æ–­
- è¿”å›žï¼šSET  æˆ–è€…  RESET 
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºADCÄ£¿éÖÐ¶ÏÅäÖÃ
+ ÐÎ²Î£ºADCx: ADCÄ£¿éºÅ
+       @arg ADC0 : ADCÄ£¿é0
+       @arg ADC1 : ADCÄ£¿é1
+       ADC_Mux : ¸´ÓÃÑ¡Ôñ
+       @arg A : ¸´ÓÃA 
+       @arg B : ¸´ÓÃB
+       ADC_IT : ADCÖÐ¶Ï
+       @arg ADC_IT_AI : ADC×ª»»Íê³ÉÖÐ¶Ï
+ ·µ»Ø£ºSET  »òÕß  RESET 
+ Ïê½â£º0
 ************************************************************************************************/
 ITStatus ADC_GetITStatus(ADC_Type* ADCx, uint8_t ADC_Mux, uint16_t ADC_IT)
 {
 	ITStatus retval;
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊý¼ì²é
 	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 	assert_param(IS_ADC_MUX(ADC_Mux));
 	assert_param(IS_ADC_IT(ADC_IT));
@@ -210,21 +210,21 @@ ITStatus ADC_GetITStatus(ADC_Type* ADCx, uint8_t ADC_Mux, uint16_t ADC_IT)
 }
 
 /***********************************************************************************************
- åŠŸèƒ½ï¼šADCæ¨¡å—ä¸­æ–­é…ç½®
- å½¢å‚ï¼šADCx: ADCæ¨¡å—å·
-       @arg ADC0 : ADCæ¨¡å—0
-       @arg ADC1 : ADCæ¨¡å—1
-       ADC_DMAReq : ADCè§¦å‘æºé€‰æ‹©
-       @arg ADC_DMAReq_COCO : ADCå®Œæˆå‡†æ¢è§¦å‘
-			 NewState : ä½¿èƒ½æˆ–è€…å…³é—­
-       @arg ENABLE : ä½¿èƒ½
-       @arg DISABLE: å…³é—­
- è¿”å›žï¼šSET  æˆ–è€…  RESET 
- è¯¦è§£ï¼š0
+ ¹¦ÄÜ£ºADCÄ£¿éÖÐ¶ÏÅäÖÃ
+ ÐÎ²Î£ºADCx: ADCÄ£¿éºÅ
+       @arg ADC0 : ADCÄ£¿é0
+       @arg ADC1 : ADCÄ£¿é1
+       ADC_DMAReq : ADC´¥·¢Ô´Ñ¡Ôñ
+       @arg ADC_DMAReq_COCO : ADCÍê³É×¼»»´¥·¢
+			 NewState : Ê¹ÄÜ»òÕß¹Ø±Õ
+       @arg ENABLE : Ê¹ÄÜ
+       @arg DISABLE: ¹Ø±Õ
+ ·µ»Ø£ºSET  »òÕß  RESET 
+ Ïê½â£º0
 ************************************************************************************************/
 void ADC_DMACmd(ADC_Type* ADCx, uint16_t ADC_DMAReq, FunctionalState NewState)
 {
-	//å‚æ•°æ£€æŸ¥
+	//²ÎÊý¼ì²é
 	assert_param(IS_ADC_ALL_PERIPH(ADCx));
 	assert_param(IS_ADC_DMAREQ(ADC_DMAReq));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
@@ -240,13 +240,13 @@ void ADC_DMACmd(ADC_Type* ADCx, uint16_t ADC_DMAReq, FunctionalState NewState)
 /*
 static const ADC_MapTypeDef ADC_Check_Maps[] = 
 {  //I  P  G  A  S  A   C
-	  //ADC0 æŸ¥åˆ†è¾“å…¥é€šé“
+	  //ADC0 ²é·ÖÊäÈëÍ¨µÀ
     {0, 0, 0, 0, 1, 1 ,0, 0}, //ADC0_DP0_DM0
     {0, 0, 0, 0, 1, 1 ,0, 1}, //ADC0_DP1_DM1
     {0, 0, 0, 0, 1, 1 ,0, 2}, //ADC0_PGA0_DP_DM
     {0, 0, 0, 0, 1, 1 ,0, 3}, //ADC0_DP3_DM3
     {0, 0, 0, 0, 1, 1 ,0,26}, //ADC0_TEMP_SENOR_DIFF
-    //ADC0 å•ç«¯è¾“å…¥é€šé“
+    //ADC0 µ¥¶ËÊäÈëÍ¨µÀ
     {0, 0, 0, 0, 0, 1 ,0,0}, //ADC0_SE0_DP0	
     {0, 0, 0, 0, 0, 1 ,0,1}, //ADC0_SE1_DP1	
     {0, 0, 0, 0, 0, 1 ,0,2}, //ADC0_SE2_PGA0_DP	
@@ -267,13 +267,13 @@ static const ADC_MapTypeDef ADC_Check_Maps[] =
 		{0, 0, 0, 0, 0, 1 ,0,20}, //ADC0_SE20_DM1	
 		{0, 0, 0, 0, 0, 1 ,0,26}, //ADC1_TEMP_SENOR_SE		
 	 //I  P  G  A  S  A   C
-		//ADC1å·®åˆ†è¾“å…¥é€šé“
+		//ADC1²î·ÖÊäÈëÍ¨µÀ
 		{1, 0, 0, 0, 1, 1 ,0, 0}, //ADC1_DP0_DM0	
 		{1, 0, 0, 0, 1, 1 ,0, 1}, //ADC1_DP1_DM1	
 		{1, 0, 0, 0, 1, 1 ,0, 2}, //ADC1_PGA1_DP_DM	
 		{1, 0, 0, 0, 1, 1 ,0, 3}, //ADC1_DP3_DM3	
 		{1, 0, 0, 0, 1, 1 ,0,26}, //ADC1_TEMP_SENOR_DIFF
-    //ADC1å•ç«¯è¾“å…¥é€šé“
+    //ADC1µ¥¶ËÊäÈëÍ¨µÀ
 		{1, 0, 0, 0, 0, 1 ,0, 0}, //ADC1_SE0_DP0		
 		{1, 0, 0, 0, 0, 1 ,0, 1}, //ADC1_SE1_DP1
 		{1, 0, 0, 0, 0, 1 ,0, 2}, //ADC1_SE2_PGA1_DP	
@@ -315,41 +315,41 @@ void ADC_CalConstValue(void)
 }
 */
 
-//ADCæ ¡å‡†ç¨‹åº
+//ADCæ ¡å‡†
 static uint8_t ADC_Cal(ADC_Type *ADCx)
 {
-  unsigned short cal_var;
-  ADCx->SC2 &= ~ADC_SC2_ADTRG_MASK;
-	ADCx->SC3 &= ( ~ADC_SC3_ADCO_MASK & ~ADC_SC3_AVGS_MASK ); 
-	ADCx->SC3 |= ( ADC_SC3_AVGE_MASK | ADC_SC3_AVGS(AVGS_32) ); 
-  ADCx->SC3 |= ADC_SC3_CAL_MASK ;      // Start CAL 
-	while((ADCx->SC1[A] & ADC_SC1_COCO_MASK) == COCO_NOT);
-	if((ADCx->SC3 & ADC_SC3_CALF_MASK) == CALF_FAIL)
+    unsigned short cal_var;
+    ADCx->SC2 &= ~ADC_SC2_ADTRG_MASK;
+    ADCx->SC3 &= ( ~ADC_SC3_ADCO_MASK & ~ADC_SC3_AVGS_MASK ); 
+    ADCx->SC3 |= ( ADC_SC3_AVGE_MASK | ADC_SC3_AVGS(AVGS_32) ); 
+    ADCx->SC3 |= ADC_SC3_CAL_MASK ;      // Start CAL 
+    while((ADCx->SC1[A] & ADC_SC1_COCO_MASK) == COCO_NOT);
+    if((ADCx->SC3 & ADC_SC3_CALF_MASK) == CALF_FAIL)
 	{
 		return 1;
 	}
-  // Calculate plus-side calibration
-  cal_var = 0x00;
-  cal_var =  ADCx->CLP0; 
-  cal_var += ADCx->CLP1; 
-  cal_var += ADCx->CLP2; 
-  cal_var += ADCx->CLP3; 
-  cal_var += ADCx->CLP4; 
-  cal_var += ADCx->CLPS; 
-  cal_var = cal_var/2;
-  cal_var |= 0x8000; // Set MSB
+    // Calculate plus-side calibration
+    cal_var = 0x00;
+    cal_var =  ADCx->CLP0; 
+    cal_var += ADCx->CLP1; 
+    cal_var += ADCx->CLP2; 
+    cal_var += ADCx->CLP3; 
+    cal_var += ADCx->CLP4; 
+    cal_var += ADCx->CLPS; 
+    cal_var = cal_var/2;
+    cal_var |= 0x8000; // Set MSB
 	ADCx->PG =  ADC_PG_PG(cal_var);
-  // Calculate minus-side calibration
-  cal_var = 0x00;
-  cal_var =  ADCx->CLM0; 
-  cal_var += ADCx->CLM1; 
-  cal_var += ADCx->CLM2; 
-  cal_var += ADCx->CLM3; 
-  cal_var += ADCx->CLM4; 
-  cal_var += ADCx->CLMS; 
-  cal_var = cal_var/2;
-  cal_var |= 0x8000; // Set MSB
-	ADCx->MG = ADC_MG_MG(cal_var); 
-  ADCx->SC3 &= ~ADC_SC3_CAL_MASK;
-  return 0;
+    // Calculate minus-side calibration
+    cal_var = 0x00;
+    cal_var =  ADCx->CLM0; 
+    cal_var += ADCx->CLM1; 
+    cal_var += ADCx->CLM2; 
+    cal_var += ADCx->CLM3; 
+    cal_var += ADCx->CLM4; 
+    cal_var += ADCx->CLMS; 
+    cal_var = cal_var/2;
+    cal_var |= 0x8000; // Set MSB
+    ADCx->MG = ADC_MG_MG(cal_var); 
+    ADCx->SC3 &= ~ADC_SC3_CAL_MASK;
+    return 0;
 }
