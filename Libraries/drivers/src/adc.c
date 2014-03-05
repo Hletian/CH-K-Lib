@@ -14,7 +14,7 @@ static uint8_t ADC_Cal(ADC_Type *ADCx);
  形参：ADC_InitStruct: 初始化结构
  返回：0
  详解：0
-/******************************************************************************/
+******************************************************************************/
 void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 {
 	ADC_MapTypeDef *pADC_Map = (ADC_MapTypeDef*)&ADC_InitStruct->ADCxMap;
