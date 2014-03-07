@@ -43,25 +43,24 @@ QD: 正交编码 需要2根线 A线 B线 可以测量 转速和 旋转方向
 
 int main(void)
 {
-		uint32_t value;
-		uint8_t dir;
+    uint32_t value;
+    uint8_t dir;
     //初始化系统时钟 使用外部50M晶振 PLL倍频到100M
     SystemClockSetup(ClockSource_EX50M,CoreClock_100M);
     DelayInit();
     LED_Init(LED_PinLookup_CHKATOM, kNumOfLED);
     UART_DebugPortInit(UART4_RX_C14_TX_C15, 115200);
     UART_printf("FTM QuadratureDecoder Test\r\n");
-	
     //QD Init
     FTM_QDInit(FTM2_QD_B18_PHA_B19_PHB);
 		
     while(1)
     {
-			  //Get Data for QD module
-			  FTM_QDGetData(FTM2, &value, &dir);
+        //Get Data for QD module
+        FTM_QDGetData(FTM2, &value, &dir);
         UART_printf("Value:%d  Direction%d\r\n", value, dir);
-				DelayMs(50);
-				LED_Toggle(kLED1);
+        DelayMs(50);
+        LED_Toggle(kLED1);
     }
  }
 
