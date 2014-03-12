@@ -80,7 +80,7 @@ void DMA_Init(DMA_InitTypeDef *DMA_InitStruct)
 	DMA0->TCD[DMA_InitStruct->Channelx].BITER_ELINKNO = DMA_BITER_ELINKNO_BITER(DMA_InitStruct->MinorLoopLength);
 	//设置每一次传输字节的个数  个数到达上限时 DMA便将数据存入RAM 
 	DMA0->TCD[DMA_InitStruct->Channelx].NBYTES_MLNO = DMA_NBYTES_MLNO_NBYTES(DMA_InitStruct->TransferBytes);
-//设置DMA TCD控制寄存器
+    //设置DMA TCD控制寄存器
 	DMA0->TCD[DMA_InitStruct->Channelx].CSR = 0;
 	if(DMA_InitStruct->DMAAutoClose == ENABLE)
 	{

@@ -106,16 +106,16 @@ void DelayMs(uint32_t ms)
 ************************************************************************************************/
 void DelayUs(uint32_t us)
 { 
-	uint32_t temp;
-   SysTick->LOAD=us*fac_us; 					//时间加载
-   SysTick->VAL=0x00;   							//清空计数器
-   SysTick->CTRL|=0x01	;						 	//开始倒数   
-		do
-		{
-			temp=SysTick->CTRL;
-		}
-	while(temp&0x01&&!(temp&(1<<16)));	//等待时间到达   
-	SysTick->CTRL&=~0x01;      				  //关闭计数器
+    uint32_t temp;
+    SysTick->LOAD=us*fac_us; 					//时间加载
+    SysTick->VAL=0x00;   							//清空计数器
+    SysTick->CTRL|=0x01	;						 	//开始倒数   
+    do
+    {
+        temp=SysTick->CTRL;
+    }
+    while(temp&0x01&&!(temp&(1<<16)));	//等待时间到达   
+    SysTick->CTRL&=~0x01;      				  //关闭计数器
 }
 /***********************************************************************************************
  功能：MS级延时函数

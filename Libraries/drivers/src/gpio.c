@@ -50,10 +50,10 @@ void GPIO_Init(GPIO_InitTypeDef* GPIO_InitStruct)
 	//确定是输入还是输出
 	if((GPIO_InitStruct->GPIO_Mode == GPIO_Mode_OOD) || (GPIO_InitStruct->GPIO_Mode == GPIO_Mode_OPP))
 	{
-		//配置GPIOx口的第GPIO_Pin引脚为输出
-		GPIOx->PDDR |= (1<<(GPIO_InitStruct->GPIO_Pin));	
-		//作为输出口时关闭该引脚的上下拉电阻功能
-	  PORTx->PCR[(GPIO_InitStruct->GPIO_Pin)]&=~(PORT_PCR_PE_MASK); 
+        //配置GPIOx口的第GPIO_Pin引脚为输出
+        GPIOx->PDDR |= (1<<(GPIO_InitStruct->GPIO_Pin));	
+        //作为输出口时关闭该引脚的上下拉电阻功能
+        PORTx->PCR[(GPIO_InitStruct->GPIO_Pin)]&=~(PORT_PCR_PE_MASK); 
 		//输出电平配置
 		(Bit_SET == GPIO_InitStruct->GPIO_InitState)?(GPIOx->PDOR |= (1<<(GPIO_InitStruct->GPIO_Pin))):(GPIOx->PDOR &= ~(1<<(GPIO_InitStruct->GPIO_Pin)));
 		//开漏或者推挽输出
@@ -113,12 +113,12 @@ ITStatus GPIO_GetITStates(GPIO_Type *GPIOx,uint16_t GPIO_Pin)
 	//开端口时钟
 	switch((uint32_t)GPIOx)
 	{
-		case PTA_BASE:PORTx = PORTA;break;
-	  case PTB_BASE:PORTx = PORTB;break;
-	  case PTC_BASE:PORTx = PORTC;break;
-	  case PTD_BASE:PORTx = PORTD;break;
-	  case PTE_BASE:PORTx = PORTE;break;
-	  default : break;
+        case PTA_BASE:PORTx = PORTA;break;
+        case PTB_BASE:PORTx = PORTB;break;
+        case PTC_BASE:PORTx = PORTC;break;
+        case PTD_BASE:PORTx = PORTD;break;
+        case PTE_BASE:PORTx = PORTE;break;
+        default : break;
 	} 
 	//返回标志位
 	if(PORTx->ISFR & (1<<GPIO_Pin))
@@ -149,12 +149,12 @@ void GPIO_ClearITPendingBit(GPIO_Type *GPIOx,uint16_t GPIO_Pin)
 	//开端口时钟
 	switch((uint32_t)GPIOx)
 	{
-		case PTA_BASE:PORTx=PORTA;SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;break; //开启PORTA口使能时钟，在设置前首先开启使能时钟参见k10手册268页，
-	  case PTB_BASE:PORTx=PORTB;SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;break;	//开启PORTB口使能时钟
-	  case PTC_BASE:PORTx=PORTC;SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;break;	//开启PORTC口使能时钟
-	  case PTD_BASE:PORTx=PORTD;SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;break;	//开启PORTD口使能时钟
-	  case PTE_BASE:PORTx=PORTE;SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;break;	//开启PORTE口使能时钟
-	  default : break;
+        case PTA_BASE:PORTx=PORTA;SIM->SCGC5|=SIM_SCGC5_PORTA_MASK;break; //开启PORTA口使能时钟，在设置前首先开启使能时钟参见k10手册268页，
+        case PTB_BASE:PORTx=PORTB;SIM->SCGC5|=SIM_SCGC5_PORTB_MASK;break;	//开启PORTB口使能时钟
+        case PTC_BASE:PORTx=PORTC;SIM->SCGC5|=SIM_SCGC5_PORTC_MASK;break;	//开启PORTC口使能时钟
+        case PTD_BASE:PORTx=PORTD;SIM->SCGC5|=SIM_SCGC5_PORTD_MASK;break;	//开启PORTD口使能时钟
+        case PTE_BASE:PORTx=PORTE;SIM->SCGC5|=SIM_SCGC5_PORTE_MASK;break;	//开启PORTE口使能时钟
+        default : break;
 	} 
 	PORTx->ISFR |= (1<<GPIO_Pin);
 }
@@ -192,14 +192,14 @@ void GPIO_WriteBit(GPIO_Type *GPIOx,uint16_t GPIO_Pin,BitAction BitVal)
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	assert_param(IS_GPIO_BIT_ACTION(BitVal)); 
 	
-  if (BitVal != Bit_RESET)
-  {
-    GPIOx->PSOR |= (1<<GPIO_Pin);
-  }
-  else
-  {
-    GPIOx->PCOR |= (1<<GPIO_Pin);
-  }
+    if (BitVal != Bit_RESET)
+    {
+        GPIOx->PSOR |= (1<<GPIO_Pin);
+    }
+    else
+    {
+        GPIOx->PCOR |= (1<<GPIO_Pin);
+    }
 }
 /***********************************************************************************************
  功能：将一个IO Pin设置为1
@@ -302,15 +302,15 @@ uint8_t GPIO_ReadOutputDataBit(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	
-  if(((GPIOx->PDOR >> GPIO_Pin) & 1 ) != (uint32_t)Bit_RESET)
-  {
-    bitstatus = (uint8_t)Bit_SET;
-  }
-  else
-  {
-    bitstatus = (uint8_t)Bit_RESET;
-  }
-  return bitstatus;
+    if(((GPIOx->PDOR >> GPIO_Pin) & 1 ) != (uint32_t)Bit_RESET)
+    {
+        bitstatus = (uint8_t)Bit_SET;
+    }
+    else
+    {
+        bitstatus = (uint8_t)Bit_RESET;
+    }
+    return bitstatus;
 }
 /***********************************************************************************************
  功能：读取一个已经设置为输出的IO的 电平
@@ -350,15 +350,15 @@ uint8_t GPIO_ReadInputDataBit(GPIO_Type* GPIOx, uint16_t GPIO_Pin)
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	assert_param(IS_GPIO_PIN(GPIO_Pin));
 	
-  if (((GPIOx->PDIR >> GPIO_Pin)& 0x01) != (uint32_t)Bit_RESET)
-  {
-    bitstatus = (uint8_t)Bit_SET;
-  }
-  else
-  {
-    bitstatus = (uint8_t)Bit_RESET;
-  }
-  return bitstatus;
+    if (((GPIOx->PDIR >> GPIO_Pin)& 0x01) != (uint32_t)Bit_RESET)
+    {
+        bitstatus = (uint8_t)Bit_SET;
+    }
+    else
+    {
+        bitstatus = (uint8_t)Bit_RESET;
+    }
+    return bitstatus;
 }
 /***********************************************************************************************
  功能：读取一个IO端口的输入电平
@@ -376,6 +376,6 @@ uint32_t GPIO_ReadInputData(GPIO_Type *GPIOx)
 	//检测参数
 	assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
 	
-	 return(GPIOx->PDIR);
+    return(GPIOx->PDIR);
 }
 

@@ -26,10 +26,10 @@ void LPTM_Init(LPTM_InitTypeDef* LPTM_InitStruct)
 	SIM->SCGC5 |= SIM_SCGC5_LPTIMER_MASK; 
 	//清空寄存器
 	LPTMx->CSR = 0x00; 
-  LPTMx->PSR = 0x00;
-  LPTMx->CMR = 0x00;
+    LPTMx->PSR = 0x00;
+    LPTMx->CMR = 0x00;
 	//定时计数模式
-	if(LPTM_InitStruct->LPTM_Mode == LPTM_Mode_TC)
+    if(LPTM_InitStruct->LPTM_Mode == LPTM_Mode_TC)
 	{
 		LPTMx->CSR &= ~LPTMR_CSR_TMS_MASK; 
 		//不分频 采用1KHZ时钟源	

@@ -206,9 +206,9 @@ ITStatus DAC_GetITStatus(DAC_Type* DACx, uint16_t DAC_IT)
 void DAC_SoftwareTrigger(DAC_Type *DACx)
 {
 	//参数检查
-	assert_param(IS_DAC_ALL_PERIPH(DACx));
+    assert_param(IS_DAC_ALL_PERIPH(DACx));
 	
-  DAC0->C0 |= DAC_C0_DACSWTRG_MASK;//软件触发一次
+    DAC0->C0 |= DAC_C0_DACSWTRG_MASK;//软件触发一次
 }
 
 /***********************************************************************************************

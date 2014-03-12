@@ -94,7 +94,7 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 	}
 	//其他杂项配置
 	ADCx->CFG2 |= (ADACKEN_DISABLED|ADHSC_HISPEED|ADC_CFG2_ADLSTS(ADLSTS_20));
-  ADCx->CV1 = 0x1234u; 
+    ADCx->CV1 = 0x1234u; 
 	ADCx->CV2 = 0x5678u;
 	ADCx->SC2 = (ACFE_DISABLED|ACFGT_GREATER|ACREN_ENABLED|DMAEN_DISABLED| ADC_SC2_REFSEL(REFSEL_EXT));
 	ADCx->SC3 = (CAL_OFF|ADCO_SINGLE|AVGE_ENABLED|ADC_SC3_AVGS(AVGS_32));
@@ -110,7 +110,7 @@ void ADC_Init(ADC_InitTypeDef* ADC_InitStruct)
 		ADCx->SC1[pADC_Map->ADC_IsChlAB] |= ADC_SC1_DIFF_MASK; 
 	}
 	//校准
-  ADC_Cal(ADCx);
+    ADC_Cal(ADCx);
 	//配置触发源
 	(ADC_TRIGGER_HW == ADC_InitStruct->ADC_TriggerSelect)?(ADCx->SC2 |= ADC_SC2_ADTRG_MASK):(ADCx->SC2 &= ~ADC_SC2_ADTRG_MASK);
 }
@@ -232,9 +232,9 @@ void ADC_DMACmd(ADC_Type* ADCx, uint16_t ADC_DMAReq, FunctionalState NewState)
 	switch(ADC_DMAReq)
 	{
 		case ADC_DMAReq_COCO:
-			(NewState == ENABLE)?(ADCx->SC2 |= ADC_SC2_DMAEN_MASK):(ADCx->SC2 &= ~ADC_SC2_DMAEN_MASK);
-			break;
-			default:break;
+            (NewState == ENABLE)?(ADCx->SC2 |= ADC_SC2_DMAEN_MASK):(ADCx->SC2 &= ~ADC_SC2_DMAEN_MASK);
+            break;
+        default:break;
 	}
 }
 /*

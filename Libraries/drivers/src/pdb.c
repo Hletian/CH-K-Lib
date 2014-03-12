@@ -22,8 +22,8 @@ void PDB_Init(PDB_InitTypeDef * PDB_InitStruct)
 	assert_param(IS_PDB_CONT_MODE(PDB_InitStruct->PDB_ContinuousMode));
 	assert_param(IS_PDB_LDMOD(PDB_InitStruct->PDB_LoadMode));  
 	
-  //使能PDB时钟
-  SIM->SCGC6 |= SIM_SCGC6_PDB_MASK ;
+    //使能PDB时钟
+    SIM->SCGC6 |= SIM_SCGC6_PDB_MASK ;
 	//清0状态寄存器
 	PDB0->SC = 0x00;
 	//设置触发源
@@ -38,8 +38,8 @@ void PDB_Init(PDB_InitTypeDef * PDB_InitStruct)
 	}
 	if(i > 7) i = 7;
 	//设置分频率
-  PDB0->SC |= PDB_SC_MULT(PDB_MULT_40);
-	PDB0->SC |= PDB_SC_PRESCALER(i);
+    PDB0->SC |= PDB_SC_MULT(PDB_MULT_40);
+    PDB0->SC |= PDB_SC_PRESCALER(i);
 	//设置MOD和 IDLY 
 	PDB0->MOD =  ((PDB_InitStruct->PDB_Period)*(CPUInfo.BusClock/1000))/(40*(1<<i));
 	PDB0->IDLY = ((PDB_InitStruct->PDB_Period)*(CPUInfo.BusClock/1000))/(40*(1<<i));

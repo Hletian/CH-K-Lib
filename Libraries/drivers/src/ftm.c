@@ -344,8 +344,8 @@ void FTM_Init(FTM_InitTypeDef *FTM_InitStruct)
 ************************************************************************************************/
 void FTM_QDGetData(FTM_Type *ftm, uint32_t* value, uint8_t* dir)
 {
-	*dir = (((ftm->QDCTRL)>>FTM_QDCTRL_QUADIR_SHIFT)&1);
-	*value = (ftm->CNT);
+    *dir = (((ftm->QDCTRL)>>FTM_QDCTRL_QUADIR_SHIFT)&1);
+    *value = (ftm->CNT);
 }
 
 /***********************************************************************************************

@@ -125,7 +125,7 @@ void CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
 	uint8_t i = 0;
 	PORT_Type *CAN_PORT = NULL;
 	CAN_MapTypeDef *pCAN_Map = (CAN_MapTypeDef*)&(CAN_InitStruct->CANxMap);
-  CAN_Type  *CANx = NULL;
+    CAN_Type  *CANx = NULL;
 	//参数检测
 	assert_param(IS_FUNCTIONAL_STATE(CAN_InitStruct->FilterEnable));
 	assert_param(IS_CAN_MAP(CAN_InitStruct->CANxMap));
@@ -201,9 +201,9 @@ void CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
 	CANx->MCR |= CAN_MCR_IDAM(0); 
 	//使能个别滤波和接受队列特点?
 	//配置通信频率和初始化CTRL1  （自己理解的，设置传输一bite的时间）	 |CAN_CTRL1_LPB_MASK
-  CANx->MCR |= CAN_MCR_IRMQ_MASK;    
-  //设置传输速率
-	CAN_SetBaudrate(CANx,CAN_InitStruct->CAN_BaudRateSelect);
+    CANx->MCR |= CAN_MCR_IRMQ_MASK;    
+    //设置传输速率
+    CAN_SetBaudrate(CANx,CAN_InitStruct->CAN_BaudRateSelect);
 	CANx->MCR |= CAN_MCR_IDAM(0); //配置ID模式，目前选择的是A格式
 	//设置屏蔽功能
 	if(CAN_InitStruct->FilterEnable == ENABLE)
@@ -385,14 +385,14 @@ uint8_t CAN_Receive(CAN_Type* CANx,CAN_RxMsgTypeDef* RxMessage)
 		RxMessage->Id =  CANx->MB[RxMessage->MBIndex].ID>>18;
 	}
 	//读取地址
-	for(i=0;i<len;i++)
-  {  
-	 if(i < 4)
-	 (RxMessage->Data[0+i])=(word[0]>>((3-i)*8));
-	 else									 //数据存储转换
-	 (RxMessage->Data[0+i])=(word[1]>>((7-i)*8));
-  }
-	return TRUE;
+    for(i=0;i<len;i++)
+    {  
+        if(i < 4)
+        (RxMessage->Data[0+i])=(word[0]>>((3-i)*8));
+        else									 //数据存储转换
+        (RxMessage->Data[0+i])=(word[1]>>((7-i)*8));
+    }
+    return TRUE;
 }
 /***********************************************************************************************
  功能：CAN 中断配置

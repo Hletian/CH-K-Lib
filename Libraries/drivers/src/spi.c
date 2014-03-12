@@ -150,14 +150,14 @@ void SPI_Init(SPI_InitTypeDef* SPI_InitStruct)
 	//配置MSB或者LSD
 	(SPI_InitStruct->SPI_FirstBit == SPI_FirstBit_MSB)?(SPIx->CTAR[1] &= ~SPI_CTAR_LSBFE_MASK):(SPIx->CTAR[1] |= SPI_CTAR_LSBFE_MASK);
 	//清空状态
-  SPIx->SR = SPI_SR_EOQF_MASK   //队列结束标志 w1c  (write 1 to clear)     
+    SPIx->SR = SPI_SR_EOQF_MASK   //队列结束标志 w1c  (write 1 to clear)     
             | SPI_SR_TFUF_MASK    //TX FIFO underflow flag  w1c
             | SPI_SR_TFFF_MASK    //TX FIFO fill      flag  w1c
             | SPI_SR_RFOF_MASK    //RX FIFO overflow  flag  w1c
             | SPI_SR_RFDF_MASK    //RX FIFO fill      flasg w1c (0时为空)
 					  | SPI_SR_TCF_MASK;
-	//开始传输
-	 SPIx->MCR &= ~SPI_MCR_HALT_MASK;    //开始传输，见参考手册1129页
+    //开始传输
+    SPIx->MCR &= ~SPI_MCR_HALT_MASK;    //开始传输，见参考手册1129页
 }
 
 /***********************************************************************************************
@@ -199,13 +199,13 @@ uint16_t SPI_ReadWriteByte(uint32_t SPICSMap,uint16_t Data,uint16_t PCS_State)
 							 | SPI_PUSHR_CTAS(1)      
 						   | SPI_PUSHR_PCS(1<<(pSPI_CSMap->SPI_PCS_CH_Index))//使能信号
 						 	 | SPI_PUSHR_TXDATA(Data); //写数据
-	while(!(SPIx->SR & SPI_SR_TCF_MASK)){};     //等待发送完成
-  SPIx->SR |= SPI_SR_TCF_MASK ;               //清除发送缓冲标志位
-  //使接收缓冲器为空
-  while((SPIx->SR & SPI_SR_RFDF_MASK) == 0){};   //RX FIFO 未接收到数据则一直等待
-  temp = (uint8_t)(SPIx->POPR & 0xFF);           //数据以32位形式存在POPR中，转化格式 
-  SPIx->SR |= SPI_SR_RFDF_MASK;                  //清除标志位
-  return temp;
+    while(!(SPIx->SR & SPI_SR_TCF_MASK)){};     //等待发送完成
+    SPIx->SR |= SPI_SR_TCF_MASK ;               //清除发送缓冲标志位
+    //使接收缓冲器为空
+    while((SPIx->SR & SPI_SR_RFDF_MASK) == 0){};   //RX FIFO 未接收到数据则一直等待
+    temp = (uint8_t)(SPIx->POPR & 0xFF);           //数据以32位形式存在POPR中，转化格式 
+    SPIx->SR |= SPI_SR_RFDF_MASK;                  //清除标志位
+    return temp;
 }
 
 /***********************************************************************************************
@@ -225,7 +225,7 @@ uint16_t SPI_ReadWriteByte(uint32_t SPICSMap,uint16_t Data,uint16_t PCS_State)
 void SPI_ITConfig(SPI_Type* SPIx, uint16_t SPI_IT, FunctionalState NewState)
 {
 	//参数检查
-	assert_param(IS_SPI_ALL_PERIPH(SPIx));
+    assert_param(IS_SPI_ALL_PERIPH(SPIx));
 	assert_param(IS_SPI_IT(SPI_IT));
 	assert_param(IS_FUNCTIONAL_STATE(NewState));
 	

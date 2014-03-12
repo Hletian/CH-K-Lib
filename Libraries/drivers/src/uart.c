@@ -53,41 +53,41 @@ void UART_DebugPortInit(uint32_t UARTxMAP,uint32_t UART_BaudRate)
 ************************************************************************************************/
 void UART_Init(UART_InitTypeDef* UART_InitStruct)
 {
-  UART_Type* UARTx = NULL;
-	PORT_Type *UART_PORT = NULL;
-  uint16_t sbr;
-	uint8_t brfa; 
+    UART_Type* UARTx = NULL;
+    PORT_Type *UART_PORT = NULL;
+    uint16_t sbr;
+    uint8_t brfa; 
 	uint32_t clock;
-	UART_MapTypeDef *pUART_Map = NULL;
-	pUART_Map = (UART_MapTypeDef*)&(UART_InitStruct->UARTxMAP);
-  //检测参数
-	assert_param(IS_UART_MAP(UART_InitStruct->UARTxMAP));
-	//找出对应的UART端口
-	switch(pUART_Map->UART_Index)
-	{
-			case 0:
-					SIM->SCGC4|=SIM_SCGC4_UART0_MASK;
-					UARTx = UART0;
-					break;
-			case 1:
-					SIM->SCGC4|=SIM_SCGC4_UART1_MASK;
-					UARTx = UART1;
-					break;
-			case 2:
-					SIM->SCGC4|=SIM_SCGC4_UART2_MASK;
-					UARTx = UART2;
-					break;
-			case 3:
-					SIM->SCGC4|=SIM_SCGC4_UART3_MASK;
-					UARTx = UART3;
-					break;
-			case 4:
-					SIM->SCGC1|=SIM_SCGC1_UART4_MASK;
-					UARTx = UART4;
-					break;
-			default:
-					UARTx = NULL;
-					break;
+    UART_MapTypeDef *pUART_Map = NULL;
+    pUART_Map = (UART_MapTypeDef*)&(UART_InitStruct->UARTxMAP);
+    //检测参数
+    assert_param(IS_UART_MAP(UART_InitStruct->UARTxMAP));
+    //找出对应的UART端口
+    switch(pUART_Map->UART_Index)
+    {
+        case 0:
+            SIM->SCGC4|=SIM_SCGC4_UART0_MASK;
+            UARTx = UART0;
+            break;
+        case 1:
+            SIM->SCGC4|=SIM_SCGC4_UART1_MASK;
+            UARTx = UART1;
+            break;
+        case 2:
+            SIM->SCGC4|=SIM_SCGC4_UART2_MASK;
+            UARTx = UART2;
+            break;
+        case 3:
+            SIM->SCGC4|=SIM_SCGC4_UART3_MASK;
+            UARTx = UART3;
+            break;
+        case 4:
+            SIM->SCGC1|=SIM_SCGC1_UART4_MASK;
+            UARTx = UART4;
+            break;
+        default:
+            UARTx = NULL;
+        break;
 	}
 	 //找出 PORT端口 并使能时钟
 	switch(pUART_Map->UART_GPIO_Index )
@@ -121,8 +121,8 @@ void UART_Init(UART_InitTypeDef* UART_InitStruct)
 	UART_PORT->PCR[pUART_Map->UART_TX_Pin_Index] &= ~PORT_PCR_MUX_MASK;
 	UART_PORT->PCR[pUART_Map->UART_TX_Pin_Index] |= PORT_PCR_MUX(pUART_Map->UART_Alt_Index);
 	//配置传输频率
-	GetCPUInfo();  //计算系统时钟
-  clock = CPUInfo.BusClock;
+    GetCPUInfo();  //计算系统时钟
+    clock = CPUInfo.BusClock;
 	if((uint32_t)UARTx == UART0_BASE||(uint32_t)UARTx == UART1_BASE) 
 	{
 		clock = CPUInfo.CoreClock; //UART0 UART1使用CoreClock
@@ -132,8 +132,8 @@ void UART_Init(UART_InitTypeDef* UART_InitStruct)
 	UARTx->BDH |= ((sbr>>8)&UART_BDH_SBR_MASK);//设置高5位的数据
 	UARTx->BDL = (sbr&UART_BDL_SBR_MASK);//设置低8位数据
 	UARTx->C4 |= brfa&(UART_BDL_SBR_MASK>>3);//设置小数位
-	//配置uart控制寄存器，实现基本的八位传输功能
-  UARTx->C2 &= ~(UART_C2_RE_MASK|UART_C2_TE_MASK);	 //禁止发送接受
+    //配置uart控制寄存器，实现基本的八位传输功能
+    UARTx->C2 &= ~(UART_C2_RE_MASK|UART_C2_TE_MASK);	 //禁止发送接受
 	UARTx->C1 &= ~UART_C1_M_MASK;                      //配置数据位数为8位
 	UARTx->C1 &= ~(UART_C1_PE_MASK);                   //配置为无奇偶校检位
 	UARTx->S2 &= ~UART_S2_MSBF_MASK;                   //配置为最低位优先传输
@@ -314,16 +314,16 @@ void UART_DMACmd(UART_Type* UARTx, uint16_t UART_DMAReq, FunctionalState NewStat
 ************************************************************************************************/
 void UART_SendDataIntProcess(UART_Type* UARTx)
 {
-	if((UARTx->S1 & UART_S1_TDRE_MASK) && (UARTx->C2 & UART_C2_TIE_MASK))
-	{
-		if(UART_TxIntStruct1.IsComplete == FALSE)
-		{
+    if((UARTx->S1 & UART_S1_TDRE_MASK) && (UARTx->C2 & UART_C2_TIE_MASK))
+    {
+        if(UART_TxIntStruct1.IsComplete == FALSE)
+        {
 			UARTx->D = UART_TxIntStruct1.TxBuf[UART_TxIntStruct1.Offset++];
 			if(UART_TxIntStruct1.Offset >= UART_TxIntStruct1.Length)
 			{
-					UART_TxIntStruct1.IsComplete = TRUE;
-				  //关闭发送中断
-					UARTx->C2 &= ~UART_C2_TIE_MASK;
+                UART_TxIntStruct1.IsComplete = TRUE;
+                //关闭发送中断
+                UARTx->C2 &= ~UART_C2_TIE_MASK;
 			}
 		} 
 	}
@@ -347,7 +347,7 @@ uint8_t UART_ReceiveData(UART_Type *UARTx,uint8_t *ch)
 	if((UARTx->S1 & UART_S1_RDRF_MASK)!= 0)//判断接收缓冲区是否满
 	{
 		*ch = (UARTx->D);	//接受数据
-		 return 1; 		  	//接受成功
+        return 1; 		  	//接受成功
 	}
 	return 0;			      //如果超时，接受失败
 }

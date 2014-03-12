@@ -54,32 +54,32 @@ static MINISHELL_CommandTableTypeDef SHELL_InFunTable[] =
 static int SHELL_InsertFunction(MINISHELL_CommandTableTypeDef* pAddress)
 {
     uint32_t i;
-	  //check name conflict
-		for(i = 0; i < MAX_FUNCTION_NUM; i++)
-		{
+    //check name conflict
+    for(i = 0; i < MAX_FUNCTION_NUM; i++)
+    {
         if(gpCmdTable[i] != NULL)
-				{
+        {
             if(!strcmp(gpCmdTable[i]->name, pAddress->name))
             {
                 return 1;
             }
-				}
+        }
     }
-		//find empty pointer
-		for(i = 0; i < MAX_FUNCTION_NUM; i++)
-		{
+    //find empty pointer
+    for(i = 0; i < MAX_FUNCTION_NUM; i++)
+    {
         if(gpCmdTable[i] == NULL)
         {
             gpCmdTable[i] = (MINISHELL_CommandTableTypeDef*) pAddress;
             return 0;
         }
-		}
-		//function slocket is full
-		if(i == MAX_FUNCTION_NUM)
+    }
+    //function slocket is full
+    if(i == MAX_FUNCTION_NUM)
     {
         return 2;
     }
-		return -1; //impossible
+    return -1; //impossible
 }
 
 void MINISHELL_Init(void)
@@ -94,9 +94,9 @@ void MINISHELL_Init(void)
 void MINISHELL_Install(MINISHELL_InstallTypeDef* pInstall)
 {
     if((pInstall->ctrl_getchar == NULL) || (pInstall->ctrl_putchar == NULL))
-		{
+    {
         return;
-		}
+    }
     gInstall = *pInstall;
 }
 
@@ -114,7 +114,7 @@ static void printchar(char **str, int c)
 {
 	//extern void putchar(char c);
 	
-	if (str) {
+    if (str) {
 		**str = (char)c;
 		++(*str);
 	}

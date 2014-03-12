@@ -44,23 +44,23 @@ void FLASH_Init(void)
 	WDOG->UNLOCK = 0xD928;
 	WDOG->STCTRLH = 0;    // 禁止看门狗
 	//检查Flash访问错误
-  if(FTFL->FSTAT & FTFL_FSTAT_ACCERR_MASK)
-  {
-    FTFL->FSTAT |= FTFL_FSTAT_ACCERR_MASK;       //清除错误标志
-  }
-  //检查保护错误
-  else if (FTFL->FSTAT & FTFL_FSTAT_FPVIOL_MASK)
-  {
-    FTFL->FSTAT |= FTFL_FSTAT_FPVIOL_MASK;
-  }
-  //检查读冲突错误
-  else if (FTFL->FSTAT & FTFL_FSTAT_RDCOLERR_MASK)
-  {
-    FTFL->FSTAT |= FTFL_FSTAT_RDCOLERR_MASK;
-  }
-  //禁用Flash模块的数据缓存
-  FMC->PFB0CR &= ~FMC_PFB0CR_B0DCE_MASK;
-  FMC->PFB1CR &= ~FMC_PFB1CR_B1DCE_MASK;
+    if(FTFL->FSTAT & FTFL_FSTAT_ACCERR_MASK)
+    {
+        FTFL->FSTAT |= FTFL_FSTAT_ACCERR_MASK;       //清除错误标志
+    }
+    //检查保护错误
+    else if (FTFL->FSTAT & FTFL_FSTAT_FPVIOL_MASK)
+    {
+        FTFL->FSTAT |= FTFL_FSTAT_FPVIOL_MASK;
+    }
+    //检查读冲突错误
+    else if (FTFL->FSTAT & FTFL_FSTAT_RDCOLERR_MASK)
+    {
+        FTFL->FSTAT |= FTFL_FSTAT_RDCOLERR_MASK;
+    }
+    //禁用Flash模块的数据缓存
+    FMC->PFB0CR &= ~FMC_PFB0CR_B0DCE_MASK;
+    FMC->PFB1CR &= ~FMC_PFB1CR_B1DCE_MASK;
 }
 
 /***********************************************************************************************
@@ -73,7 +73,7 @@ void FLASH_Init(void)
 ************************************************************************************************/
 void FLASH_ReadByte(uint32_t FlashStartAdd,uint32_t len,uint8_t *pbuffer)
 {
-	uint32_t i = 0;
+    uint32_t i = 0;
 	for(i=0;i<len;i++)
 	{
 	  pbuffer[i] = *(uint8_t *)(FlashStartAdd+i);		//读取指定地址的数据
