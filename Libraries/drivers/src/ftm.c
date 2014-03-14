@@ -413,8 +413,7 @@ void FTM_QDInit(uint32_t FTM_QD_Maps)
     FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] |= PORT_PCR_MUX(pFTM_Map->FTM_Alt_Index);
     FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] |= PORT_PCR_PE_MASK;
     FTM_PORT->PCR[pFTM_Map->FTM_PHB_Index] |= PORT_PCR_PS_MASK;
-		
-    FTMx->MOD = 14000; //根据需要设置
+    FTMx->MOD = FTM_MOD_MOD_MASK; //设置为最大值
     FTMx->CNTIN = 0;
     FTMx->MODE |= FTM_MODE_WPDIS_MASK; //禁止写保护
     FTMx->MODE |= FTM_MODE_FTMEN_MASK; //FTMEN=1,关闭TPM兼容模式，开启FTM所有功能
