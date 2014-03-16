@@ -93,23 +93,23 @@ int main(void)
     DelayInit();
     LED_Init(LED_PinLookup_CHK60EVB, kNumOfLED);
     UART_DebugPortInit(UART4_RX_C14_TX_C15, 115200);
-	  DisplayCPUInfo();
+    DisplayCPUInfo();
     GUI_Init(&CHGUI_InitStruct1);
-	  GUI_SetFontFormName("FONT_CourierNew");
+    GUI_SetFontFormName("FONT_CourierNew");
     while(1) 
     {
-		    GUI_GotoXY(0, 0);
-			  GUI_TOUCH_GetState(&State);
-			  //打印物理AD坐标
-			  GUI_printf("Phy:X:%04d Y:%04d\r\n", GUI_TOUCH_GetxPhys(), GUI_TOUCH_GetyPhys());
-			  //打印逻辑AD坐标
+        GUI_GotoXY(0, 0);
+        GUI_TOUCH_GetState(&State);
+        //打印物理AD坐标
+        GUI_printf("Phy:X:%04d Y:%04d\r\n", GUI_TOUCH_GetxPhys(), GUI_TOUCH_GetyPhys());
+        //打印逻辑AD坐标
         GUI_printf("Log:X:%04d Y:%04d\r\n", State.x, State.y);	
         GUI_printf("State:%01d\r\n", State.Pressed);
-			  //LCD 画笔跟踪
+        //LCD 画笔跟踪
         GUI_DrawPoint(State.x, State.y);			
-			  DelayMs(10);
-			  //GUI 触摸屏处理函数 每10MS调用一次
-			  GUI_TOUCH_Exec();
+        DelayMs(10);
+        //GUI 触摸屏处理函数 每10MS调用一次
+        GUI_TOUCH_Exec();
     }
 }
 
