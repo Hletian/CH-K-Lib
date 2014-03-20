@@ -62,13 +62,13 @@ int main(void)
     //RTC_SetCalander(&RTC_Calander1);
     NVIC_EnableIRQ(RTC_IRQn);
     while(1) 
-		{
+    {
         RTC_GetCalander(&RTC_Calander1); //∂¡»° ±º‰
         if(last_sec != RTC_Calander1.Second)
-				{
+        {
             UART_printf("%d-%d-%d %d:%d:%d\r\n", RTC_Calander1.Year, RTC_Calander1.Month, RTC_Calander1.Date, RTC_Calander1.Hour, RTC_Calander1.Minute, RTC_Calander1.Second);
             last_sec = RTC_Calander1.Second;
-				}	
-		}
+        }	
+    }
  }
 
