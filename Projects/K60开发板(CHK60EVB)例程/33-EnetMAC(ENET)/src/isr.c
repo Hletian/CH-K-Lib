@@ -17,15 +17,15 @@ void UART4_RX_TX_IRQHandler(void)
 void PORTC_IRQHandler(void)
 {
     if(GPIO_GetITStates(PTC, GPIO_Pin_17) == SET)
-		{
+    {
         LED_Toggle(kLED1);
         GPIO_ClearITPendingBit(PTC, GPIO_Pin_17);
-		}
+    }
     if(GPIO_GetITStates(PTC, GPIO_Pin_18) == SET)
-		{
+    {
         LED_Toggle(kLED2);
         GPIO_ClearITPendingBit(PTC, GPIO_Pin_18);
-		}
+    }
 }
 
 void PIT0_IRQHandler(void)
@@ -43,6 +43,6 @@ void RTC_IRQHandler(void)
 
 void CAN1_ORed_Message_buffer_IRQHandler(void)
 {  
- // candev.reclen = CAN_ReadData(CAN1,CANRXBuffer); //接收数据
-		CAN1->IFLAG1 = (1<<CAN_IT_MB0);	 //必须清除
+    // candev.reclen = CAN_ReadData(CAN1,CANRXBuffer); //接收数据
+    CAN1->IFLAG1 = (1<<CAN_IT_MB0);	 //必须清除
 }

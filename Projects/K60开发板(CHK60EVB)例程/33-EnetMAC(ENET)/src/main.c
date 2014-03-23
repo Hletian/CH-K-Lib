@@ -72,33 +72,33 @@ int main(void)
     DelayInit();
     LED_Init(LED_PinLookup_CHK60EVB, kNumOfLED);
     UART_DebugPortInit(UART4_RX_C14_TX_C15, 115200);
-	  DisplayCPUInfo();
+    DisplayCPUInfo();
 
-	  ENET_InitStruct1.pMacAddress = gCfgLoca_MAC;
-	  ENET_Init(&ENET_InitStruct1);
-	  if(ENET_MiiLinkState() == TRUE)
-		{
+    ENET_InitStruct1.pMacAddress = gCfgLoca_MAC;
+    ENET_Init(&ENET_InitStruct1);
+    if(ENET_MiiLinkState() == TRUE)
+    {
         UART_printf("ENET Phy Connected succ.\r\n");
-		}
-		else
-		{
-			  UART_printf("ENET Phy Connected failed.\r\n");
-		}
+    }
+    else
+    {
+        UART_printf("ENET Phy Connected failed.\r\n");
+    }
     while(1) 
     {
-				//等待其他设备(PC机 发来的消息)
-				if(gEnetFlag == 1)
-				{
-						len = ENET_MacRecData(gBuffer);
-						UART_printf("Enet frame received, len:%d\r\n", len);
-						//打印接收到的数据
-						for(i = 0; i < len; i++)
-						{
-								UART_printf("0x%x ", gBuffer[i]);
-						}
-						UART_printf("\r\n");
-				 gEnetFlag = 0;
-			 }
+        //等待其他设备(PC机 发来的消息)
+        if(gEnetFlag == 1)
+        {
+            len = ENET_MacRecData(gBuffer);
+            UART_printf("Enet frame received, len:%d\r\n", len);
+            //打印接收到的数据
+            for(i = 0; i < len; i++)
+            {
+                UART_printf("0x%x ", gBuffer[i]);
+            }
+            UART_printf("\r\n");
+            gEnetFlag = 0;
+        }
     }
 }
 
