@@ -14,14 +14,13 @@
 #endif
 
 //定义以太网DMA缓冲区
-static  uint8_t xENETTxDescriptors_unaligned[ ( 1 * sizeof( NBUF ) ) + 16 ];
+static  uint8_t xENETTxDescriptors_unaligned[ ( CFG_NUM_ENET_TX_BUFFERS * sizeof( NBUF ) ) + 16 ];
 static  uint8_t pxENETRxDescriptors_unaligned[ ( CFG_NUM_ENET_RX_BUFFERS * sizeof( NBUF ) ) + 16 ];
 static NBUF *pxENETTxDescriptor;
 static NBUF *pxENETRxDescriptors;
 
 //以太网接收缓冲区
 static uint8_t ucENETRxBuffers[ ( CFG_NUM_ENET_RX_BUFFERS * CFG_ENET_BUFFER_SIZE ) + 16 ];
-static uint32_t uxNextRxBuffer = 0;
 
 /***********************************************************************************************
  功能：以太网缓冲区初始化
@@ -69,9 +68,7 @@ static void ENET_BDInit(void)
 	}
 	//最后一个描述符设置为Warp
 	pxENETRxDescriptors[ CFG_NUM_ENET_RX_BUFFERS - 1 ].status |= RX_BD_W;
-	//从0描述符开始
-	uxNextRxBuffer = 0;
-	
+	pxENETRxDescriptors[ CFG_NUM_ENET_TX_BUFFERS - 1 ].status |= RX_BD_W;
 }
 /***********************************************************************************************
  功能：计算MAC地址
@@ -159,9 +156,9 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
     ENET_MiiInit();  
 
 	//开启中断
-	NVIC_EnableIRQ(ENET_Transmit_IRQn);
-	NVIC_EnableIRQ(ENET_Receive_IRQn);
-	NVIC_EnableIRQ(ENET_Error_IRQn);
+	//NVIC_EnableIRQ(ENET_Transmit_IRQn);
+	//NVIC_EnableIRQ(ENET_Receive_IRQn);
+	//NVIC_EnableIRQ(ENET_Error_IRQn);
     //使能GPIO引脚复用功能
     PORTB->PCR[0]  = PORT_PCR_MUX(4); 
     PORTB->PCR[1]  = PORT_PCR_MUX(4); 
@@ -270,7 +267,7 @@ uint8_t ENET_Init(ENET_InitTypeDef* ENET_InitStrut)
 	ENET->EIR = ( uint32_t ) 0xFFFFFFFF;
 
 	//使能中断
-	ENET->EIMR = ENET_EIR_TXF_MASK | ENET_EIMR_RXF_MASK | ENET_EIMR_RXB_MASK | ENET_EIMR_UN_MASK | ENET_EIMR_RL_MASK | ENET_EIMR_LC_MASK | ENET_EIMR_BABT_MASK | ENET_EIMR_BABR_MASK | ENET_EIMR_EBERR_MASK;
+	//ENET->EIMR = ENET_EIR_TXF_MASK | ENET_EIMR_RXF_MASK | ENET_EIMR_RXB_MASK | ENET_EIMR_UN_MASK | ENET_EIMR_RL_MASK | ENET_EIMR_LC_MASK | ENET_EIMR_BABT_MASK | ENET_EIMR_BABR_MASK | ENET_EIMR_EBERR_MASK;
 
 	//使能MAC模块
 	ENET->ECR |= ENET_ECR_ETHEREN_MASK;
@@ -405,24 +402,21 @@ void ENET_MacSendData(uint8_t *ch, uint16_t len)
 uint16_t ENET_MacRecData(uint8_t *ch)
 {
     uint16_t len = 0;
-    ch = ch;
     //寻找非空的缓冲区描述符
-    if((pxENETRxDescriptors[uxNextRxBuffer].status & RX_BD_E ) == 0)
+    if((pxENETRxDescriptors[0].status & RX_BD_E ) == 0)
     {
 		//读取数据
-		len =  __REVSH(pxENETRxDescriptors[ uxNextRxBuffer ].length);
-		memcpy(ch,(uint8_t *)__REV((uint32_t)pxENETRxDescriptors[ uxNextRxBuffer ].data),len);
+		len =  __REVSH(pxENETRxDescriptors[ 0 ].length);
+		memcpy(ch,(uint8_t *)__REV((uint32_t)pxENETRxDescriptors[ 0 ].data),len);
 		//表示已经读取改缓冲区数据
-		pxENETRxDescriptors[uxNextRxBuffer].status |= RX_BD_E;
-		uxNextRxBuffer++;
-		if( uxNextRxBuffer >= CFG_NUM_ENET_RX_BUFFERS )
-		{
-			uxNextRxBuffer = 0;
-		}
+		pxENETRxDescriptors[0].status |= RX_BD_E;
 		ENET->RDAR = ENET_RDAR_RDAR_MASK;
+        return len;
 	}
-	return len;
-	
+	else
+    {
+        return 0;
+    }
 }
 /***********************************************************************************************
  功能：以太网发送完成中断
@@ -440,11 +434,9 @@ void ENET_Transmit_IRQHandler(void)
  返回：0
  详解：0
 ************************************************************************************************/
-uint8_t gEnetFlag = 0;
 void ENET_Receive_IRQHandler(void)
 {
 	ENET->EIR |= ENET_EIMR_RXF_MASK; 
-	gEnetFlag = 1;
 }
 
 void ENET_Error_IRQHandler(void)

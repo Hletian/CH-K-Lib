@@ -60,21 +60,18 @@ extern uint8_t gEnetFlag ;
 uint16_t tapdev_read(void)
 {	
 	uint16_t len = 0;
-	if(gEnetFlag)
-	{
-		len = ENET_MacRecData(uip_buf);
-		gEnetFlag = 0;
-	}
-	else
-	{
-		len = 0;
-	}
+    len = ENET_MacRecData(uip_buf);
+    if(len)
+    {
+       UART_printf("MacReceived:%d\r\n", len);
+    }
 	return len;
 }
 //发送一包数据  
 void tapdev_send(void)
 {
-	ENET_MacSendData(uip_buf,uip_len);	
+	ENET_MacSendData(uip_buf, uip_len);	
+    UART_printf("MacSend:%d\r\n", uip_len);
 }
 
 //打印日志用
