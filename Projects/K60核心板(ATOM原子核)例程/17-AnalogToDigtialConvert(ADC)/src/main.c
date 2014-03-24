@@ -54,7 +54,7 @@ int main(void)
     UART_DebugPortInit(UART4_RX_C14_TX_C15, 115200);
 	  DisplayCPUInfo();
     //初始化ADC
-    ADC_InitStruct1.ADCxMap = ADC0_SE13_PB3;              //PC0 引脚作为ADC0 14通道
+    ADC_InitStruct1.ADCxMap = ADC0_SE13_PB3;              //PB3 引脚作为ADC0 13通道 单端模式(SE)
     ADC_InitStruct1.ADC_Precision = ADC_PRECISION_10BIT;  //10位精度
     ADC_InitStruct1.ADC_TriggerSelect = ADC_TRIGGER_SW;   //软件触发(A 通道可使用软/硬件触发 B 通道只能使用硬件触发)
     ADC_InitStruct1.ADC_ClkDiv = ADC_CLKDIV_8;            //ADC转换时钟为总线时钟/8 时钟越慢转换速度越慢 精度越高
