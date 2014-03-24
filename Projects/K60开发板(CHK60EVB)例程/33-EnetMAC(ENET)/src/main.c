@@ -86,10 +86,9 @@ int main(void)
     }
     while(1) 
     {
-        //等待其他设备(PC机 发来的消息)
-        if(gEnetFlag == 1)
+        len = ENET_MacRecData(gBuffer);
+        if(len)
         {
-            len = ENET_MacRecData(gBuffer);
             UART_printf("Enet frame received, len:%d\r\n", len);
             //打印接收到的数据
             for(i = 0; i < len; i++)
@@ -97,7 +96,6 @@ int main(void)
                 UART_printf("0x%x ", gBuffer[i]);
             }
             UART_printf("\r\n");
-            gEnetFlag = 0;
         }
     }
 }

@@ -63,7 +63,7 @@ uint16_t tapdev_read(void)
     len = ENET_MacRecData(uip_buf);
     if(len)
     {
-       UART_printf("MacReceived:%d\r\n", len);
+  //     UART_printf("MacReceived:%d\r\n", len);
     }
 	return len;
 }
@@ -71,7 +71,7 @@ uint16_t tapdev_read(void)
 void tapdev_send(void)
 {
 	ENET_MacSendData(uip_buf, uip_len);	
-    UART_printf("MacSend:%d\r\n", uip_len);
+  //  UART_printf("MacSend:%d\r\n", uip_len);
 }
 
 //打印日志用
