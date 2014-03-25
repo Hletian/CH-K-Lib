@@ -112,26 +112,26 @@ static uint32_t AppGetData(uint32_t ReqestedByte, uint32_t Offset, uint8_t **ppD
 
 int main(void)
 {
-	  uint8_t bmp_pic_cnt = 0;
+    uint8_t bmp_pic_cnt = 0;
     uint32_t i = 0;
-	  uint8_t res;
+    uint8_t res;
     SD_InitTypeDef SD_InitStruct1;
     SystemClockSetup(ClockSource_EX50M,CoreClock_100M);
     DelayInit();
     LED_Init(LED_PinLookup_CHK60EVB, kNumOfLED);
     UART_DebugPortInit(UART4_RX_C14_TX_C15, 115200);
-	  DisplayCPUInfo();
+    DisplayCPUInfo();
 	
     GUI_Init(&CHGUI_InitStruct1);
     GUI_SetBkColor(BLACK);
-	  GUI_SetTextMode(GUI_TEXTMODE_NORMAL);
+    GUI_SetTextMode(GUI_TEXTMODE_NORMAL);
     GUI_SetColor(LGRAY);
     GUI_SetFontFormName("FONT_CourierNew");
-		GUI_printf("HelloWorld\r\n");
-		GUI_printf("CHGUI_Version:%0.2f\r\n", (float)(GUI_VERSION/100));
-		GUI_printf("ID:%X\r\n", GUI_GetDeivceID());
-	  GUI_printf("Please Insert Card...\r\n");
-	  DelayMs(200);
+    GUI_printf("HelloWorld\r\n");
+    GUI_printf("CHGUI_Version:%0.2f\r\n", (float)(GUI_VERSION/100));
+    GUI_printf("ID:%X\r\n", GUI_GetDeivceID());
+    GUI_printf("Please Insert Card...\r\n");
+    DelayMs(200);
     SD_InitStruct1.SD_BaudRate = 2000000;
     //等待SD卡初始化成功
     while(SD_Init(&SD_InitStruct1) != ESDHC_OK);
@@ -165,16 +165,16 @@ int main(void)
     }
     while(1)
     {
-				//打开SD卡中的BMP文件
+        //打开SD卡中的BMP文件
         znFAT_Open_File(&fileInfo1, "/PIC/*.bmp", i, 1);
-			  //画图
+        //画图
         GUI_BMP_DrawEx(0,0, AppGetData);
-			  //关闭文件
+        //关闭文件
         znFAT_Close_File(&fileInfo1);
-			  //停顿一秒
+        //停顿一秒
         DelayMs(1000);
         i++;
-			  if(i == bmp_pic_cnt) i = 0;
+        if(i == bmp_pic_cnt) i = 0;
         LED_Toggle(kLED1);
     }
 }
