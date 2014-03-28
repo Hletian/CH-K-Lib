@@ -65,10 +65,10 @@ typedef struct
     uint32_t ADC_Pin_Index:6;
     uint32_t ADC_GPIO_Index:4;
     uint32_t ADC_Alt_Index:4;
-		uint32_t ADC_SingleDifferential:2;
-	  uint32_t ADC_IsAnalogChl:2;
-		uint32_t ADC_IsChlAB:2;
-	  uint32_t ADC_Chl:6;
+    uint32_t ADC_SingleDifferential:2;
+    uint32_t ADC_IsAnalogChl:2;
+    uint32_t ADC_IsChlAB:2;
+    uint32_t ADC_Chl:6;
 }ADC_MapTypeDef;
 
 //ADC0ïÒ¥åˆ†ä¿¡å·ðè¾Þì…¥ãÍ‰æ‹©
