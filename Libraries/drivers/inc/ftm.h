@@ -80,10 +80,10 @@ typedef struct
 {
     uint32_t FTM_Index:4;
     uint32_t FTM_CH_Index:4;
-		uint32_t FTM_PHA_Index:6;
-		uint32_t FTM_PHB_Index:6;
-		uint32_t FTM_GPIO_Index:4;
-		uint32_t FTM_Alt_Index:4;
+    uint32_t FTM_PHA_Index:6;
+    uint32_t FTM_PHB_Index:6;
+    uint32_t FTM_GPIO_Index:4;
+    uint32_t FTM_Alt_Index:4;
 }FTM_QD_MapTypeDef;
 
 //FTM  Ä£Ê½Ñ¡Ôñ
